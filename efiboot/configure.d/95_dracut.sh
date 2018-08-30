@@ -8,6 +8,10 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
+# Copy kernel compiled in core recipe
+CORE_CONFIGURE="${CURRENT_OUT_ROOT}/../../../core/configure"
+cp -aT "${CORE_CONFIGURE}/boot" "${CURRENT_OUT_ROOT}/boot"
+
 # Identify the kernel version string installed in this root tree to (otherwise
 # dracut will try to find out the kernel version by using uname(1) and may use
 # the kernel version string of the SDK host):
@@ -66,16 +70,6 @@ fi
 # we do not want this
 rm -f "${CURRENT_OUT_ROOT:?}/etc/machine-id"
 
-# List of modules added to the initramfs and loaded at boot time
-# TODO: Create a specific list for each target
-# TODO: Make sure module loading is disabled once we exit the initramfs
-drivers=""
-# QEMU/KVM client support
-drivers+=" virtio_balloon virtio_net virtio_console virtio_blk virtio_pci virtio_rng virtio_ring"
-drivers+=" qemu_fw_cfg"
-# QEMU/KVM host support
-#drivers+=" kvm kvm_intel"
-
 # Sadly enough, dracut does not provide an option to be able to work with
 # objects (kernel, binaries, environment) from a detached root tree.
 # For this reason, we are going to rely on a chroot(1) call into
@@ -86,8 +80,7 @@ env -i chroot "${CURRENT_OUT_ROOT}" \
         dracut --kver "${kernel_version}" \
         --reproducible --force \
         --uefi --uefi-stub /usr/lib/systemd/boot/efi/linuxx64.efi.stub \
-        --kernel-cmdline "${kernel_cmdline}" \
-        --add-drivers "${drivers}" --force-drivers "${drivers}"
+        --kernel-cmdline "${kernel_cmdline}" --no-kernel
 # Note for the "bash -lc 'exec ...'" quirk above:
 # This trick is to ensure that we won't inherit anything from the environment
 # of the SDK but only from the CURRENT_OUT_ROOT (the bash -l option will source

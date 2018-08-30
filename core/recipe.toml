@@ -24,6 +24,7 @@ steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/21_dbus_user.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/29_debug_no_root_password.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/30_prepare_state.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/31_extract_boot.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/40_fstab.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/41_dev_proc_sys.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config.sh",

@@ -23,3 +23,33 @@ einfo "Set fixed known machine-id & hostname for now."
 SHORT_NAME="${CURRENT_PRODUCT_PROPERTY['short_name']}"
 echo "${SHORT_NAME:?}-qemu" > "${CURRENT_OUT_ROOT}/etc/hostname"
 echo "${SHORT_NAME:?}-qemu" | md5sum | awk '{print $1}' > "${CURRENT_OUT_ROOT}/etc/machine-id"
+
+einfo "Setup state directory for kernel modules config"
+install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT}/state/core/etc/modules-load.d"
+install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/modules-load.d"
+ln -sf "/mnt/state/core/etc/modules-load.d/hardware.conf" \
+    "${CURRENT_OUT_ROOT}/etc/modules-load.d/hardware.conf"
+
+# FIXME: This is specific to the QEMU environment
+einfo "Add default hardware profile"
+cat > "${CURRENT_OUT}/state/core/etc/modules-load.d/hardware.conf" <<EOF
+atkbd
+psmouse
+ptp_kvm
+qemu_fw_cfg
+qxl
+bochs-drm
+rtc-cmos
+snd_hda_codec_generic
+virtio_balloon
+virtio_console
+virtio_crypto
+virtio_gpu
+virtio_input
+virtio_mmio
+virtio_net
+virtio_rng
+virtio_scsi
+EOF
+
+# vim: set ft=sh ts=4 sts=4 sw=4 et:

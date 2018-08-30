@@ -15,6 +15,7 @@ rm -rf "${CURRENT_OUT_ROOT}/etc/sysctl.d"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/sysctl.d"
 
 cat > "${CURRENT_OUT_ROOT}/etc/sysctl.d/hardening.conf" <<EOF
+kernel.modules_disabled = 1
 kernel.kptr_restrict = 2
 kernel.yama.ptrace_scope = 1
 kernel.perf_event_paranoid = 3
