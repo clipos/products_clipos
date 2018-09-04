@@ -40,7 +40,7 @@ the CLIP OS kernel. Before starting, it is worth mentioning that:
   only used when needed either for the initramfs or to ease the automation of
   the deployment of CLIP OS on multiple different machines (for the moment, we
   only target a QEMU-KVM guest). This is particularly important as module
-  loading will be disabled after CLIP OS startup.
+  loading is disabled after CLIP OS startup.
 
 * We **focus on a secure configuration**. The remaining of the configuration
   is minimal and it is your job to tune it for your machines and use cases.
@@ -195,9 +195,9 @@ General setup
 
 .. ---
 
-Although CLIP OS stores kernel modules in an initramfs located in a signed
-EFI binary (together with the kernel itself and its command line), we still
-enable and enforce module signing as an additional layer of security:
+Although CLIP OS stores kernel modules in a read-only rootfs whose integrity is
+guaranteed by dm-verity, we still enable and enforce module signing as an
+additional layer of security:
 
  .. describe:: CONFIG_MODULE_SIG=y
                CONFIG_MODULE_SIG_FORCE=y
@@ -719,10 +719,11 @@ using it:
 
    Increase the space for PID values.
 
-For each hardware configuration, a predefined fixed list of modules for
-hardware support will be loaded in the kernel at boot time. Once all modules
-are loaded and the system is considered booted, module loading will be disabled
-by setting ``kernel.modules_disabled = 1``.
+.. describe:: kernel.modules_disabled = 1
+
+   Disable module loading once systemd has loaded the ones required for the
+   running machine according to a profile (i.e., a predefined and
+   hardware-specific list of modules).
 
 Pure network sysctls (``net.ipv4.*`` and ``net.ipv6.*``) will be detailed in a
 separate place.
