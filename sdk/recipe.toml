@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2017-2018 ANSSI. All rights reserved.
+
+# CLIP OS SDK recipe file
+
+features = [ "sdk" ]
+
+[runtime]
+additional_capabilities = [
+    # this is needed to build the GCC package:
+    "CAP_SYS_PTRACE",
+]
+
+additional_device_bindings = [ ]
+
+cwd = "{{repo}}/products/{{product}}/{{recipe}}/scripts"
+
+prelude_commands = [
+    # This script interprets PORTAGE_PROFILE and PORTAGE_OVERLAYS environment
+    # variables and set it accordingly in the spawned container:
+    "{{repo}}/products/{{product}}/{{recipe}}/scripts/setup-portage.sh",
+]
+
+postlude_commands = [ ]
+
+writable_assets_dirs_at_build = [
+    "distfiles"
+]
+
+[runtime.env]
+# Portage overlays to expose in the Portage configuration
+# Note: this is the enumeration of the Portage overlays repo_name (not
+# necessarily their directory name in /mnt/src/portage).
+PORTAGE_OVERLAYS = 'gentoo clipos'
+# Portage profile to use
+PORTAGE_PROFILE = 'clipos:clipos/amd64/sdk'
+
+[bootstrap]
+rootfs_archive = "{{repo}}/assets/gentoo/stage3-amd64-hardened+nomultilib-20180722T214501Z.tar.xz"
+steps = [
+    # The script in charge of transforming the above rootfs into a SDK image:
+    "{{repo}}/products/{{product}}/{{recipe}}/scripts/bootstrap.sh",
+]
+
+[run]
+steps = [
+    "bash -li",
+]
+
+# vim: set ts=4 sts=4 sw=4 et ft=toml:

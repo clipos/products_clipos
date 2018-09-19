@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2017-2018 ANSSI. All rights reserved.
+
+# CLIP OS EFI boot recipe file
+
+features = [ "root", "configure", "bundle" ]  # "sign"?
+
+[root]
+sdk = "clipos/sdk"
+env = { PORTAGE_PROFILE = 'clipos:clipos/amd64/efiboot' }
+build_steps = [
+    "{{repo}}/products/clipos/sdk/scripts/portage/build-recipe.sh clipos-meta/clipos-efiboot",
+]
+image_steps = [
+    "{{repo}}/products/clipos/sdk/scripts/portage/image-recipe.sh clipos-meta/clipos-efiboot",
+]
+
+[configure]
+sdk = "clipos/sdk"
+root = "{{product}}/{{recipe}}"  # work on self
+steps = [
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/10_cleanup.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/20_default_users.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config_state.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/53_os-release.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/90_config_cleanup.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/91_chroot_devices.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/92_core_dracut_config.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/95_dracut.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/96_secure_boot.sh",
+]
+
+[bundle]
+sdk = "clipos/sdk"
+steps = [
+    "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh",
+]
+
+# vim: set ts=4 sts=4 sw=4 et ft=toml:

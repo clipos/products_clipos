@@ -1,0 +1,1 @@
+../../sdk/scripts/configure.d/20_default_users.sh

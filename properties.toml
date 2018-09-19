@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2017-2018 ANSSI. All rights reserved.
+
+# CLIP OS product global properties file
+
+# The version of this product:
+version = "5.0.0-alpha.1"
+
+# The common name such as the official trademark name or the common designation
+# name for this product:
+common_name = "CLIP OS"
+
+# A short name reflecting the common name (but without any special character,
+# this string must satisfy the regular expression ^[a-z]+$) that can be used as
+# a programmatic identifier in some parts of the source code:
+# Note: this short name can be different from the product name (i.e. the name
+# of the directory in "{repo}/products") for various naming policy reasons such
+# as trademark rights or project codename policy.
+short_name = "clipos"
+
+# The URL to the project homepage:
+homepage = "https://github.com/clipos/"
+
+[system]
+keymap = "fr"
+timezone = "UTC"
+locale = "en_US.UTF-8"
+
+[system.disk_layout]
+vg_name = "mainvg"
+
+# vim: set ts=4 sts=4 sw=4 et ft=toml:

@@ -1,0 +1,1 @@
+../../sdk/scripts/configure.d/90_config_cleanup.sh

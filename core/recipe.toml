@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2017-2018 ANSSI. All rights reserved.
+
+# CLIP OS Core recipe file
+
+features = [ "root", "configure", "bundle" ]  # "sign"?
+
+[root]
+sdk = "clipos/sdk"
+env = { PORTAGE_PROFILE = 'clipos:clipos/amd64/core' }
+build_steps = [
+    "{{repo}}/products/clipos/sdk/scripts/portage/build-recipe.sh clipos-meta/clipos-core",
+]
+image_steps = [
+    "{{repo}}/products/clipos/sdk/scripts/portage/image-recipe.sh clipos-meta/clipos-core",
+]
+
+[configure]
+sdk = "clipos/sdk"
+root = "{{product}}/{{recipe}}"  # work on self
+steps = [
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/10_cleanup.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/20_default_users.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/21_dbus_user.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/29_debug_no_root_password.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/30_prepare_state.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/40_fstab.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/41_dev_proc_sys.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config_state.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/51_network.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/53_os-release.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/54_systemd.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/55_sysctl.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/59_lvm.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/60_nosuid.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/90_config_cleanup.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/99_final_cleanup.sh",
+]
+
+[bundle]
+sdk = "clipos/sdk"
+steps = [
+    "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh",
+]
+
+# vim: set ts=4 sts=4 sw=4 et ft=toml:

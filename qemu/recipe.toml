@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2017-2018 ANSSI. All rights reserved.
+
+# CLIP OS QEMU target recipe file
+
+features = ["bundle", "virt"]
+
+[bundle]
+sdk = "clipos/sdk_debian"
+steps = [
+    "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh"
+]
+
+[virt]
+xml_domain_template = "{{repo}}/products/{{product}}/{{recipe}}/libvirt/clipos-qemu.xml"
+xml_network_template = "{{repo}}/products/{{product}}/{{recipe}}/libvirt/clipos-internal.xml"
+qcow2_main_disk_image = "{{repo}}/out/{{product}}/{{version}}/{{recipe}}/bundle/main.qcow2"
+ovmf_code = "{{repo}}/products/{{product}}/efiboot/configure.d/dummy_keys_secure_boot/OVMF_CODE_secure-Boot.fd"
+ovmf_vars_template = "{{repo}}/products/{{product}}/efiboot/configure.d/dummy_keys_secure_boot/OVMF_VARS.fd"
+
+# vim: set ts=4 sts=4 sw=4 et ft=toml:
