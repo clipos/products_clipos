@@ -93,6 +93,7 @@
     <console type='pty'>
       <target type='serial' port='0'/>
     </console>
+    ${tpm_support}
   </devices>
   <!-- vim: set ts=2 sts=2 sw=2 et ft=xml: -->
 </domain>
