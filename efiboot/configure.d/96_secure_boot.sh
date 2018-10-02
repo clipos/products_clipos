@@ -41,10 +41,10 @@ mv  "${CURRENT_OUT_ROOT}/secure_boot/linux.efi.signed" \
 mv  "${CURRENT_OUT_ROOT}/secure_boot/systemd-bootx64.efi.signed" \
     "${CURRENT_OUT}/systemd-bootx64.efi"
 
-# Same thing for the OVMF code compiled with Secure Boot support and for OVMF
-# vars with dummy keys enrolled
+# Same thing for the OVMF code compiled with Secure Boot and TPM 2.0 support
+# and for OVMF vars with dummy keys enrolled
 cp  "${CURRENT_OUT_ROOT}/usr/share/edk2-ovmf/OVMF_CODE.fd" \
-    "${CURRENT_OUT}/OVMF_CODE_secure-boot.fd"
+    "${CURRENT_OUT}/OVMF_CODE_sb-tpm.fd"
 
 cp  "${sb_keys_path}"/OVMF_VARS.fd \
     "${CURRENT_OUT}/OVMF_VARS-secure-boot.fd"
