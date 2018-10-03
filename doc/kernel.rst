@@ -574,13 +574,6 @@ Security
 
 .. ---
 
-.. describe:: CONFIG_SECURITY_LOADPIN=y
-              CONFIG_SECURITY_LOADPIN_ENABLED=y
-
-   Add a level of protection to ensure the kernel can only load files (e.g.,
-   modules or firmwares) from our read-only rootfs and not from other
-   filesystems.
-
 .. describe:: CONFIG_SECURITY_YAMA=y
 
    The Yama LSM currently provides ptrace scope restriction (which might be
