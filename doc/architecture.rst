@@ -28,7 +28,7 @@ A CLIP OS system is split into several logically separated entities:
    High level overview of CLIP OS components
 
 The execution environment of each Cage is logically isolated from the Core and
-from the all other Cages. Interactions between a Cage and the Core is carefully
+from all the other Cages. Interactions between a Cage and the Core is carefully
 controlled and goes through confined and unprivileged services as shown in
 :numref:`clipos-cage-and-service-isolation`.
 
