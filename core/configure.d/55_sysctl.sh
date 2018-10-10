@@ -14,10 +14,20 @@ rm -f "${CURRENT_OUT_ROOT}/etc/sysctl.conf"
 rm -rf "${CURRENT_OUT_ROOT}/etc/sysctl.d"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/sysctl.d"
 
+if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
+	unset kernel_modules_disabled
+	kernel_kptr_restrict=0
+	kernel_yama_ptrace_scope=0
+else
+	kernel_modules_disabled=1
+	kernel_kptr_restrict=2
+	kernel_yama_ptrace_scope=3
+fi
+
 cat > "${CURRENT_OUT_ROOT}/etc/sysctl.d/hardening.conf" <<EOF
-kernel.modules_disabled = 1
-kernel.kptr_restrict = 2
-kernel.yama.ptrace_scope = 1
+${kernel_modules_disabled:+"kernel.modules_disabled = ${kernel_modules_disabled}"}
+kernel.kptr_restrict = ${kernel_kptr_restrict}
+kernel.yama.ptrace_scope = ${kernel_yama_ptrace_scope}
 kernel.perf_event_paranoid = 3
 kernel.unprivileged_bpf_disabled = 1
 kernel.tiocsti_restrict = 1
