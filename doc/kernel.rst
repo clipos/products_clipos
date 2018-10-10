@@ -658,9 +658,9 @@ tightly related to the CLIP OS kernel configuration detailed above.
    Hide kernel addresses in ``/proc`` and other interfaces, even to privileged
    users.
 
-.. describe:: kernel.yama.ptrace_scope = 1
+.. describe:: kernel.yama.ptrace_scope = 3
 
-   Enable the ptrace scope restriction provided by the Yama LSM.
+   Enable the strictest ptrace scope restriction provided by the Yama LSM.
 
 .. describe:: kernel.perf_event_paranoid = 3
 
