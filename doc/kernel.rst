@@ -758,7 +758,9 @@ We pass the following command line parameters to the kernel:
 
    Even if we correctly enable the IOMMU in the kernel configuration, the
    kernel can still decide for various reasons to not initialize it at boot.
-   Therefore, we force it with this parameter.
+   Therefore, we force it with this parameter. Note that with some Intel
+   chipsets, you may need to add ``intel_iommu=igfx_off`` to allow your GPU to
+   access the physical memory directly without going through the DMA Remapping.
 
 .. describe:: slub_debug=F
 
