@@ -10,7 +10,7 @@
    clipos/architecture
    clipos/security
    clipos/kernel
-   clipos/secure_boot
+   clipos/boot_integrity
    clipos/roadmap
 
 .. vim: set tw=79 ts=2 sts=2 sw=2 et:

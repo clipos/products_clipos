@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="12cm" height="4cm" viewBox="347 113 229 74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="348.35" y="114.8" width="226.15" height="71.4499"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="348.35" y="114.8" width="226.15" height="71.4499"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="461.425" y="154.425">
+      <tspan x="461.425" y="154.425"></tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="357.225" y="124.25" width="91.55" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="357.225" y="124.25" width="91.55" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="403" y="147.15">
+      <tspan x="403" y="147.15">EFI system</tspan>
+      <tspan x="403" y="163.15">partition</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="460.675" y="124.3" width="105.9" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="460.675" y="124.3" width="105.9" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="513.625" y="155.2">
+      <tspan x="513.625" y="155.2">LVM partition</tspan>
+    </text>
+  </g>
+</svg>

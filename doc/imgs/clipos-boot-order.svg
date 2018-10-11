@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="11.662203cm"
+   height="13.498173cm"
+   viewBox="602 50 223.52555 265.81017"
+   version="1.1"
+   id="svg108"
+   sodipodi:docname="clipos-boot-integrity.svg"
+   inkscape:version="0.92.2 2405546, 2018-03-11">
+  <metadata
+     id="metadata114">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs112" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="1032"
+     id="namedview110"
+     showgrid="false"
+     fit-margin-bottom="0.5"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     inkscape:zoom="4.3568056"
+     inkscape:cx="114.38084"
+     inkscape:cy="152.17935"
+     inkscape:window-x="1680"
+     inkscape:window-y="18"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g72" />
+  <g
+     id="g10"
+     transform="translate(-3.374149,-0.5)">
+    <rect
+       style="fill:#ffffff"
+       x="650"
+       y="51.5"
+       width="179.783"
+       height="38"
+       id="rect2" />
+    <rect
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       x="650"
+       y="51.5"
+       width="179.783"
+       height="38"
+       id="rect4" />
+    <text
+       font-size="12.8"
+       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+       x="739.89203"
+       y="74.400002"
+       id="text8">
+      <tspan
+         x="739.89203"
+         y="74.400002"
+         id="tspan6">UEFI Firmware</tspan>
+    </text>
+  </g>
+  <g
+     id="g20"
+     transform="translate(-3.374149,-0.5)">
+    <rect
+       style="fill:#ffffff"
+       x="649.784"
+       y="100.5"
+       width="181"
+       height="38"
+       id="rect12" />
+    <rect
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       x="649.784"
+       y="100.5"
+       width="181"
+       height="38"
+       id="rect14" />
+    <text
+       font-size="12.8"
+       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+       x="740.284"
+       y="123.4"
+       id="text18">
+      <tspan
+         x="740.284"
+         y="123.4"
+         id="tspan16">Bootloader</tspan>
+    </text>
+  </g>
+  <g
+     id="g34"
+     transform="translate(-3.374149,-0.5)">
+    <rect
+       style="fill:#ffffff"
+       x="650.07599"
+       y="151"
+       width="180.8"
+       height="70"
+       id="rect22" />
+    <rect
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       x="650.07599"
+       y="151"
+       width="180.8"
+       height="70"
+       id="rect24" />
+    <text
+       font-size="12.8"
+       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+       x="740.47601"
+       y="173.89999"
+       id="text32">
+      <tspan
+         x="740.47601"
+         y="173.89999"
+         id="tspan26">EFI Binary</tspan>
+      <tspan
+         x="740.47601"
+         y="189.89999"
+         id="tspan28">(Linux kernel + initramfs</tspan>
+      <tspan
+         x="740.47601"
+         y="205.89999"
+         id="tspan30">+ kernel command line)</tspan>
+    </text>
+  </g>
+  <g
+     id="g42"
+     transform="translate(-3.374149,-0.5)">
+    <path
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       d="m 649.784,129 a 19.7506,19.7506 0 0 0 -6.087,38.462"
+       id="path36"
+       inkscape:connector-curvature="0" />
+    <polygon
+       style="fill:#000000"
+       points="641.831,165.524 647.84,168.507 641.849,171.524 643.34,168.52 "
+       id="polygon38"
+       transform="rotate(30,644.8355,168.52399)" />
+    <polygon
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       points="641.831,165.524 647.84,168.507 641.849,171.524 643.34,168.52 "
+       id="polygon40"
+       transform="rotate(30,644.83215,168.53025)" />
+  </g>
+  <g
+     id="g50"
+     transform="translate(-3.374149,-0.5)">
+    <path
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       d="m 650,70.5 a 19.8297,19.8297 0 0 0 -6.66,38.985"
+       id="path44"
+       inkscape:connector-curvature="0" />
+    <polygon
+       style="fill:#000000"
+       points="641.325,107.702 647.556,110.188 641.829,113.681 643.072,110.565 "
+       id="polygon46"
+       transform="rotate(21.377421,644.4405,110.69149)" />
+    <polygon
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       points="641.325,107.702 647.556,110.188 641.829,113.681 643.072,110.565 "
+       id="polygon48"
+       transform="rotate(22.873642,645.87525,110.68737)" />
+  </g>
+  <g
+     id="g64"
+     transform="translate(-3.374149,-0.5)">
+    <rect
+       style="fill:#ffffff"
+       x="650.784"
+       y="235.464"
+       width="180"
+       height="70"
+       id="rect52" />
+    <rect
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       x="650.784"
+       y="235.464"
+       width="180"
+       height="70"
+       id="rect54" />
+    <text
+       font-size="12.8"
+       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+       x="740.784"
+       y="258.36401"
+       id="text62">
+      <tspan
+         x="740.784"
+         y="258.36401"
+         id="tspan56">/</tspan>
+      <tspan
+         x="740.784"
+         y="274.36401"
+         id="tspan58">(DM-Verity &amp;</tspan>
+      <tspan
+         x="740.784"
+         y="290.36401"
+         id="tspan60">read-only rootfs)</tspan>
+    </text>
+  </g>
+  <g
+     id="g72"
+     transform="translate(-3.374149,-0.5)">
+    <path
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       d="M 650.076,203.5 A 25.3885,25.3885 0 0 0 644.6,250.757"
+       id="path66"
+       inkscape:connector-curvature="0" />
+    <polygon
+       style="fill:#000000"
+       points="644.2,251.539 643.369,248.29 648.599,252.491 642.1,254.154 "
+       id="polygon68" />
+    <polygon
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+       points="643.369,248.29 648.599,252.491 642.1,254.154 644.2,251.539 "
+       id="polygon70"
+       transform="rotate(15,645.11352,250.74922)" />
+  </g>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:sans-serif;text-anchor:start;fill:#000000"
+     x="578.90985"
+     y="91.730003"
+     id="text76">
+    <tspan
+       x="578.90985"
+       y="91.730003"
+       id="tspan74" />
+  </text>
+  <g
+     id="g86"
+     transform="translate(-3.374149,-0.5)">
+    <ellipse
+       style="fill:#ffffff"
+       cx="610.58899"
+       cy="88.687897"
+       rx="7.5276799"
+       ry="7.1264801"
+       id="ellipse78" />
+    <ellipse
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:1"
+       cx="610.58899"
+       cy="88.687897"
+       rx="7.5276799"
+       ry="7.1264801"
+       id="ellipse80" />
+    <text
+       font-size="9.03097"
+       style="font-style:normal;font-weight:normal;font-size:9.03096962px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+       x="610.58899"
+       y="91.443497"
+       id="text84">
+      <tspan
+         x="610.58899"
+         y="91.443497"
+         id="tspan82">1</tspan>
+    </text>
+  </g>
+  <g
+     id="g96"
+     transform="translate(-3.374149,-0.5)">
+    <ellipse
+       style="fill:#ffffff"
+       cx="611.54498"
+       cy="227.425"
+       rx="7.5276799"
+       ry="7.1264801"
+       id="ellipse88" />
+    <ellipse
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:1"
+       cx="611.54498"
+       cy="227.425"
+       rx="7.5276799"
+       ry="7.1264801"
+       id="ellipse90" />
+    <text
+       font-size="9.03097"
+       style="font-style:normal;font-weight:normal;font-size:9.03096962px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+       x="611.54498"
+       y="230.181"
+       id="text94">
+      <tspan
+         x="611.54498"
+         y="230.181"
+         id="tspan92">3</tspan>
+    </text>
+  </g>
+  <g
+     id="g106"
+     transform="translate(-3.374149,-0.5)">
+    <ellipse
+       style="fill:#ffffff"
+       cx="610.24799"
+       cy="147.021"
+       rx="7.5276799"
+       ry="7.1264801"
+       id="ellipse98" />
+    <ellipse
+       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:1"
+       cx="610.24799"
+       cy="147.021"
+       rx="7.5276799"
+       ry="7.1264801"
+       id="ellipse100" />
+    <text
+       font-size="9.03097"
+       style="font-style:normal;font-weight:normal;font-size:9.03096962px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+       x="610.24799"
+       y="149.77699"
+       id="text104">
+      <tspan
+         x="610.24799"
+         y="149.77699"
+         id="tspan102">2</tspan>
+    </text>
+  </g>
+</svg>
