@@ -21,7 +21,7 @@ A CLIP OS system is split into several logically separated entities:
     confidentiality level.
 
 .. _clipos-high-level-architecture:
-.. figure:: clipos-high-level-architecture.svg
+.. figure:: imgs/clipos-high-level-architecture.svg
    :align: center
    :figwidth: 90 %
 
@@ -33,7 +33,7 @@ controlled and goes through confined and unprivileged services as shown in
 :numref:`clipos-cage-and-service-isolation`.
 
 .. _clipos-cage-and-service-isolation:
-.. figure:: clipos-cage-and-service-isolation.svg
+.. figure:: imgs/clipos-cage-and-service-isolation.svg
    :align: center
    :figwidth: 90 %
 
@@ -43,7 +43,7 @@ Direct communication between Cages is forbidden. All inter-Cage interaction is
 mediated by services running in the Core.
 
 .. _clipos-inter-level-interactions:
-.. figure:: clipos-inter-level-interactions.svg
+.. figure:: imgs/clipos-inter-level-interactions.svg
    :align: center
    :figwidth: 90 %
 
