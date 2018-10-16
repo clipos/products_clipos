@@ -17,11 +17,6 @@ depends() {
 }
 
 # called by dracut
-installkernel() {
-    instmods dm_verity dm_bufio dm_mod
-}
-
-# called by dracut
 install() {
     inst veritysetup systemd-escape sed tr head bash
 
