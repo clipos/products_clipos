@@ -51,7 +51,7 @@ kernel_cmdline+=" spectre_v2=on spec_store_bypass_disable=seccomp"
 # hypervisor with untrusted guest VMs someday
 #kernel_cmdline+=" l1tf=full,force"
 
-# Debug options disabled by default
+# Development and debug options are disabled by default
 if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
     kernel_cmdline+=" rd.retry=10 rd.timeout=15 "  # Smaller timeout in VMs
     # Debug shells at various dracut hook stages
@@ -61,6 +61,9 @@ if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
     kernel_cmdline+=" rd.shell rd.break=cleanup"
     # Persistent runtime debug shell
     kernel_cmdline+=" systemd.debug-shell=1"
+fi
+if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+    kernel_cmdline+=" console=ttyS0,115200"
 fi
 
 # Heavy debug options disabled by default

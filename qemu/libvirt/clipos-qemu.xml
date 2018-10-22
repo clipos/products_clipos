@@ -90,6 +90,9 @@
       <backend model='random'>/dev/urandom</backend>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
     </rng>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
   </devices>
   <!-- vim: set ts=2 sts=2 sw=2 et ft=xml: -->
 </domain>
