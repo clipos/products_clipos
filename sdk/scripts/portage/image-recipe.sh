@@ -33,6 +33,6 @@ einfo "Extracting from binpkgs all the package to emerge in ROOT:"
 emerge ${EMERGE_IMAGEROOTONLYRDEPS_OPTS} "$@"
 
 # Extract the detailed list of installed packages in ROOT
-qlist -IvSSRUC > "${CURRENT_OUT}/root.packages"
+qlist -IvSSRUC > "${CURRENT_CACHE}/root.packages"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

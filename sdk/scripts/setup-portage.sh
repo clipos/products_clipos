@@ -61,8 +61,8 @@ done
 # TODO: Enable 'stricter' portage FEATURE (disabled due to QA failures).
 cat <<EOF >> /etc/portage/make.conf
 DISTDIR='/mnt/assets/distfiles'
-PKGDIR='/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/binpkgs'
-PORT_LOGDIR='/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/log'
+PKGDIR='${CURRENT_CACHE_PKG}'
+PORT_LOGDIR='${CURRENT_CACHE}/log'
 BINPKG_COMPRESS='lz4'
 BINPKG_COMPRESS_FLAGS='-1'
 FEATURES='sandbox userfetch userpriv usersandbox nodoc noinfo noman strict parallel-install split-elog split-log -news unknown-features-warn'

@@ -28,13 +28,13 @@ emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} sys-apps/baselayout
 
 # Systematically remove previously built binary packages for meta ebuilds
 for pkg in $@; do
-    rm -fv /mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/binpkgs/${pkg}*
+    rm -fv "${CURRENT_CACHE_PKG}/${pkg}"*
 done
 
 einfo "Building the packages to emerge in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} "$@"
 
 # Extract the detailed list of installed packages in ROOT
-qlist -IvSSRUC > "${CURRENT_OUT}/root.packages"
+qlist -IvSSRUC > "${CURRENT_CACHE}/root.packages"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

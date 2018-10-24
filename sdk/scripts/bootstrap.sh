@@ -26,7 +26,7 @@ for var in "${portage_vars_to_delete[@]}"; do
     sed -i -E -e '/^[ \t]*'"${var}"'=/d' /etc/portage/make.conf
 done
 cat <<EOF >> /etc/portage/make.conf
-PKGDIR='/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/binpkgs-bz2'
+PKGDIR='${CURRENT_CACHE_PKG}/.binpkgs-bz2'
 EOF
 
 # Needed for a time-optimal compression of the binpkgs.
