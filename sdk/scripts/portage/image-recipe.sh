@@ -16,7 +16,7 @@ if [[ "${#@}" -eq 0 ]]; then
 fi
 
 # Needed to get EMERGE_IMAGEROOTONLYRDEPS_OPTS:
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/portage/emergeopts.sh
+source "${CURRENT_SDK}/scripts/portage/emergeopts.sh"
 
 # This current meta-script works only on a detached root tree.
 # Emerge, qlist and other Portage script will read this environment variable

@@ -49,6 +49,10 @@ export CURRENT_CACHE
 readonly CURRENT_CACHE_PKG="/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/binpkgs"
 export CURRENT_CACHE_PKG
 
+# SDK directory for easy access to SDK scripts. Always available read-only.
+readonly CURRENT_SDK="/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}"
+export CURRENT_SDK
+
 # This requires Bash 4 at least and defines the associative array
 # CURRENT_PRODUCT_PROPERTY which holds all the current product properties
 # associating keys and their values:

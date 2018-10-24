@@ -11,10 +11,10 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 # Setup Portage as there is no prerun command in the bootstrap action:
-/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/setup-portage.sh
+${CURRENT_SDK}/scripts/setup-portage.sh
 
 # Needed to get EMERGE_BUILDROOTWITHBDEPS_OPTS:
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/portage/emergeopts.sh
+source ${CURRENT_SDK}/scripts/portage/emergeopts.sh
 
 # Workaround for lz4 build
 portage_vars_to_delete=(
@@ -33,7 +33,7 @@ EOF
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} app-arch/lz4
 
 # Now reset portage setup:
-/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/setup-portage.sh
+${CURRENT_SDK}/scripts/setup-portage.sh
 
 # Install equery and retrieve distfiles for installed packages in the Gentoo stage3:
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} app-portage/gentoolkit
