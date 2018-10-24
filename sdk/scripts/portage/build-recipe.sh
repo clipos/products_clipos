@@ -37,4 +37,7 @@ emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} "$@"
 # Extract the detailed list of installed packages in ROOT
 qlist -IvSSRUC > "${CURRENT_CACHE}/root.packages"
 
+# Save expanded profile config
+emerge --info > "${CURRENT_CACHE}/emerge.info"
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
