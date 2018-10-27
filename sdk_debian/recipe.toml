@@ -22,7 +22,7 @@ postlude_commands = [ ]
 writable_assets_dirs_at_build = [ ]
 
 [bootstrap]
-rootfs_archive = "{{repo}}/assets/debian/rootfs-2018-07-27.tar.xz"
+rootfs_archive = "{{repo}}/assets/debian/rootfs-latest.tar.xz"
 steps = [
     # Download the source code for all binary packages included in the rootfs:
     "{{repo}}/products/{{product}}/{{recipe}}/scripts/bootstrap.sh",

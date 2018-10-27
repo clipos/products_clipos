@@ -51,6 +51,9 @@ rootfs:
     echo "[*] Removing temporary rootfs"
     rm -rf "${repo_root}/assets/debian/rootfs"
 
+    echo "[*] Creating generic symlink for rootfs"
+    ln -sf "${repo_root}/assets/debian/rootfs-$(date --iso-8601).tar.xz" "${repo_root}/assets/debian/rootfs-latest.tar.xz"
+
     echo "[*] Done"
 
 clear-rootfs:
