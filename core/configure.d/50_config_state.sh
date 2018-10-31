@@ -30,26 +30,10 @@ install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/modules-load.d"
 ln -sf "/mnt/state/core/etc/modules-load.d/hardware.conf" \
     "${CURRENT_OUT_ROOT}/etc/modules-load.d/hardware.conf"
 
-# FIXME: This is specific to the QEMU environment
+# FIXME: this is specific to the QEMU environment; in the future, the symbolic
+# link will be created at installation time only.
 einfo "Add default hardware profile"
-cat > "${CURRENT_OUT}/state/core/etc/modules-load.d/hardware.conf" <<EOF
-atkbd
-psmouse
-ptp_kvm
-qemu_fw_cfg
-qxl
-bochs-drm
-rtc-cmos
-snd_hda_codec_generic
-virtio_balloon
-virtio_console
-virtio_crypto
-virtio_gpu
-virtio_input
-virtio_mmio
-virtio_net
-virtio_rng
-virtio_scsi
-EOF
+ln -sf "/usr/share/clipos-hardware/profiles/kvm_ovmf64/modules" \
+    "${CURRENT_OUT}/state/core/etc/modules-load.d/hardware.conf"
 
 # vim: set ft=sh ts=4 sts=4 sw=4 et:
