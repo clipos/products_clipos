@@ -15,19 +15,19 @@ readonly clip_core_root="${current}/core/bundle/core.squashfs.verity.bundled"
 readonly clip_core_state="${current}/core/bundle/core-state.tar"
 readonly clip_efiboot="${current}/efiboot/bundle/efipartition.tar"
 
-/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/disk-images/disk-create.sh \
+${CURRENT_SDK}/scripts/disk-images/disk-create.sh \
     "${qemu_disk_image}" qcow2 20G
 
-/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/disk-images/disk-insert-efiboot.sh \
+${CURRENT_SDK}/scripts/disk-images/disk-insert-efiboot.sh \
     "${qemu_disk_image}" "${clip_efiboot}"
 
-/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/disk-images/disk-insert-lv.sh \
+${CURRENT_SDK}/scripts/disk-images/disk-insert-lv.sh \
     "${qemu_disk_image}" "${clip_core_root}" "${core_lv_name}" 4096
 
-/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/disk-images/disk-insert-state-lv.sh \
+${CURRENT_SDK}/scripts/disk-images/disk-insert-state-lv.sh \
     "${qemu_disk_image}" "${clip_core_state}" core_state 4096
 
-/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/disk-images/disk-insert-empty-lv.sh \
+${CURRENT_SDK}/scripts/disk-images/disk-insert-empty-lv.sh \
     "${qemu_disk_image}" core_swap 1024
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

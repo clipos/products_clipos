@@ -31,14 +31,27 @@ die_if_not_in_a_sdk
 
 # Compute useful global variables to be used across various scripts used within
 # this SDK:
+
+# Output directory for the current recipe/action. Always available read-write.
 readonly CURRENT_OUT="/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/${CURRENT_ACTION}"
 export CURRENT_OUT
 
+# Shortcut for frequently used root subdirectory
 readonly CURRENT_OUT_ROOT="${CURRENT_OUT}/root"
 export CURRENT_OUT_ROOT
 
-readonly CURRENT_CACHE="/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}"
+# Cache directory for the current recipe/action. Always available read-write.
+readonly CURRENT_CACHE="/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/${CURRENT_ACTION}"
 export CURRENT_CACHE
+
+# Cache directory for packages for the current recipe. Available read-write
+# only during the build action.
+readonly CURRENT_CACHE_PKG="/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/binpkgs"
+export CURRENT_CACHE_PKG
+
+# SDK directory for easy access to SDK scripts. Always available read-only.
+readonly CURRENT_SDK="/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}"
+export CURRENT_SDK
 
 # This requires Bash 4 at least and defines the associative array
 # CURRENT_PRODUCT_PROPERTY which holds all the current product properties
