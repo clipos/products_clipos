@@ -27,7 +27,7 @@ if [[ ! -f "${empty_disk_image}" ]] || [[ ! -f "${core_state_keyfile}" ]]; then
     ${CURRENT_SDK}/scripts/bundle.d/20_insert_empty_lv.sh \
         "${empty_disk_image}" "${core_lv_name}" 4096
     ${CURRENT_SDK}/scripts/bundle.d/20_insert_empty_lv.sh \
-        "${empty_disk_image}" core_state 4096
+        "${empty_disk_image}" core_state 512
     ${CURRENT_SDK}/scripts/bundle.d/20_insert_empty_lv.sh \
         "${empty_disk_image}" core_swap 1024
 
