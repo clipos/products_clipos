@@ -10,6 +10,7 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 
 readonly empty_disk_image="${CURRENT_CACHE}/empty.qcow2"
 readonly final_disk_image="${CURRENT_OUT}/main.qcow2"
+readonly core_state_keyfile="${CURRENT_CACHE}/core_state.keyfile"
 
 readonly core_lv_name="core_${CURRENT_PRODUCT_VERSION}"
 
@@ -19,7 +20,7 @@ readonly core_root="${current}/core/bundle/core.squashfs.verity.bundled"
 readonly core_state="${current}/core/bundle/core-state.tar"
 
 # Re-use cached empty disk image if available
-if [[ ! -f "${empty_disk_image}" ]]; then
+if [[ ! -f "${empty_disk_image}" ]] || [[ ! -f "${core_state_keyfile}" ]]; then
     ${CURRENT_SDK}/scripts/bundle.d/10_create_disk_image.sh \
         "${empty_disk_image}" qcow2 20G
 
@@ -30,7 +31,8 @@ if [[ ! -f "${empty_disk_image}" ]]; then
     ${CURRENT_SDK}/scripts/bundle.d/20_insert_empty_lv.sh \
         "${empty_disk_image}" core_swap 1024
 
-    ${CURRENT_SDK}/scripts/bundle.d/30_setup_ext4.sh \
+    echo -n "core_state_key" > "${core_state_keyfile}"
+    ${CURRENT_SDK}/scripts/bundle.d/30_setup_dm_crypt_integrity.sh \
         "${empty_disk_image}" core_state
 else
     ewarn "Re-using cached empty QEMU disk image!"
