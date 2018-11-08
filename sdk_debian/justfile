@@ -32,7 +32,7 @@ rootfs:
         --cache-dir="${repo_root}/assets/debian/cache" \
         --include=perl-openssl-defaults,libguestfs-tools,linux-image-amd64,busybox \
         --variant=minbase \
-        stable \
+        unstable \
         "${repo_root}/assets/debian/rootfs" \
         http://debian.mirrors.ovh.net/debian/
 

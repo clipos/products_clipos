@@ -16,7 +16,7 @@ DEBIAN_PKG_SRC_DIR="${DEBIAN_ASSETS_DIR}/src"
 # Download package sources only if they are not already available
 if [[ ! -d "${DEBIAN_PKG_SRC_DIR}" ]]; then
     einfo "Adding source URIs"
-    echo "deb-src http://debian.mirrors.ovh.net/debian/ stable main" \
+    echo "deb-src http://debian.mirrors.ovh.net/debian/ unstable main" \
         >> /etc/apt/sources.list
 
     einfo "Updating package lists"
