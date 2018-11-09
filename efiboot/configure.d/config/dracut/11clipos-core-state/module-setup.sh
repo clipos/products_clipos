@@ -3,6 +3,11 @@
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
 # called by dracut
+check() {
+    require_binaries cryptsetup || return 1
+}
+
+# called by dracut
 depends() {
     # We depend on device-mapper:
     echo dm
@@ -10,6 +15,8 @@ depends() {
 
 # called by dracut
 install() {
+    inst_multiple cryptsetup rmdir readlink umount
+    inst_simple "${tmpfilesdir}/cryptsetup.conf"
     inst_hook pre-pivot 90 "$moddir/mount-core-state.sh"
 }
 

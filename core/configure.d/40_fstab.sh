@@ -51,8 +51,8 @@ EOF
 einfo "Add core state configuration."
 install -d -m 0755 "${CURRENT_OUT_ROOT}/mnt/state"
 cat <<EOF >> "${CURRENT_OUT_ROOT}/etc/fstab"
-/dev/mapper/${vg_name}-core_state  /mnt/state  ext4  rw,nodev,noexec,nosuid       0 2
-/mnt/state/core/var/               /var        none  rw,bind,nodev,noexec,nosuid  0 0
+/dev/mapper/core_state  /mnt/state  ext4  rw,nodev,noexec,nosuid       0 2
+/mnt/state/core/var/    /var        none  rw,bind,nodev,noexec,nosuid  0 0
 EOF
 
 einfo "Add swap configuration."

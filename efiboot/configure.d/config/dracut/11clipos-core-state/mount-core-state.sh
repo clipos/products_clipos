@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
@@ -16,4 +16,8 @@
 # otherwise the system-wide enforcement of W^X (see the security principles and
 # architecture design in the CLIP OS documentation) would be broken.
 
-mount /dev/mapper/VG_NAME-core_state /sysroot/mnt/state -t ext4 -o rw,nodev,noexec,nosuid
+# FIXME: Use TPM & keyslots
+echo -n 'core_state_key' > /tmp/core_state.keyfile
+
+cryptsetup open /dev/mapper/VG_NAME-core_state core_state --type luks --key-file /tmp/core_state.keyfile
+mount /dev/mapper/core_state /sysroot/mnt/state -t ext4 -o rw,nodev,noexec,nosuid
