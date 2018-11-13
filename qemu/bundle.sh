@@ -24,6 +24,7 @@ if [[ ! -f "${empty_disk_image}" ]] || [[ ! -f "${core_state_keyfile}" ]]; then
     ${CURRENT_SDK}/scripts/bundle.d/10_create_disk_image.sh \
         "${empty_disk_image}" qcow2 20G
 
+    # Sizes are in MB (See http://libguestfs.org/guestfish.1.html#lvcreate)
     ${CURRENT_SDK}/scripts/bundle.d/20_insert_empty_lv.sh \
         "${empty_disk_image}" "${core_lv_name}" 4096
     ${CURRENT_SDK}/scripts/bundle.d/20_insert_empty_lv.sh \
