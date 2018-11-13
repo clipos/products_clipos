@@ -3,7 +3,7 @@
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
 # Insert the content of TAR archive in the DM-Crypt/Integrity device in LV_NAME
-# Logical Volume inside IMAGE which must be a Clip OS prepared disk image.
+# Logical Volume inside IMAGE which must be a CLIP OS prepared disk image.
 
 # Safety settings: do not remove!
 set -o errexit -o nounset -o pipefail

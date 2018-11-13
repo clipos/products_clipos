@@ -25,7 +25,7 @@ source /etc/profile
 source "$(dirname ${BASH_SOURCE[0]})/lib/logging.sh"
 source "$(dirname ${BASH_SOURCE[0]})/lib/utils.sh"
 
-# Ensure we are in a CLIP core SDK container (to avoid potential disaster if
+# Ensure we are in a CLIP OS Core SDK container (to avoid potential disaster if
 # ever run in the host):
 die_if_not_in_a_sdk
 

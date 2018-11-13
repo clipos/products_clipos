@@ -10,7 +10,7 @@ all: bundle run
 sdk:
     just ../sdk_debian/all
 
-# Assemble all the other parts composing the CLIP image into a QEMU QCOW disk
+# Assemble all the other parts composing the CLIP OS image into a QEMU QCOW disk
 # image.
 bundle: clear-bundle sdk
     cosmk bundle "{{product}}/{{recipe}}"

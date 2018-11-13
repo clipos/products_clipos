@@ -3,7 +3,7 @@
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
 # Insert an empty Logical Volume with name LV_NAME and size LV_SIZE inside
-# IMAGE which must be a Clip OS prepared disk image.
+# IMAGE which must be a CLIP OS prepared disk image.
 
 # Safety settings: do not remove!
 set -o errexit -o nounset -o pipefail
@@ -19,8 +19,8 @@ readonly LV_SIZE="${3:?LV_SIZE is needed}"
 readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 
 # We make use of libguestfs in the following commands to create the disk image
-# where CLIP will be installed. This environment variable tells libguestfs to
-# use directly QEMU-KVM without the need of the libvirt daemon.
+# where CLIP OS will be installed. This environment variable tells libguestfs
+# to use directly QEMU-KVM without the need of the libvirt daemon.
 export LIBGUESTFS_BACKEND=direct
 
 ebegin "${IMAGE_DISK_FILE}: Adding empty ${LV_NAME}:${LV_SIZE}M..."

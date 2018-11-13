@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
-# CLIP SDK setup script
+# CLIP OS SDK setup script
 
 # Safety settings: do not remove!
 set -o errexit -o nounset -o pipefail

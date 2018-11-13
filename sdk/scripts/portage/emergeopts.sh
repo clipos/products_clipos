@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
-# CLIP core SDK emerge options and utility functions
+# CLIP OS Core SDK emerge options and utility functions
 
 # Options to make the emerge more comprehensive and verbose for interesting
 # things. This eases debugging for developers.

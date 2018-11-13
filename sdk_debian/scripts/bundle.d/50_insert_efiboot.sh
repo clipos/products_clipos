@@ -3,7 +3,7 @@
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
 # Insert the content of TAR archive in the first partition (EFI boot) of IMAGE
-# which must be a Clip OS prepared disk image.
+# which must be a CLIP OS prepared disk image.
 
 # Safety settings: do not remove!
 set -o errexit -o nounset -o pipefail
@@ -22,8 +22,8 @@ if [[ ! -f "${TAR_FILE}" ]]; then
 fi
 
 # We make use of libguestfs in the following commands to create the disk image
-# where CLIP will be installed. This environment variable tells libguestfs to
-# use directly QEMU-KVM without the need of the libvirt daemon.
+# where CLIP OS will be installed. This environment variable tells libguestfs
+# to use directly QEMU-KVM without the need of the libvirt daemon.
 export LIBGUESTFS_BACKEND=direct
 
 ebegin "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in EFI system partition..."

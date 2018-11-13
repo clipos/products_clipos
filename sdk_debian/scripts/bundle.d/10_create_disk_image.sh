@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # Copyright © 2017-2018 ANSSI. All rights reserved.
 
-# Create an empty CLIP image IMAGE with type TYPE and size SIZE.
+# Create an empty CLIP OS image IMAGE with type TYPE and size SIZE.
 
 # Safety settings: do not remove!
 set -o errexit -o nounset -o pipefail
@@ -24,8 +24,8 @@ readonly BOOT_PARTITION_SIZE="536870912"  # 512 Mio
 rm -f "${IMAGE_FILE}"
 
 # We make use of libguestfs in the following commands to create the disk image
-# where CLIP will be installed. This environment variable tells libguestfs to
-# use directly QEMU-KVM without the need of the libvirt daemon.
+# where CLIP OS will be installed. This environment variable tells libguestfs
+# to use directly QEMU-KVM without the need of the libvirt daemon.
 export LIBGUESTFS_BACKEND=direct
 
 # Nomenclature for the following variables:
