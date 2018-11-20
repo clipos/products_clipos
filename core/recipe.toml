@@ -34,7 +34,7 @@ steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/54_systemd.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/55_sysctl.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/59_lvm.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/60_nosuid.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/80_nosuid.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/90_config_cleanup.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/99_final_cleanup.sh",
 ]
