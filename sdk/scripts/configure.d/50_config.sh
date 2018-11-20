@@ -18,6 +18,8 @@ systemd-tmpfiles \
     --create \
     --prefix="/etc" \
 
+install -dm 0755 -o 0 -g 0 "${CURRENT_OUT_ROOT}/etc/tmpfiles.d"
+
 einfo "Set locale, keymap and timezone"
 systemd-firstboot \
     --root="${CURRENT_OUT_ROOT}" \

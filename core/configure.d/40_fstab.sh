@@ -10,7 +10,6 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 
 
 # FIXME: Move most for those entries to .mount units
-# FIXME: Hardcode version number in core_XXX entries
 # FIXME: add /proc restrictions
 # FIXME: Remove /tmp & make it chmod 500
 
@@ -49,11 +48,12 @@ cat <<EOF >> "${CURRENT_OUT_ROOT}/etc/fstab"
 EOF
 
 einfo "Add core state configuration."
-install -d -m 0755 "${CURRENT_OUT_ROOT}/mnt/state"
 cat <<EOF >> "${CURRENT_OUT_ROOT}/etc/fstab"
 /dev/mapper/core_state  /mnt/state  ext4  rw,nodev,noexec,nosuid       0 2
-/mnt/state/core/var/    /var        none  rw,bind,nodev,noexec,nosuid  0 0
 EOF
+
+einfo "Create directories for state partition mountpoints."
+install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/mnt/state"
 
 einfo "Add swap configuration."
 cat <<EOF >> "${CURRENT_OUT_ROOT}/etc/fstab"

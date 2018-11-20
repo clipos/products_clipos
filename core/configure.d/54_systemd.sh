@@ -27,4 +27,7 @@ ln -s "/usr/lib/systemd/system/multi-user.target" \
 rm "${CURRENT_OUT_ROOT}/lib64/systemd/system/user@.service"
 ln -s '/dev/null' "${CURRENT_OUT_ROOT}/lib64/systemd/system/user@.service"
 
+# TODO: Fix /var/run symlink setup
+sed -i "s|L /var/run - - - - ../run|L /var/run - - - - /run|" "${CURRENT_OUT_ROOT}/usr/lib64/tmpfiles.d/var.conf"
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
