@@ -23,7 +23,7 @@ steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/20_default_users.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config_state.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/53_os-release.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/51_os-release.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/90_config_cleanup.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/91_chroot_devices.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/92_core_dracut_config.sh",

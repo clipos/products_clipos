@@ -1,1 +1,0 @@
-../../sdk/scripts/configure.d/53_os-release.sh

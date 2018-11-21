@@ -1,0 +1,1 @@
+../../sdk/scripts/configure.d/51_os-release.sh
