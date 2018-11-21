@@ -23,8 +23,4 @@ ln -s "/usr/lib/systemd/system/multi-user.target" \
 rm "${CURRENT_OUT_ROOT}/lib64/systemd/system/user@.service"
 ln -s '/dev/null' "${CURRENT_OUT_ROOT}/lib64/systemd/system/user@.service"
 
-# Update /etc/systemd/journald.conf
-sed -i 's|#Storage=auto|Storage=persistent|g' "${CURRENT_OUT_ROOT}/etc/systemd/journald.conf"
-sed -i 's|#RateLimitBurst=1000|RateLimitBurst=2000|g' "${CURRENT_OUT_ROOT}/etc/systemd/journald.conf"
-
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
