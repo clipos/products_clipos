@@ -46,14 +46,4 @@ echo "${core_bundled_fecoffset}"  > "core.squashfs.verity.bundled.fecoffset"
 cat "core.squashfs" "core.squashfs.verity" "core.squashfs.verity.fec" \
     > "core.squashfs.verity.bundled"
 
-
-einfo "Bundling the core state in a tarball..."
-# Bundle the state folder content as a tarball while making sure to keep
-# filesystem advanced properties such as sparse information or extended
-# attributes:
-tar --create --xattrs --sparse \
-    --file "core-state.tar" \
-    --directory "../configure/state" \
-    .
-
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

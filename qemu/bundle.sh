@@ -17,7 +17,7 @@ readonly core_lv_name="core_${CURRENT_PRODUCT_VERSION}"
 readonly current="/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}"
 readonly efiboot="${current}/efiboot/bundle/efipartition.tar"
 readonly core_root="${current}/core/bundle/core.squashfs.verity.bundled"
-readonly core_state="${current}/core/bundle/core-state.tar"
+readonly qemu_core_state="${CURRENT_OUT}/qemu-core-state.tar"
 
 # Re-use cached empty disk image if available
 if [[ ! -f "${empty_disk_image}" ]] || [[ ! -f "${core_state_keyfile}" ]]; then
@@ -48,7 +48,9 @@ ${CURRENT_SDK}/scripts/bundle.d/50_insert_efiboot.sh \
 ${CURRENT_SDK}/scripts/bundle.d/51_insert_image.sh \
     "${final_disk_image}" "${core_root}" "${core_lv_name}"
 
+# Generate & install core_state initial content
+/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/generate_core_state.sh
 ${CURRENT_SDK}/scripts/bundle.d/52_insert_fs_tar.sh \
-    "${final_disk_image}" "${core_state}" core_state
+    "${final_disk_image}" "${qemu_core_state}" core_state
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
