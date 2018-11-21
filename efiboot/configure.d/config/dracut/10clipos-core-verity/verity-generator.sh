@@ -92,6 +92,6 @@ root_device_systemd_escaped=$(systemd-escape --suffix=device --path "${root_devi
 
 root_requires_dir="${unit_dirpath}/${root_device_systemd_escaped}.requires"
 mkdir -p "${root_requires_dir}"
-ln -sf "../veritysetup.service" "${root_requires_dir}/verity-setup.service"
+ln -sf "${unit_dirpath}/veritysetup.service" "${root_requires_dir}/veritysetup.service"
 
 # vim: set ts=4 sts=4 sw=4 et:
