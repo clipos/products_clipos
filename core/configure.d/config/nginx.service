@@ -12,5 +12,25 @@ ExecStart=/usr/sbin/nginx -g 'pid /run/nginx.pid; error_log stderr;'
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -QUIT $MAINPID
 
+NoNewPrivileges=yes
+MemoryDenyWriteExecute=yes
+
+PrivateTmp=yes
+PrivateDevices=yes
+
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+
+RestrictNamespaces=yes
+
+SystemCallArchitectures=native
+; Available only on v239+
+; SystemCallFilter=@system-service
+SystemCallFilter=~@clock @cpu-emulation @debug @keyring @module @mount @obsolete @privileged @raw-io
+SystemCallErrorNumber=EPERM
+RestrictAddressFamilies=AF_UNIX AF_INET
+
 [Install]
 WantedBy=multi-user.target
