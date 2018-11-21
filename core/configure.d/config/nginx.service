@@ -21,10 +21,12 @@ MemoryDenyWriteExecute=yes
 PrivateTmp=yes
 PrivateDevices=yes
 
+ProtectSystem=strict
 ProtectHome=yes
 ProtectKernelTunables=yes
 ProtectKernelModules=yes
 ProtectControlGroups=yes
+ReadWritePaths=/var/lib/nginx /run/nginx/
 
 RestrictNamespaces=yes
 
