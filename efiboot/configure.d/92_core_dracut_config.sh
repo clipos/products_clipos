@@ -49,8 +49,15 @@ install -m 0755 -o 0 -g 0 \
     "${dracut_config_path}/90clipos-check-state/clipos-check-state.sh" \
     "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-check-state"
 
-readonly vg_name="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
-sed -i 's|VG_NAME|'"${vg_name}"'|' \
-    "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/11clipos-core-state/mount-core-state.sh"
+readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
+if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+    readonly REQUIRE_TPM=false
+    readonly BRUTEFORCE_LOCKOUT=false
+else
+    readonly REQUIRE_TPM=true
+    readonly BRUTEFORCE_LOCKOUT=true
+fi
+export VG_NAME REQUIRE_TPM BRUTEFORCE_LOCKOUT
+replace_placeholders "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/11clipos-core-state/mount-core-state.sh"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
