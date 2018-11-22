@@ -5,12 +5,15 @@ After=network.target remote-fs.target nss-lookup.target
 [Service]
 Type=forking
 
-PIDFile=/run/nginx.pid
+PIDFile=/run/nginx/nginx.pid
 
-ExecStartPre=/usr/sbin/nginx -g 'pid /run/nginx.pid; error_log stderr;' -t
-ExecStart=/usr/sbin/nginx -g 'pid /run/nginx.pid; error_log stderr;'
+ExecStartPre=/usr/sbin/nginx -g 'pid /run/nginx/nginx.pid; error_log stderr;' -t
+ExecStart=/usr/sbin/nginx -g 'pid /run/nginx/nginx.pid; error_log stderr;'
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -QUIT $MAINPID
+
+User=nginx
+Group=nginx
 
 NoNewPrivileges=yes
 MemoryDenyWriteExecute=yes
@@ -31,6 +34,11 @@ SystemCallArchitectures=native
 SystemCallFilter=~@clock @cpu-emulation @debug @keyring @module @mount @obsolete @privileged @raw-io
 SystemCallErrorNumber=EPERM
 RestrictAddressFamilies=AF_UNIX AF_INET
+
+CapabilityBoundingSet=
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=
+AmbientCapabilities=CAP_NET_BIND_SERVICE
 
 [Install]
 WantedBy=multi-user.target

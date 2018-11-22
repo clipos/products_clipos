@@ -44,6 +44,10 @@ rm "${CURRENT_OUT_ROOT}/lib/systemd/system/nginx.service"
 install -o 0 -g 0 -m 0644 "${nginx_config}/nginx.service" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/nginx.service"
 
+cat >> "${CURRENT_OUT_ROOT}/etc/tmpfiles.d/nginx.conf" << EOF
+d /run/nginx         0750 nginx nginx
+EOF
+
 einfo "Enable nginx by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable nginx
 
