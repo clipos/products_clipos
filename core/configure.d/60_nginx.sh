@@ -44,4 +44,7 @@ rm "${CURRENT_OUT_ROOT}/lib/systemd/system/nginx.service"
 install -o 0 -g 0 -m 0644 "${nginx_config}/nginx.service" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/nginx.service"
 
+einfo "Enable nginx by default"
+systemctl --root="${CURRENT_OUT_ROOT}" enable nginx
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
