@@ -10,3 +10,5 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 
 einfo "Extract boot directory"
 mv "${CURRENT_OUT_ROOT}/boot" "${CURRENT_OUT}"
+
+# vim: set ts=4 sts=4 sw=4 et ft=sh:
