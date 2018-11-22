@@ -33,6 +33,7 @@ steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/55_sysctl.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/56_network.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/59_lvm.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/60_nginx.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/80_nosuid.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/89_empty_var.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/90_config_cleanup.sh",
