@@ -123,13 +123,6 @@ REMOVE_LIST+=(
     "$root"/etc/shadow-
 )
 
-# FIXME: Remove unneeded mount units
-REMOVE_LIST+=(
-    "$root"/lib64/systemd/system/sys-kernel-config.mount
-    "$root"/lib64/systemd/system/sys-kernel-config.mount
-    "$root"/lib64/systemd/system/tmp.mount
-)
-
 einfo "Remove various unneeded files:"
 for f in "${REMOVE_LIST[@]}"; do
     einfo "Removing: ${f}"

@@ -22,7 +22,6 @@ REMOVE_LIST+=(
     "$root"/usr/lib/tmpfiles.d/etc.conf
     "$root"/usr/lib/tmpfiles.d/home.conf
     "$root"/usr/lib/tmpfiles.d/journal-nocow.conf
-    "$root"/usr/lib/tmpfiles.d/systemd-nspawn.conf
     "$root"/usr/lib/tmpfiles.d/x11.conf
 )
 
