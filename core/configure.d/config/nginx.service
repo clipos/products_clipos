@@ -1,0 +1,16 @@
+[Unit]
+Description=The nginx HTTP and reverse proxy server
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+
+PIDFile=/run/nginx.pid
+
+ExecStartPre=/usr/sbin/nginx -g 'pid /run/nginx.pid; error_log stderr;' -t
+ExecStart=/usr/sbin/nginx -g 'pid /run/nginx.pid; error_log stderr;'
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target

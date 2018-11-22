@@ -38,4 +38,10 @@ d /var/lib/nginx/www 0750 root  nginx
 d /var/lib/nginx/tmp 0750 nginx nginx
 EOF
 
+
+einfo "Install custom nginx service unit"
+rm "${CURRENT_OUT_ROOT}/lib/systemd/system/nginx.service"
+install -o 0 -g 0 -m 0644 "${nginx_config}/nginx.service" \
+    "${CURRENT_OUT_ROOT}/etc/systemd/system/nginx.service"
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
