@@ -30,4 +30,12 @@ EOF
 rm "${CURRENT_OUT_ROOT}/etc/nginx/nginx.conf"
 ln -s "/mnt/state/core/etc/nginx/nginx.conf" "${CURRENT_OUT_ROOT}/etc/nginx/nginx.conf"
 
+
+einfo "Setup tmpfiles.d config for nginx state folders"
+cat >> "${CURRENT_OUT_ROOT}/etc/tmpfiles.d/nginx.conf" << EOF
+d /var/lib/nginx     0750 root  nginx
+d /var/lib/nginx/www 0750 root  nginx
+d /var/lib/nginx/tmp 0750 nginx nginx
+EOF
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
