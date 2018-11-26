@@ -7,12 +7,24 @@ recipe = "sdk_debian"
 # Pipeline all the actions to produce the final result of this recipe
 all: bootstrap
 
-# Bootstrap from scratch
-bootstrap-from-scratch: clear-cache rootfs bootstrap
+# Bootstrap from scratch using current packages
+bootstrap-from-scratch: clear bootstrap
+
+# Rebuild Debian SDK with updated packages
+update-packages: clear-cache rootfs bootstrap
 
 rootfs:
     #!/usr/bin/env bash
     repo_root="$(cosmk repo-root-path)"
+
+    # Do not run as root
+    if [[ "${EUID}" == 0 ]]; then
+        echo "[*] Do not run as root!"
+        exit 1
+    fi
+
+    fixup_uid="$(stat -c '%u' ${repo_root}/assets/debian)"
+    fixup_gid="$(stat -c '%g' ${repo_root}/assets/debian)"
 
     echo "[*] Initial cleanup"
     rm -rf \
@@ -23,10 +35,25 @@ rootfs:
     mkdir "${repo_root}/assets/debian/cache"
 
     echo "[*] Running debootstrap"
+
     # Explicit inclusion of perl-openssl-defaults is required as debootstrap
     # does not properly resolve dependencies on virtual packages:
     # https://groups.google.com/forum/#!topic/linux.debian.maint.boot/cI9Yy5Yt5ak
+
+    # Download only as non-root
     debootstrap \
+        --arch=amd64 \
+        --force-check-gpg \
+        --cache-dir="${repo_root}/assets/debian/cache" \
+        --include=perl-openssl-defaults,libguestfs-tools,linux-image-amd64,busybox \
+        --variant=minbase \
+        --download-only \
+        unstable \
+        "${repo_root}/assets/debian/rootfs" \
+        http://debian.mirrors.ovh.net/debian/
+
+    # Install as root
+    sudo debootstrap \
         --arch=amd64 \
         --force-check-gpg \
         --cache-dir="${repo_root}/assets/debian/cache" \
@@ -37,19 +64,15 @@ rootfs:
         http://debian.mirrors.ovh.net/debian/
 
     echo "[*] Creating rootfs tarball"
-    tar --create --preserve-permissions --xz \
+    sudo tar --create --preserve-permissions --xz \
         --file "${repo_root}/assets/debian/rootfs-$(date --iso-8601).tar.xz" \
         --directory "${repo_root}/assets/debian/rootfs" \
         .
     echo "[*] Fixing permissions"
-    fixup_uid="$(stat -c '%u' ${repo_root}/assets/debian)"
-    fixup_gid="$(stat -c '%g' ${repo_root}/assets/debian)"
-    chown "${fixup_uid}:${fixup_gid}" -R \
-        "${repo_root}/assets/debian/cache" \
-        "${repo_root}/assets/debian/rootfs-"*.tar.xz
+    sudo chown "${fixup_uid}:${fixup_gid}" "${repo_root}/assets/debian/rootfs-"*.tar.xz
 
     echo "[*] Removing temporary rootfs"
-    rm -rf "${repo_root}/assets/debian/rootfs"
+    sudo rm -rf "${repo_root}/assets/debian/rootfs"
 
     echo "[*] Done"
 
