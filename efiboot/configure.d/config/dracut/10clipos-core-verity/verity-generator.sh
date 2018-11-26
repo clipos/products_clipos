@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2017-2018 ANSSI
 # All rights reserved
@@ -77,7 +77,7 @@ After=${verity_device_systemd_escaped}
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/sh -c '/sbin/veritysetup create --hash-offset="${verity_hashoffset}" ${veritysetup_opts_fec:-} "${verity_name}" "${verity_device}" "${verity_device}" "${verity_roothash}"'
+ExecStart=/bin/bash -c '/sbin/veritysetup create --hash-offset="${verity_hashoffset}" ${veritysetup_opts_fec:-} "${verity_name}" "${verity_device}" "${verity_device}" "${verity_roothash}"'
 
 # If there's a hash mismatch during table initialization, veritysetup reports
 # it on stderr but still exits 0 and the device-mapper device is still created
