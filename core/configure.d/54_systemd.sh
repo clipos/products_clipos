@@ -12,6 +12,11 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 ln -sf "/mnt/state/core/etc/hostname"   "${CURRENT_OUT_ROOT}/etc/hostname"
 ln -sf "/mnt/state/core/etc/machine-id" "${CURRENT_OUT_ROOT}/etc/machine-id"
 
+# Set module loading symlink
+install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/modules-load.d"
+ln -sf "/mnt/state/core/etc/modules-load.d/hardware.conf" \
+    "${CURRENT_OUT_ROOT}/etc/modules-load.d/hardware.conf"
+
 # Set systemd configuration
 einfo "Set systemd configuration."
 rm -rf "${CURRENT_OUT_ROOT}/etc/systemd/system"
