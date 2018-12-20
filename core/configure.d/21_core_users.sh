@@ -22,6 +22,11 @@ u audit      801             "Audit user"                        /home/audit /bi
 m audit      systemd-journal
 EOF
 
+# OpenSSH privilege separation user
+cat <<EOF >> /usr/lib/sysusers.d/clipos-core.conf
+u sshd       22              "OpenSSH privilege separation user" /usr/lib/openssh/empty
+EOF
+
 # Install sysuser config for the SDK & the final root
 cp {,"${CURRENT_OUT_ROOT}"}/usr/lib/sysusers.d/clipos-core.conf
 

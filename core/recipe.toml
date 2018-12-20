@@ -30,6 +30,7 @@ steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/54_systemd.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/55_sysctl.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/56_network.sh",
+    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/57_sshd.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/59_lvm.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/80_nosuid.sh",
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/89_empty_var.sh",
