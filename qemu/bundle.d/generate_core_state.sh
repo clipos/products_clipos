@@ -49,6 +49,48 @@ DHCP=ipv4
 # DNS=192.168.150.1
 EOF
 
+# Setup admin & audit home dirs
+admin_id="$(grep "admin:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/passwd" | cut -d: -f 3)"
+audit_id="$(grep "audit:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/passwd" | cut -d: -f 3)"
+install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/home"
+install -o ${admin_id} -g ${admin_id} -m 0700 -d "${CURRENT_STATE}/core/home/admin"
+install -o ${audit_id} -g ${audit_id} -m 0700 -d "${CURRENT_STATE}/core/home/audit"
+if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+    install -o 0 -g 0 -m 0700 -d "${CURRENT_STATE}/core/home/root"
+fi
+
+# Add SSH keys for audit & admin
+for key in "${CURRENT_CACHE}/ssh_admin" "${CURRENT_CACHE}/ssh_audit" "${CURRENT_CACHE}/ssh_root"; do
+    if [[ ! -f "${key}" ]]; then
+        ssh-keygen -t ecdsa -f "${key}" -N ""
+    fi
+done
+
+install -o ${admin_id} -g ${admin_id} -m 0700 -d "${CURRENT_STATE}/core/home/admin/.ssh"
+install -o ${admin_id} -g ${admin_id} -m 0700 -D \
+    "${CURRENT_CACHE}/ssh_admin.pub" \
+    "${CURRENT_STATE}/core/home/admin/.ssh/authorized_keys"
+
+install -o ${audit_id} -g ${audit_id} -m 0700 -d "${CURRENT_STATE}/core/home/audit/.ssh"
+install -o ${audit_id} -g ${audit_id} -m 0700 -D \
+    "${CURRENT_CACHE}/ssh_audit.pub" \
+    "${CURRENT_STATE}/core/home/audit/.ssh/authorized_keys"
+
+if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+    install -o 0 -g 0 -m 0700 -d "${CURRENT_STATE}/core/home/root/.ssh"
+    install -o 0 -g 0 -m 0700 -D \
+        "${CURRENT_CACHE}/ssh_root.pub" \
+        "${CURRENT_STATE}/core/home/root/.ssh/authorized_keys"
+fi
+
+# Setup /etc/ssh/host_keys
+install -o 0 -g 0 -m 0700 -d "${CURRENT_STATE}/core/etc/ssh/host_keys/"
+if [[ ! -f "${CURRENT_CACHE}/host_key" ]]; then
+    ssh-keygen -t ecdsa-sha2-nistp256 -f "${CURRENT_CACHE}/host_key" -N ""
+fi
+install -o 0 -g 0 -m 0600 "${CURRENT_CACHE}/host_key"     "${CURRENT_STATE}/core/etc/ssh/host_keys/ecdsa_key"
+install -o 0 -g 0 -m 0600 "${CURRENT_CACHE}/host_key.pub" "${CURRENT_STATE}/core/etc/ssh/host_keys/ecdsa_key.pub"
+
 # Touch a specific file to enable simple initramfs check.
 touch "${CURRENT_STATE}/.setup-done"
 
