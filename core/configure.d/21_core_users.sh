@@ -32,4 +32,9 @@ systemd-sysusers --root="${CURRENT_OUT_ROOT}" clipos-core.conf
 # Setup symlinks for home dirs (admin & audit)
 ln -snf "/mnt/state/core/home" "${CURRENT_OUT_ROOT}/home"
 
+# Setup /root symlink for development & debug
+if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+    ln -s "/mnt/state/core/home/root" "${CURRENT_OUT_ROOT}/root"
+fi
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
