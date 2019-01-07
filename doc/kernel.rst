@@ -747,7 +747,10 @@ We pass the following command line parameters to the kernel:
 
 .. describe:: spectre_v2=on
 
-   Same reasoning as above but for the Spectre v2 vulnerability.
+   Same reasoning as above but for the Spectre v2 vulnerability. Note that this
+   implies ``spectre_v2_user=on``, which enables the mitigation against user
+   space to user space task attacks (namely IBPB and STIBP when available and
+   relevant).
 
 .. describe:: spec_store_bypass_disable=seccomp
 
