@@ -10,6 +10,8 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
+einfo "Setting up Portage configuration for profile ${PORTAGE_PROFILE}..."
+
 # Needed to get EMERGE_INTELLIGIBLE_OPTS:
 source "${CURRENT_SDK}/scripts/emergeopts.sh"
 
