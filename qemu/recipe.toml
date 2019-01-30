@@ -3,10 +3,10 @@
 
 # CLIP OS QEMU target recipe file
 
-features = ["bundle", "virt"]
+features = [ "bundle", "virt" ]
+sdk = "clipos/sdk_debian"
 
 [bundle]
-sdk = "clipos/sdk_debian"
 steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh"
 ]

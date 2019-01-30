@@ -4,9 +4,9 @@
 # CLIP OS EFI boot recipe file
 
 features = [ "root", "configure", "bundle" ]  # "sign"?
+sdk = "clipos/sdk"
 
 [root]
-sdk = "clipos/sdk"
 env = { PORTAGE_PROFILE = 'clipos:clipos/amd64/efiboot' }
 build_steps = [
     "{{repo}}/products/clipos/sdk/scripts/portage/build-recipe.sh clipos-meta/clipos-efiboot",
@@ -16,7 +16,6 @@ image_steps = [
 ]
 
 [configure]
-sdk = "clipos/sdk"
 root = "{{product}}/{{recipe}}"  # work on self
 steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/configure.d/10_cleanup.sh",
@@ -32,7 +31,6 @@ steps = [
 ]
 
 [bundle]
-sdk = "clipos/sdk"
 steps = [
     "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh",
 ]
