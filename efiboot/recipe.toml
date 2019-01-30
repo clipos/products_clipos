@@ -9,10 +9,10 @@ sdk = "clipos/sdk"
 [root]
 env = { PORTAGE_PROFILE = 'clipos:clipos/amd64/efiboot' }
 build_steps = [
-    "{{repo}}/products/clipos/sdk/scripts/portage/build-recipe.sh clipos-meta/clipos-efiboot",
+    "{{repo}}/products/clipos/sdk/scripts/build.sh clipos-meta/clipos-efiboot",
 ]
 image_steps = [
-    "{{repo}}/products/clipos/sdk/scripts/portage/image-recipe.sh clipos-meta/clipos-efiboot",
+    "{{repo}}/products/clipos/sdk/scripts/image.sh clipos-meta/clipos-efiboot",
 ]
 
 [configure]

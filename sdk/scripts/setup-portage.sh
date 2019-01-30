@@ -11,7 +11,7 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 # Needed to get EMERGE_INTELLIGIBLE_OPTS:
-source "${CURRENT_SDK}/scripts/portage/emergeopts.sh"
+source "${CURRENT_SDK}/scripts/emergeopts.sh"
 
 # Compute optimal values for the number of jobs to allocate for make and
 # emerge. Since we throttle the amount of CPU shares dedicated to the current
