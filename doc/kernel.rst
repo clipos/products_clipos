@@ -537,10 +537,20 @@ Security
    useful to find bugs but not recommended for a production kernel yet.
    [linux-hardened]_
 
-.. describe:: CONFIG_STATIC_USERMODEHELPER=n
+.. describe:: CONFIG_STATIC_USERMODEHELPER=y
 
-   This feature requires userspace support that is not currently present in
-   CLIP OS.
+   This makes the kernel route all usermode helper calls to a single binary
+   that cannot have its name changed. Without this, the kernel can be tricked
+   into calling an attacker-controlled binary (e.g. to bypass SMAP, cf.
+   `exploitation <https://seclists.org/oss-sec/2016/q4/621>`_ of
+   CVE-2016-8655).
+
+   .. describe:: CONFIG_STATIC_USERMODEHELPER_PATH=""
+
+      Currently, we have no need for usermode helpers therefore we simply
+      disable them. If we ever need some, this path will need to be set to a
+      custom trusted binary in charge of filtering and choosing what real
+      helpers should then be called.
 
 .. ---
 
