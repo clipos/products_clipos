@@ -14,7 +14,7 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 ${CURRENT_SDK}/scripts/setup-portage.sh
 
 # Needed to get EMERGE_BUILDROOTWITHBDEPS_OPTS:
-source ${CURRENT_SDK}/scripts/portage/emergeopts.sh
+source ${CURRENT_SDK}/scripts/emergeopts.sh
 
 # Workaround for lz4 build
 portage_vars_to_delete=(
