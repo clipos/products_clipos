@@ -426,8 +426,8 @@ Storage space for system and user authentication secrets are separated.
 
 :Status: Not started
 
-Non-persistency of eventual system or user session compromise
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Non-persistency of potential system or user session compromise
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Privileged user (i.e., ``root``) level compromises are mitigated against
   persistency methods which make use of the filesystem. Such compromises would
