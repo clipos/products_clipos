@@ -12,5 +12,6 @@
    clipos/kernel
    clipos/boot_integrity
    clipos/roadmap
+   clipos/development
 
 .. vim: set tw=79 ts=2 sts=2 sw=2 et:
