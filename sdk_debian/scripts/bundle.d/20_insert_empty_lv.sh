@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# Copyright © 2017-2018 ANSSI. All rights reserved.
+# Copyright © 2017 ANSSI. All rights reserved.
 
 # Insert an empty Logical Volume with name LV_NAME and size LV_SIZE inside
 # IMAGE which must be a CLIP OS prepared disk image.

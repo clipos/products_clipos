@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# Copyright © 2017-2018 ANSSI. All rights reserved.
+# Copyright © 2017 ANSSI. All rights reserved.
 
 # This file is set up as a dracut hook to mount the stateful part of the core
 # (i.e., the part of the core filesystem which is read+write) as it is

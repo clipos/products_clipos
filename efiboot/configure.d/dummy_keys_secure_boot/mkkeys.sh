@@ -2,8 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0
 # Copyright (c) 2015 by Roderick W. Smith
 # Licensed under the terms of the GPL v3
-# Copyright (C) 2017-2018 ANSSI
-# All rights reserved
+# Copyright © 2017 ANSSI. All rights reserved.
 
 NAME="CLIPOS"
 

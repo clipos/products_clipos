@@ -1,7 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2017-2018 ANSSI
-# All rights reserved
+# Copyright © 2017 ANSSI. All rights reserved.
 
 # Systemd generator script for the .device unit file
 # Freely adapted from verity-generator from

@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# Copyright © 2017-2018 ANSSI. All rights reserved.
+# Copyright © 2017 ANSSI. All rights reserved.
 
 # Setup DM-Crypt+Integrity for LV_NAME Logical Volume and create an ext4
 # filesystem inside the image IMAGE_DISK_FILE.

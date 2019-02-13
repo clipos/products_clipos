@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# Copyright © 2017-2018 ANSSI. All rights reserved.
+# Copyright © 2017 ANSSI. All rights reserved.
 
 # The prelude to be called at the beginning of every Bash script of this SDK.
 # This prelude ensure to be run in a SDK container (thanks to the function
