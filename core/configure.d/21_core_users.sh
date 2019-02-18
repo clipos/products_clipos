@@ -8,7 +8,7 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
-einfo "Setup Core users"
+sdk_info "Setup Core users"
 
 # DBus user
 cat <<EOF >> /usr/lib/sysusers.d/clipos-core.conf

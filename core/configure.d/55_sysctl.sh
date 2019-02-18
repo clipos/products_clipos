@@ -9,7 +9,7 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 # Tune sysctls
-einfo "Tune sysctls"
+sdk_info "Tune sysctls"
 rm -f "${CURRENT_OUT_ROOT}/etc/sysctl.conf"
 rm -rf "${CURRENT_OUT_ROOT}/etc/sysctl.d"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/sysctl.d"

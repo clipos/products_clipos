@@ -8,7 +8,7 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
-einfo "Extract boot directory"
+sdk_info "Extract boot directory"
 mv "${CURRENT_OUT_ROOT}/boot" "${CURRENT_OUT}"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

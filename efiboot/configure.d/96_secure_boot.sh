@@ -20,14 +20,14 @@ mv  "${CURRENT_OUT_ROOT}/usr/lib64/systemd/boot/efi/systemd-bootx64.efi" \
     "${CURRENT_OUT_ROOT}/secure_boot"
 
 # See comments in "./95_dracut.sh" for below env and bash tricks
-einfo "Sign dracut bundled EFI binary..."
+sdk_info "Sign dracut bundled EFI binary..."
 env -i chroot "${CURRENT_OUT_ROOT}" \
     /bin/bash -l -c 'exec "$0" "$@"' \
         sbsign --key /secure_boot/DB.key \
                --cert /secure_boot/DB.crt \
                /secure_boot/linux.efi
 
-einfo "Sign systemd-boot EFI binary..."
+sdk_info "Sign systemd-boot EFI binary..."
 env -i chroot "${CURRENT_OUT_ROOT}" \
     /bin/bash -l -c 'exec "$0" "$@"' \
         sbsign --key /secure_boot/DB.key \

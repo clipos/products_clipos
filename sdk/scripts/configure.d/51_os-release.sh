@@ -12,7 +12,7 @@ COMMON_NAME="${CURRENT_PRODUCT_PROPERTY['common_name']}"
 SHORT_NAME="${CURRENT_PRODUCT_PROPERTY['short_name']}"
 HOMEPAGE="${CURRENT_PRODUCT_PROPERTY['homepage']}"
 
-einfo "Customizing /usr/lib/os-release."
+sdk_info "Customizing /usr/lib/os-release."
 cat <<EOF > "${CURRENT_OUT_ROOT}/usr/lib/os-release"
 NAME="${COMMON_NAME:?}"
 PRETTY_NAME="${COMMON_NAME:?} ${CURRENT_PRODUCT_TAINTED_VERSION:?} (${CURRENT_RECIPE:?})"

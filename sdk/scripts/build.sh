@@ -11,7 +11,7 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 if [[ "${#@}" -eq 0 ]]; then
-    eerror "No packages to emerge (no arguments given)."
+    sdk_error "No packages to emerge (no arguments given)."
     exit 1
 fi
 
@@ -23,7 +23,7 @@ source "${CURRENT_SDK}/scripts/emergeopts.sh"
 # and will work in this ROOT tree.
 export ROOT="${CURRENT_OUT_ROOT}"
 
-einfo "Building baselayout in ROOT:"
+sdk_info "Building baselayout in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} sys-apps/baselayout
 
 # Systematically remove previously built binary packages for meta ebuilds
@@ -31,7 +31,7 @@ for pkg in $@; do
     rm -fv "${CURRENT_CACHE_PKG}/${pkg}"*
 done
 
-einfo "Building the packages to emerge in ROOT:"
+sdk_info "Building the packages to emerge in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} "$@"
 
 # Extract the detailed list of installed packages in ROOT

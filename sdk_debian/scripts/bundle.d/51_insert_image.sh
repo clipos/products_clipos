@@ -21,10 +21,10 @@ readonly LV_NAME="${3:?LV_NAME is needed}"
 readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 
 if [[ ! -f "${IMAGE_DISK_FILE}" ]]; then
-    die "${IMAGE_DISK_FILE} does not exist!"
+    sdk_die "${IMAGE_DISK_FILE} does not exist!"
 fi
 if [[ ! -f "${LV_IMAGE_FILE}" ]]; then
-    die "${LV_IMAGE_FILE} does not exist!"
+    sdk_die "${LV_IMAGE_FILE} does not exist!"
 fi
 
 # We make use of libguestfs in the following commands to create the disk image
@@ -32,7 +32,7 @@ fi
 # to use directly QEMU-KVM without the need of the libvirt daemon.
 export LIBGUESTFS_BACKEND=direct
 
-ebegin "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}..."
+sdk_begin "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}..."
 guestfish --rw <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main
 add-drive ${LV_IMAGE_FILE} label:lvimage readonly:true
@@ -41,6 +41,6 @@ run
 
 copy-device-to-device /dev/disk/guestfs/lvimage /dev/${VG_NAME}/${LV_NAME}
 _EOF_
-eend "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}: OK"
+sdk_end "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

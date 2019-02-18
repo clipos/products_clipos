@@ -11,7 +11,7 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 if [[ "${#@}" -eq 0 ]]; then
-    eerror "No packages to emerge (no arguments given)."
+    sdk_error "No packages to emerge (no arguments given)."
     exit 1
 fi
 
@@ -26,10 +26,10 @@ export ROOT="${CURRENT_OUT_ROOT}"
 # All imaging process must begin with a clean empty root tree:
 rm -rf "${ROOT}"
 
-einfo "Extracting from binpkgs the baselayout in ROOT:"
+sdk_info "Extracting from binpkgs the baselayout in ROOT:"
 emerge ${EMERGE_IMAGEROOTONLYRDEPS_OPTS} sys-apps/baselayout
 
-einfo "Extracting from binpkgs all the package to emerge in ROOT:"
+sdk_info "Extracting from binpkgs all the package to emerge in ROOT:"
 emerge ${EMERGE_IMAGEROOTONLYRDEPS_OPTS} "$@"
 
 # Extract the detailed list of installed packages in ROOT

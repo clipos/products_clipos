@@ -9,7 +9,7 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 # Reconsider this if it turns out we need those backups
-einfo "Disable backup & archive for LVM"
+sdk_info "Disable backup & archive for LVM"
 sed -i 's|backup = 1|backup = 0|g'   "${CURRENT_OUT_ROOT}/etc/lvm/lvm.conf"
 sed -i 's|archive = 1|archive = 0|g' "${CURRENT_OUT_ROOT}/etc/lvm/lvm.conf"
 

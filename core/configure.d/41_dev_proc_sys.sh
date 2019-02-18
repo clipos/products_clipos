@@ -8,7 +8,7 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
-einfo "Create the system directories receiving mountpoints."
+sdk_info "Create the system directories receiving mountpoints."
 rm -rf "${CURRENT_OUT_ROOT}"/{dev,proc,sys}
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}"/dev
 install -o 0 -g 0 -m 0555 -d "${CURRENT_OUT_ROOT}"/{proc,sys}

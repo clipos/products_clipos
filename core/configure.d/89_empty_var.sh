@@ -8,7 +8,7 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
-einfo "Turn /var into a symbolic link to /mnt/state/core/var"
+sdk_info "Turn /var into a symbolic link to /mnt/state/core/var"
 rm -rf "${CURRENT_OUT_ROOT}/var"
 ln -s "/mnt/state/core/var" "${CURRENT_OUT_ROOT}/var"
 

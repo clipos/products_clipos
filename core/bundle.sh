@@ -10,14 +10,14 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 
 cd "${CURRENT_OUT}"
 
-einfo "Bundling the core root in a squashfs image..."
+sdk_info "Bundling the core root in a squashfs image..."
 mksquashfs \
     "../configure/root" \
     "core.squashfs" \
     -noI -noD -noF -noX -no-duplicates -noappend
 
 
-einfo "Formatting the core root with dm-verity..."
+sdk_info "Formatting the core root with dm-verity..."
 # The file in which is stored the output result of the command
 # "veritysetup format" and in which the root hash can be found:
 core_veritysetup_status_file="core.squashfs.verity.status"

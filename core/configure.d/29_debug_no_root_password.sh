@@ -10,7 +10,7 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 
 # Set empty root password only for instrumented builds:
 if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
-    einfo "INSTRUMENTED BUILD: Setting empty root password."
+    sdk_info "INSTRUMENTED BUILD: Setting empty root password."
     sed -i 's|root:x:0:0:Super User:/root:/bin/sh|root:x:0:0:Super User:/root:/bin/bash|' \
         "${CURRENT_OUT_ROOT}/etc/passwd"
     sed -i 's|root:!!:|root::|' \

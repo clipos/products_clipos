@@ -10,7 +10,7 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
-einfo "Setting up Portage configuration for profile ${PORTAGE_PROFILE}..."
+sdk_info "Setting up Portage configuration for profile ${PORTAGE_PROFILE}..."
 
 # Needed to get EMERGE_INTELLIGIBLE_OPTS:
 source "${CURRENT_SDK}/scripts/emergeopts.sh"
@@ -183,14 +183,14 @@ done
 unset profile_path
 
 # Display the final global override setup
-einfo "Setting up global override for:"
+sdk_info "Setting up global override for:"
 for item in "${portage_profile_global_items[@]}"; do
     item_dir="/etc/portage/${item}"
     if [[ -d "${item_dir}" ]]; then
-        einfo "  * ${item}:"
+        sdk_info "  * ${item}:"
         for l in "${item_dir}/"*; do
             real_path="$(realpath ${l})"
-            einfo "    - ${real_path#/mnt/}"
+            sdk_info "    - ${real_path#/mnt/}"
         done
         unset l
     fi

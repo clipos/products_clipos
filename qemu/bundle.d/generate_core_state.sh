@@ -31,7 +31,7 @@ echo "${PRODUCT_NAME:?}-qemu" | md5sum | awk '{print $1}' > "${CURRENT_STATE}/co
 journald_gid="$(grep "systemd-journal:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/group" | cut -d: -f 3)"
 install -o 0 -g "${journald_gid}" -m 2755 -d "${CURRENT_STATE}/core/var/log/journal"
 
-einfo "Setting up modules and firmwares"
+sdk_info "Setting up modules and firmwares"
 readonly PROFILESDIR="/usr/share/hardware/profiles/kvm_ovmf64"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc/modules-load.d"
 ln -sf "$PROFILESDIR/modules" "${CURRENT_STATE}/core/etc/modules-load.d/hardware.conf"
@@ -95,7 +95,7 @@ install -o 0 -g 0 -m 0600 "${CURRENT_CACHE}/host_key.pub" "${CURRENT_STATE}/core
 # Touch a specific file to enable simple initramfs check.
 touch "${CURRENT_STATE}/.setup-done"
 
-einfo "Creating QEMU initial core state tarball..."
+sdk_info "Creating QEMU initial core state tarball..."
 # Bundle the state folder content as a tarball while making sure to keep
 # filesystem advanced properties such as sparse information or extended
 # attributes:

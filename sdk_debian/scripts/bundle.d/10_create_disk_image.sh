@@ -17,7 +17,7 @@ readonly IMAGE_SIZE="${3:?IMAGE_SIZE is needed}"
 # Main LVM volume group name
 readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 
-ebegin "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}..."
+sdk_begin "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}..."
 
 readonly BOOT_PARTITION_SIZE="536870912"  # 512 Mio
 
@@ -36,7 +36,7 @@ disk_ssz=0 boot_ssz=0 lvm_ssz=0
 boot_lbastart=0 lvm_lbastart=0
 firstlba=0 lastlba=0
 
-einfo "${IMAGE_FILE}: Getting blockdev-getsz..."
+sdk_info "${IMAGE_FILE}: Getting blockdev-getsz..."
 disk_ssz="$(guestfish --rw <<_EOF_
 disk-create ${IMAGE_FILE} ${IMAGE_TYPE} ${IMAGE_SIZE}
 add-drive ${IMAGE_FILE} label:main
@@ -46,7 +46,7 @@ run
 blockdev-getsz /dev/disk/guestfs/main
 _EOF_
 )"
-einfo "${IMAGE_FILE}: Getting blockdev-getsz: OK"
+sdk_info "${IMAGE_FILE}: Getting blockdev-getsz: OK"
 
 firstlba=2048   # => 1 Mio
 # We deliberately leave 1 Mio free in the beginning of the disk to be sure to
@@ -64,7 +64,7 @@ lvm_lbastart="$((boot_lbastart + boot_ssz))"
 lvm_ssz="$((lastlba + 1 - lvm_lbastart))"
 lvm_bsz="$((lvm_ssz * 512))"
 
-einfo "${IMAGE_FILE}: Creating disk and partitions..."
+sdk_info "${IMAGE_FILE}: Creating disk and partitions..."
 guestfish --rw <<_EOF_
 add-drive ${IMAGE_FILE} label:main
 
@@ -80,9 +80,9 @@ part-add /dev/disk/guestfs/main p ${lvm_lbastart} ${lastlba}
 part-set-gpt-type /dev/disk/guestfs/main 2 E6D6D379-F507-44C2-A23C-238F2A3DF928
 part-set-name /dev/disk/guestfs/main 2 LVM
 _EOF_
-einfo "${IMAGE_FILE}: Creating disk and partitions: OK"
+sdk_info "${IMAGE_FILE}: Creating disk and partitions: OK"
 
-einfo "${IMAGE_FILE}: Creating vfat on EFI & LVM..."
+sdk_info "${IMAGE_FILE}: Creating vfat on EFI & LVM..."
 guestfish --rw <<_EOF_
 add-drive ${IMAGE_FILE} label:main
 
@@ -92,10 +92,10 @@ mkfs vfat /dev/disk/guestfs/main1 label:EFI
 pvcreate /dev/disk/guestfs/main2
 vgcreate ${VG_NAME} /dev/disk/guestfs/main2
 _EOF_
-einfo "${IMAGE_FILE}: Creating vfat on EFI & LVM: OK"
+sdk_info "${IMAGE_FILE}: Creating vfat on EFI & LVM: OK"
 
 chmod a+rw "${IMAGE_FILE}"
 
-eend "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}: OK"
+sdk_end "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

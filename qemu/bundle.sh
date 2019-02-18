@@ -36,7 +36,7 @@ if [[ ! -f "${empty_disk_image}" ]] || [[ ! -f "${core_state_keyfile}" ]]; then
     ${CURRENT_SDK}/scripts/bundle.d/30_setup_dm_crypt_integrity.sh \
         "${empty_disk_image}" core_state
 else
-    ewarn "Re-using cached empty QEMU disk image!"
+    sdk_warn "Re-using cached empty QEMU disk image!"
 fi
 
 # Work on a copy of the cached empty disk image

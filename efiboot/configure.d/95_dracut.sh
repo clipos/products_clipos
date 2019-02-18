@@ -22,7 +22,7 @@ vmlinuz_link="$(readlink -f "${CURRENT_OUT_ROOT}/boot/vmlinuz")"
 vmlinuz_link="${vmlinuz_link##*/}"
 kernel_version="${vmlinuz_link#vmlinuz-}"
 if [[ -z "${kernel_version}" ]]; then
-    eerror "Could not identify the kernel version string."
+    sdk_error "Could not identify the kernel version string."
     exit 1
 fi
 
@@ -77,7 +77,7 @@ rm -f "${CURRENT_OUT_ROOT:?}/etc/machine-id"
 # objects (kernel, binaries, environment) from a detached root tree.
 # For this reason, we are going to rely on a chroot(1) call into
 # CURRENT_OUT_ROOT. :(
-einfo "Launch dracut to produce an initramfs+EFI-stubbed kernel..."
+sdk_info "Launch dracut to produce an initramfs+EFI-stubbed kernel..."
 env -i chroot "${CURRENT_OUT_ROOT}" \
     /bin/bash -l -c 'exec "$0" "$@"' \
         dracut --kver "${kernel_version}" \

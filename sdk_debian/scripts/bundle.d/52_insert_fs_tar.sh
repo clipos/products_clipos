@@ -19,10 +19,10 @@ readonly LV_NAME="${3:?LV_NAME is needed}"
 readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 
 if [[ ! -f "${IMAGE_DISK_FILE}" ]]; then
-    die "${IMAGE_DISK_FILE} does not exist!"
+    sdk_die "${IMAGE_DISK_FILE} does not exist!"
 fi
 if [[ ! -f "${TAR_FILE}" ]]; then
-    die "${TAR_FILE} does not exist!"
+    sdk_die "${TAR_FILE} does not exist!"
 fi
 
 # We make use of libguestfs in the following commands to create the disk image
@@ -32,7 +32,7 @@ export LIBGUESTFS_BACKEND=direct
 
 luks_key="$(cat ${CURRENT_CACHE}/${LV_NAME}.keyfile)"
 
-ebegin "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}..."
+sdk_begin "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}..."
 guestfish --rw --keys-from-stdin <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main format:qcow2
 

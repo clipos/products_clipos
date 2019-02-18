@@ -12,7 +12,7 @@ LOCALE="${CURRENT_PRODUCT_PROPERTY['system.locale']}"
 TIMEZONE="${CURRENT_PRODUCT_PROPERTY['system.timezone']}"
 KEYMAP="${CURRENT_PRODUCT_PROPERTY['system.keymap']}"
 
-einfo "Create default required files in /etc"
+sdk_info "Create default required files in /etc"
 systemd-tmpfiles \
     --root="${CURRENT_OUT_ROOT}" \
     --create \
@@ -20,7 +20,7 @@ systemd-tmpfiles \
 
 install -dm 0755 -o 0 -g 0 "${CURRENT_OUT_ROOT}/etc/tmpfiles.d"
 
-einfo "Set locale, keymap and timezone"
+sdk_info "Set locale, keymap and timezone"
 systemd-firstboot \
     --root="${CURRENT_OUT_ROOT}" \
     --locale="${LOCALE}" \
@@ -32,7 +32,7 @@ rm -rf "${CURRENT_OUT_ROOT}/dev"
 install -m 755 -o 0 -g 0 -d "${CURRENT_OUT_ROOT}/dev"
 mknod -m 666 "${CURRENT_OUT_ROOT}/dev/null" c 1 3
 
-einfo "Setup locale"
+sdk_info "Setup locale"
 echo "${LOCALE} UTF-8" > "${CURRENT_OUT_ROOT}/etc/locale.gen"
 chroot "${CURRENT_OUT_ROOT}" /usr/sbin/locale-gen
 

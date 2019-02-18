@@ -123,9 +123,9 @@ REMOVE_LIST+=(
     "$root"/etc/shadow-
 )
 
-einfo "Remove various unneeded files:"
+sdk_info "Remove various unneeded files:"
 for f in "${REMOVE_LIST[@]}"; do
-    einfo "Removing: ${f}"
+    sdk_info "Removing: ${f}"
     rm -rf "${f}"
 done
 

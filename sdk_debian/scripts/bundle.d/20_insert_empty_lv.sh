@@ -23,7 +23,7 @@ readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 # to use directly QEMU-KVM without the need of the libvirt daemon.
 export LIBGUESTFS_BACKEND=direct
 
-ebegin "${IMAGE_DISK_FILE}: Adding empty ${LV_NAME}:${LV_SIZE}M..."
+sdk_begin "${IMAGE_DISK_FILE}: Adding empty ${LV_NAME}:${LV_SIZE}M..."
 guestfish --rw <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main
 
@@ -31,6 +31,6 @@ run
 
 lvcreate ${LV_NAME} ${VG_NAME} ${LV_SIZE}
 _EOF_
-eend "${IMAGE_DISK_FILE}: Adding empty ${LV_NAME}:${LV_SIZE}M: OK"
+sdk_end "${IMAGE_DISK_FILE}: Adding empty ${LV_NAME}:${LV_SIZE}M: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

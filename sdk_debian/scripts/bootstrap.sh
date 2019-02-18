@@ -15,17 +15,17 @@ DEBIAN_PKG_SRC_DIR="${DEBIAN_ASSETS_DIR}/src"
 
 # Download package sources only if they are not already available
 if [[ ! -d "${DEBIAN_PKG_SRC_DIR}" ]]; then
-    einfo "Adding source URIs"
+    sdk_info "Adding source URIs"
     echo "deb-src http://debian.mirrors.ovh.net/debian/ unstable main" \
         >> /etc/apt/sources.list
 
-    einfo "Updating package lists"
+    sdk_info "Updating package lists"
     apt update
 
     rm -rf "${DEBIAN_PKG_SRC_DIR}"
     mkdir -p "${DEBIAN_PKG_SRC_DIR}"
 
-    einfo "Downloading sources for all installed packages"
+    sdk_info "Downloading sources for all installed packages"
     dpkg-query -W -f '${Package}\n' | sort -u | while read package; do
         rm -rf "${DEBIAN_PKG_SRC_DIR}/${package}"
         # Allow _apt user inside the SDK to download as non-root
@@ -35,13 +35,13 @@ if [[ ! -d "${DEBIAN_PKG_SRC_DIR}" ]]; then
         popd
     done
 
-    einfo "Fixing permissions"
+    sdk_info "Fixing permissions"
     fixup_uid="$(stat -c '%u' ${DEBIAN_ASSETS_DIR})"
     fixup_gid="$(stat -c '%g' ${DEBIAN_ASSETS_DIR})"
     chown -R "${fixup_uid}:${fixup_gid}" "${DEBIAN_PKG_SRC_DIR}"
     chmod -R go-w "${DEBIAN_PKG_SRC_DIR}"
 fi
 
-einfo "Done"
+sdk_info "Done"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

@@ -8,7 +8,7 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
-einfo "Enable sshd by default"
+sdk_info "Enable sshd by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable sshd
 
 # Setup symlinks for RW host key dir in state partition

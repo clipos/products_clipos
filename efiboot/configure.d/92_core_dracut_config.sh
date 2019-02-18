@@ -11,14 +11,14 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 dracut_config="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/config/dracut"
 dracut_moddir="${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/"
 
-einfo "Setup dracut configuration for core state mount"
+sdk_info "Setup dracut configuration for core state mount"
 install -d -m 0755 -o 0 -g 0 "${dracut_moddir}/11clipos-core-state"
 install -m 0755 -o 0 -g 0 \
     "${dracut_config}/11clipos-core-state/module-setup.sh" \
     "${dracut_config}/11clipos-core-state/mount-core-state.sh" \
     "${dracut_moddir}/11clipos-core-state"
 
-einfo "Setup dracut configuration for state partition content checks"
+sdk_info "Setup dracut configuration for state partition content checks"
 install -d -m 0755 -o 0 -g 0 "${dracut_moddir}/90clipos-check-state"
 install -m 0755 -o 0 -g 0 \
     "${dracut_config}/90clipos-check-state/module-setup.sh" \

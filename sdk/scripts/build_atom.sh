@@ -11,7 +11,7 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 if [[ "$#" -eq 0 ]]; then
-    eerror "No packages to emerge (no arguments given)."
+    sdk_error "No packages to emerge (no arguments given)."
     exit 1
 fi
 
@@ -31,7 +31,7 @@ export ROOT="${CURRENT_OUT_ROOT}"
 
 # Minimal check to ensure that sys-apps/baselayout has been merged.
 if [[ ! -d "${ROOT?}/usr" ]]; then
-    einfo "Building baselayout in ROOT:"
+    sdk_info "Building baselayout in ROOT:"
     emerge "${emerge_devel_optarray[@]}" sys-apps/baselayout
 fi
 
@@ -49,7 +49,7 @@ for pkg in "$@"; do
     fi
 done
 
-einfo "Building the packages to emerge in ROOT:"
+sdk_info "Building the packages to emerge in ROOT:"
 emerge "${emerge_devel_optarray[@]}" "$@"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
