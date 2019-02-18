@@ -33,7 +33,7 @@ install -o 0 -g "${journald_gid}" -m 2755 -d "${CURRENT_STATE}/core/var/log/jour
 
 # Loaded modules
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc/modules-load.d"
-ln -sf "/usr/share/clipos-hardware/profiles/kvm_ovmf64/modules" \
+ln -sf "/usr/share/hardware/profiles/kvm_ovmf64/modules" \
     "${CURRENT_STATE}/core/etc/modules-load.d/hardware.conf"
 
 # Network setup
