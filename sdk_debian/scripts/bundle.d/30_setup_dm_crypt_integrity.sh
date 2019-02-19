@@ -33,7 +33,7 @@ luks_key="$(cat ${CURRENT_CACHE}/${LV_NAME}.keyfile)"
 # setup. This is fine for now as this is unlikely to break in the future and
 # would only impact the QEMU virtual image anyway, not real hardware
 # installations.
-sdk_begin "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}..."
+sdk_info "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}..."
 guestfish --rw <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main format:qcow2
 
@@ -49,9 +49,9 @@ debug sh "echo -n '${luks_key}' | cryptsetup luksFormat \
     --key-file - \
     /dev/${VG_NAME}/${LV_NAME}"
 _EOF_
-sdk_end "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}: OK"
+sdk_success "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}: OK"
 
-sdk_begin "${IMAGE_DISK_FILE}: Creating ext4 filesystem in ${LV_NAME}..."
+sdk_info "${IMAGE_DISK_FILE}: Creating ext4 filesystem in ${LV_NAME}..."
 guestfish --rw --keys-from-stdin <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main format:qcow2
 
@@ -62,6 +62,6 @@ ${luks_key}
 
 mkfs ext4 /dev/mapper/core_state
 _EOF_
-sdk_end "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}: OK"
+sdk_success "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

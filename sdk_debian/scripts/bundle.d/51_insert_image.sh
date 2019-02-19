@@ -32,7 +32,7 @@ fi
 # to use directly QEMU-KVM without the need of the libvirt daemon.
 export LIBGUESTFS_BACKEND=direct
 
-sdk_begin "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}..."
+sdk_info "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}..."
 guestfish --rw <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main
 add-drive ${LV_IMAGE_FILE} label:lvimage readonly:true
@@ -41,6 +41,6 @@ run
 
 copy-device-to-device /dev/disk/guestfs/lvimage /dev/${VG_NAME}/${LV_NAME}
 _EOF_
-sdk_end "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}: OK"
+sdk_success "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

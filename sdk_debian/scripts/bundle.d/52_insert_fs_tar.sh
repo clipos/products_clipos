@@ -32,7 +32,7 @@ export LIBGUESTFS_BACKEND=direct
 
 luks_key="$(cat ${CURRENT_CACHE}/${LV_NAME}.keyfile)"
 
-sdk_begin "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}..."
+sdk_info "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}..."
 guestfish --rw --keys-from-stdin <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main format:qcow2
 
@@ -44,6 +44,6 @@ ${luks_key}
 mount /dev/mapper/core_state /
 tar-in ${TAR_FILE} /
 _EOF_
-eend "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}: OK"
+sdk_success "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

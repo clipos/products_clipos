@@ -26,7 +26,7 @@ fi
 # to use directly QEMU-KVM without the need of the libvirt daemon.
 export LIBGUESTFS_BACKEND=direct
 
-sdk_begin "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in EFI system partition..."
+sdk_info "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in EFI system partition..."
 
 guestfish --rw <<_EOF_
 add-drive ${IMAGE_DISK_FILE} label:main
@@ -37,6 +37,6 @@ mount /dev/disk/guestfs/main1 /
 tar-in ${TAR_FILE} /
 _EOF_
 
-sdk_end "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in EFI system partition: OK"
+sdk_success "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in EFI system partition: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

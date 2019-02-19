@@ -17,7 +17,7 @@ readonly IMAGE_SIZE="${3:?IMAGE_SIZE is needed}"
 # Main LVM volume group name
 readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 
-sdk_begin "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}..."
+sdk_info "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}..."
 
 readonly BOOT_PARTITION_SIZE="536870912"  # 512 Mio
 
@@ -96,6 +96,6 @@ sdk_info "${IMAGE_FILE}: Creating vfat on EFI & LVM: OK"
 
 chmod a+rw "${IMAGE_FILE}"
 
-sdk_end "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}: OK"
+sdk_success "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
