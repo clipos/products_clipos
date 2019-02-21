@@ -38,6 +38,7 @@ clipos/core
 
   * Tune the kernel ``sysctl``'s in order to lower security to ease binary
     debugging:
+
     * Enable signed kernel module loading
     * Disable ``PTRACE`` protections
     * Do not hide kernel pointers values from the kernel log
