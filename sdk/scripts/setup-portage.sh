@@ -167,10 +167,11 @@ for profile_path in "${portage_profile_parents[@]}"; do
         if [[ -d "${item_dir}" ]]; then
             mkdir -p "/etc/portage/${item}"
             for f in "${item_dir}/"*; do
-                # Ignore README files
-                if [[ "$(basename ${f})" != "README" ]]; then
-                    ln -snf "${f}" "/etc/portage/${item}/$(basename ${f})"
+                # Ignore README* files
+                if [[ "$(basename "${f}")" =~ ^README ]]; then
+                    continue
                 fi
+                ln -snf "${f}" "/etc/portage/${item}/$(basename "${f}")"
             done
             unset f
         elif [[ -e "${item_dir}" ]]; then
@@ -182,20 +183,22 @@ for profile_path in "${portage_profile_parents[@]}"; do
 done
 unset profile_path
 
-# Display the final global override setup
-sdk_info "Setting up global override for:"
+# Display the final global override setup for debugging purposes:
+msg="Setting up Portage profile global overrides (Portage configuration enforcement in /etc/portage directories):"
 for item in "${portage_profile_global_items[@]}"; do
     item_dir="/etc/portage/${item}"
     if [[ -d "${item_dir}" ]]; then
-        sdk_info "  * ${item}:"
-        for l in "${item_dir}/"*; do
-            real_path="$(realpath ${l})"
-            sdk_info "    - ${real_path#/mnt/}"
+        msg+=$'\n'"  * ${item_dir}/"
+        for symlink in "${item_dir}/"*; do
+            real_path="$(realpath "${symlink}")"
+            msg+=$'\n'"    - ${symlink##*/} -> ${real_path#/mnt/}"
         done
-        unset l
+        unset symlink
     fi
     unset item_dir
 done
 unset item
+sdk_info "$msg"
+unset msg
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

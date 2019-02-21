@@ -123,10 +123,23 @@ REMOVE_LIST+=(
     "$root"/etc/shadow-
 )
 
-sdk_info "Remove various unneeded files:"
-for f in "${REMOVE_LIST[@]}"; do
-    sdk_info "Removing: ${f}"
-    rm -rf "${f}"
+msg="Remove various unwanted items from ROOT (first pass):"
+for item in "${REMOVE_LIST[@]}"; do
+    if [[ ! -e "${item}" ]]; then
+        # Do not list the items to be removed if they cannot be found in ROOT
+        continue
+    fi
+    msg+=$'\n'"  $(stat -c '%A  %u:%g' "${item}")  ${item#${root}}"
+done
+sdk_info "$msg"
+unset msg
+
+# Use a for loop to avoid constructing a too long "rm -rf" command line.
+# It is a bit less efficient but easier to debug in case one "rm -rf" command
+# fails.
+for item in "${REMOVE_LIST[@]}"; do
+    rm -rf "${item}" \
+        || sdk_die "Could not succeed in removing forcibly the following item: ${item#${root}}"
 done
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
