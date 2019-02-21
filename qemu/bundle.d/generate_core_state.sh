@@ -31,10 +31,11 @@ echo "${PRODUCT_NAME:?}-qemu" | md5sum | awk '{print $1}' > "${CURRENT_STATE}/co
 journald_gid="$(grep "systemd-journal:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/group" | cut -d: -f 3)"
 install -o 0 -g "${journald_gid}" -m 2755 -d "${CURRENT_STATE}/core/var/log/journal"
 
-# Loaded modules
+einfo "Setting up modules and firmwares"
+readonly PROFILESDIR="/usr/share/hardware/profiles/kvm_ovmf64"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc/modules-load.d"
-ln -sf "/usr/share/hardware/profiles/kvm_ovmf64/modules" \
-    "${CURRENT_STATE}/core/etc/modules-load.d/hardware.conf"
+ln -sf "$PROFILESDIR/modules" "${CURRENT_STATE}/core/etc/modules-load.d/hardware.conf"
+ln -sf "$PROFILESDIR/firmware" "${CURRENT_STATE}/core/etc/firmware"
 
 # Network setup
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc/systemd/network"
