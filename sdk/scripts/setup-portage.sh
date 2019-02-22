@@ -32,7 +32,7 @@ L10N_LOCALE=${LOCALE/_/-}
 # useful things
 find /etc/portage -mindepth 1 -not -path /etc/portage/make.conf -delete
 sed -i.bak -E -e '/^[ \t]*#/d' -e '/^[ \t]*$/d' /etc/portage/make.conf
-# delete configuration values that we are going to overwrite
+# Delete configuration values that we are going to overwrite
 portage_vars_to_delete=(
     # PORTDIR is erased from make.conf because the Portage tree directory path
     # is left for the default defined in /etc/portage/repos.conf
@@ -126,5 +126,73 @@ if [[ "${CURRENT_ACTION}" == "build" ]] || [[ "${CURRENT_ACTION}" == "image" ]];
     fi
 fi
 eselect profile set "${PORTAGE_PROFILE:-}${portage_profile_suffix}"
+
+# Portage profile workaround for package.{,un}mask & package.license:
+#
+# This workaround on the Portage tree profiles is a hack to be able to declare
+# files that are explicitly not managed by the Portage profiles (see the
+# Package Manager Specification (aka. PMS) and related man pages or wiki pages:
+# https://wiki.gentoo.org/wiki/Profile_(Portage) and
+# https://wiki.gentoo.org/wiki//etc/portage for more details).
+
+# Retrieve the Portage profiles inheritance list. This list is ordered
+# bottom-up, i.e. from the deepest Portage profile (i.e. the least significant)
+# to the Portage profile currently set:
+portage_profile_parents_list="$(python -c 'import portage; print("\n".join(portage.config().profiles))'))"
+readarray -t portage_profile_parents <<< "${portage_profile_parents_list}"
+
+# List of candidate files for symlink creation into /etc/profile:
+portage_profile_global_items=(
+    # package.{,un}mask files in /etc/portage supports the masking per Portage
+    # overlay (e.g. <category>/<package>::gentoo), which is not the case when
+    # those files are set in the Portage tree overlays
+    package.mask
+    package.unmask
+    # The package licenses set to accept can only be set in /etc/portage and
+    # not in the Portage profiles
+    package.license
+)
+
+# Set nullglob to handle empty directories
+shopt -s nullglob
+
+# Iterate on profile dependencies and create a symlink for each profile
+# "global-override" files to the corresponding folder in /etc/portage
+for profile_path in "${portage_profile_parents[@]}"; do
+    for item in "${portage_profile_global_items[@]}"; do
+        item_dir="${profile_path}/${item}.global-override"
+        if [[ -d "${item_dir}" ]]; then
+            mkdir -p "/etc/portage/${item}"
+            for f in "${item_dir}/"*; do
+                # Ignore README files
+                if [[ "$(basename ${f})" != "README" ]]; then
+                    ln -snf "${f}" "/etc/portage/${item}/$(basename ${f})"
+                fi
+            done
+            unset f
+        elif [[ -e "${item_dir}" ]]; then
+            die "Only directories are supported as .global-override items"
+        fi
+        unset item_dir
+    done
+    unset item
+done
+unset profile_path
+
+# Display the final global override setup
+einfo "Setting up global override for:"
+for item in "${portage_profile_global_items[@]}"; do
+    item_dir="/etc/portage/${item}"
+    if [[ -d "${item_dir}" ]]; then
+        einfo "  * ${item}:"
+        for l in "${item_dir}/"*; do
+            real_path="$(realpath ${l})"
+            einfo "    - ${real_path#/mnt/}"
+        done
+        unset l
+    fi
+    unset item_dir
+done
+unset item
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
