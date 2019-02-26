@@ -37,6 +37,6 @@ mount /dev/disk/guestfs/main1 /
 tar-in ${TAR_FILE} /
 _EOF_
 
-eend "${IMAGE_DISK_FILE}: Done"
+eend "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in EFI system partition: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

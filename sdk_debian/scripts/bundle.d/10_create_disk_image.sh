@@ -96,6 +96,6 @@ einfo "${IMAGE_FILE}: Creating vfat on EFI & LVM: OK"
 
 chmod a+rw "${IMAGE_FILE}"
 
-eend "${IMAGE_FILE}: Done"
+eend "${IMAGE_FILE}: Creating disk image as ${IMAGE_TYPE} ${IMAGE_SIZE}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

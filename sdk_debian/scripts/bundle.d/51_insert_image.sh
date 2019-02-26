@@ -41,6 +41,6 @@ run
 
 copy-device-to-device /dev/disk/guestfs/lvimage /dev/${VG_NAME}/${LV_NAME}
 _EOF_
-eend "${IMAGE_DISK_FILE}: Done"
+eend "${IMAGE_DISK_FILE}: Adding ${LV_IMAGE_FILE} in ${LV_NAME}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

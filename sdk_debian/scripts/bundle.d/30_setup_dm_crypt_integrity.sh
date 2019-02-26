@@ -62,6 +62,6 @@ ${luks_key}
 
 mkfs ext4 /dev/mapper/core_state
 _EOF_
-eend "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}: Done"
+eend "${IMAGE_DISK_FILE}: Setting up DM-Crypt+Integrity for ${LV_NAME}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

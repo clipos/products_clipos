@@ -31,6 +31,6 @@ run
 
 lvcreate ${LV_NAME} ${VG_NAME} ${LV_SIZE}
 _EOF_
-eend "${IMAGE_DISK_FILE}: Done"
+eend "${IMAGE_DISK_FILE}: Adding empty ${LV_NAME}:${LV_SIZE}M: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

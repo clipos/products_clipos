@@ -44,6 +44,6 @@ ${luks_key}
 mount /dev/mapper/core_state /
 tar-in ${TAR_FILE} /
 _EOF_
-eend "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}: Done"
+eend "${IMAGE_DISK_FILE}: Adding ${TAR_FILE} in ${LV_NAME}: OK"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
