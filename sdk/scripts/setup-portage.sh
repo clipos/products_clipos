@@ -38,13 +38,17 @@ portage_vars_to_delete=(
     # is left for the default defined in /etc/portage/repos.conf
     PORTDIR
 
+    # ACCEPT_LICENSE is erased from make.conf because we manage this setting
+    # using special files in overlay profiles (see package.license.global and
+    # the notice about Portage profile workaround below).
+    ACCEPT_LICENSE
+
     # Rewritten by ourselves below:
     DISTDIR
     PKGDIR
     FEATURES
     MAKEOPTS
     EMERGE_DEFAULT_OPTS
-    ACCEPT_LICENSE
     LINGUAS
     L10N
     PORT_LOGDIR
@@ -70,7 +74,6 @@ BINPKG_COMPRESS_FLAGS='-1'
 FEATURES='sandbox userfetch userpriv usersandbox nodoc noinfo noman strict parallel-install split-elog split-log -news unknown-features-warn'
 MAKEOPTS='-j ${make_jobs}'
 EMERGE_DEFAULT_OPTS='--jobs ${emerge_jobs} ${EMERGE_INTELLIGIBLE_OPTS}'
-ACCEPT_LICENSE="-* @FREE"
 LINGUAS="${LOCALE%_*} ${LOCALE%.*}"
 L10N="${LOCALE%_*} ${L10N_LOCALE%.*}"
 QA_STRICT_EXECSTACK="set"
