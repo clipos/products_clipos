@@ -362,6 +362,17 @@ Power management and ACPI options
    The CLIP OS swap partition is encrypted with an ephemeral key and thus
    cannot support suspend to disk.
 
+Firmware Drivers
+~~~~~~~~~~~~~~~~
+
+.. describe:: CONFIG_RESET_ATTACK_MITIGATION=n
+
+   In order to work properly, this mitigation requires userspace support that
+   is currently not available in CLIP OS. Moreover, due to our use of Secure
+   Boot, Trusted Boot and the fact that machines running CLIP OS are expected
+   to lock their BIOS with a password, the type of *cold boot attacks* this
+   mitigation is supposed to thwart should not be an issue.
+
 Executable file formats / Emulations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
