@@ -21,14 +21,16 @@ cp "${CURRENT_OUT}/../configure/systemd-bootx64.efi" \
 
 if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -eq 0 ]]; then  # production
     BOOTLOADER_TIMEOUT=6
+    AUTO_FIRMWARE=0
 else  # instrumented or above
     BOOTLOADER_TIMEOUT=2
+    AUTO_FIRMWARE=1
 fi
 
 einfo "Install systemd-boot main configuration..."
 cat <<EOF > "${CURRENT_OUT_ROOT}/loader/loader.conf"
 editor 0
-auto-firmware 0
+auto-firmware $AUTO_FIRMWARE
 timeout ${BOOTLOADER_TIMEOUT}
 EOF
 
