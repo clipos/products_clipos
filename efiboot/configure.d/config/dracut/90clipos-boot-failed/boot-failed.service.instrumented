@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2019 ANSSI. All rights reserved.
+
+[Unit]
+Description=Warning displayed when the boot failed for an any reason
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=sysinit.target plymouth-start.service
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+StandardOutput=kmsg+console
+StandardError=kmsg+console
+# WorkingDirectory=-/root
+# ExecStartPre=-/bin/plymouth --wait quit
+ExecStart=-/bin/sleep 2
+ExecStart=-/bin/echo '                             \
+                                                   \
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
+                                                   \
+Something unexpected happened during boot up.      \
+Please contact your local system administrator.    \
+You may now turn this computer off.                \
+                                                   \
+INSTRUMENTED BUILD: Rushing you to                 \
+"emergency.target" that should offer a shell for   \
+debugging purposes.                                \
+                                                   \
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
+                                                   \
+'
+ExecStart=-/bin/systemctl --no-block isolate emergency.target"

@@ -24,6 +24,24 @@ install -m 0755 -o 0 -g 0 \
     "${dracut_config_path}/11clipos-core-state/mount-core-state.sh" \
     "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/11clipos-core-state"
 
+einfo "Setup dracut configuration for boot failure state module"
+install -d -m 0755 -o 0 -g 0 "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-boot-failed"
+install -m 0755 -o 0 -g 0 \
+    "${dracut_config_path}/90clipos-boot-failed/module-setup.sh" \
+    "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-boot-failed"
+install -m 0644 -o 0 -g 0 \
+    "${dracut_config_path}/90clipos-boot-failed/boot-failed.service" \
+    "${dracut_config_path}/90clipos-boot-failed/boot-failed.target" \
+    "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-boot-failed"
+
+# If instrumented, ensure to put a service file that drops us to
+# emergency.target which offer a shell in order to debug what's going on:
+if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+    install -m 0644 -o 0 -g 0 \
+        "${dracut_config_path}/90clipos-boot-failed/boot-failed.service.instrumented" \
+        "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-boot-failed/boot-failed.service"
+fi
+
 readonly vg_name="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 sed -i 's|VG_NAME|'"${vg_name}"'|' \
     "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/11clipos-core-state/mount-core-state.sh"

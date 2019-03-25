@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2019 ANSSI. All rights reserved.
+
+[Unit]
+Description=Boot failed target
+Requires=sysinit.target boot-failed.service
+After=sysinit.target boot-failed.service
+AllowIsolate=yes
