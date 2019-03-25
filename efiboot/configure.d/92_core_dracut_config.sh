@@ -42,6 +42,13 @@ if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
         "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-boot-failed/boot-failed.service"
 fi
 
+einfo "Setup dracut configuration for state partition content checks"
+install -d -m 0755 -o 0 -g 0 "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-check-state"
+install -m 0755 -o 0 -g 0 \
+    "${dracut_config_path}/90clipos-check-state/module-setup.sh" \
+    "${dracut_config_path}/90clipos-check-state/clipos-check-state.sh" \
+    "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/90clipos-check-state"
+
 readonly vg_name="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
 sed -i 's|VG_NAME|'"${vg_name}"'|' \
     "${CURRENT_OUT_ROOT}/usr/lib/dracut/modules.d/11clipos-core-state/mount-core-state.sh"
