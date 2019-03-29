@@ -62,10 +62,10 @@ replace_placeholders() {
                 gsub(placeholder, value)
             }
             print
-        }' "$file" > "$tempfile" \
+        }' "$file" >| "$tempfile" \
             || { rm -f "$tempfile"; return 3; }
 
-    cat "$tempfile" > "$file" || { rm -f "$tempfile"; return 4; }
+    cat "$tempfile" >| "$file" || { rm -f "$tempfile"; return 4; }
     rm -f "$tempfile"
 }
 
