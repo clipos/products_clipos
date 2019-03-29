@@ -26,6 +26,9 @@ export ROOT="${CURRENT_OUT_ROOT}"
 sdk_info "Building baselayout in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} sys-apps/baselayout
 
+sdk_info "Emerging linux-sources in ROOT:"
+emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} virtual/linux-sources
+
 # Systematically remove previously built binary packages for meta ebuilds
 for pkg in $@; do
     rm -fv "${CURRENT_CACHE_PKG}/${pkg}"*
