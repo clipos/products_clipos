@@ -15,21 +15,21 @@ StandardError=kmsg+console
 # WorkingDirectory=-/root
 # ExecStartPre=-/bin/plymouth --wait quit
 ExecStart=-/bin/sleep 2
-ExecStart=-/bin/echo '                             \
-                                                   \
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
-                                                   \
-Something unexpected happened during boot up.      \
-Please contact your local system administrator.    \
-You may now turn this computer off.                \
-                                                   \
-INSTRUMENTED BUILD: Rushing you to                 \
-"emergency.target" that should offer a shell for   \
-debugging purposes.                                \
-                                                   \
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \
-                                                   \
+ExecStart=-/bin/echo -e '                         \n\
+                                                  \n\
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\
+                                                  \n\
+Something unexpected happened during boot up.     \n\
+Please contact your local system administrator.   \n\
+You may now turn this computer off.               \n\
+                                                  \n\
+INSTRUMENTED BUILD: Rushing you to                \n\
+"emergency.target" that should offer a shell for  \n\
+debugging purposes.                               \n\
+                                                  \n\
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\
+                                                  \n\
 '
-ExecStart=-/bin/systemctl --no-block isolate emergency.target"
+ExecStart=-/bin/systemctl --no-block isolate emergency.target
