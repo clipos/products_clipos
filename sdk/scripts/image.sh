@@ -26,10 +26,10 @@ export ROOT="${CURRENT_OUT_ROOT}"
 # All imaging process must begin with a clean empty root tree:
 rm -rf "${ROOT}"
 
-sdk_info "Extracting from binpkgs the baselayout in ROOT:"
+sdk_info "Emerging (using binpkgs only) baselayout in ROOT:"
 emerge ${EMERGE_IMAGEROOTONLYRDEPS_OPTS} sys-apps/baselayout
 
-sdk_info "Extracting from binpkgs all the package to emerge in ROOT:"
+sdk_info "Emerging (using binpkgs only) all the required packages in ROOT:"
 emerge ${EMERGE_IMAGEROOTONLYRDEPS_OPTS} "$@"
 
 # Extract the detailed list of installed packages in ROOT

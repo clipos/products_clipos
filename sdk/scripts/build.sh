@@ -23,7 +23,7 @@ source "${CURRENT_SDK}/scripts/emergeopts.sh"
 # and will work in this ROOT tree.
 export ROOT="${CURRENT_OUT_ROOT}"
 
-sdk_info "Building baselayout in ROOT:"
+sdk_info "Emerging baselayout in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} sys-apps/baselayout
 
 sdk_info "Emerging linux-sources in ROOT:"
