@@ -32,6 +32,7 @@ L10N_LOCALE=${LOCALE/_/-}
 # useful things
 find /etc/portage -mindepth 1 -not -path /etc/portage/make.conf -delete
 sed -i.bak -E -e '/^[ \t]*#/d' -e '/^[ \t]*$/d' /etc/portage/make.conf
+
 # Delete configuration values that we are going to overwrite
 portage_vars_to_delete=(
     # PORTDIR is erased from make.conf because the Portage tree directory path
@@ -64,20 +65,79 @@ portage_vars_to_delete=(
 for var in "${portage_vars_to_delete[@]}"; do
     sed -i -E -e '/^[ \t]*'"${var}"'=/d' /etc/portage/make.conf
 done
-# TODO: Once we have a CI, we should add 'getbinpkg' to FEATURES
-# TODO: Disable 'parallel-install' for production builds
-# TODO: Enable 'stricter' portage FEATURE (disabled due to QA failures).
+
+# The Portage FEATURES we want to use (see make.conf(5) for the reference of
+# those):
+wanted_portage_features=(
+    # Ebuilds build isolation:
+    sandbox
+    userfetch  # ensure portage:portage privileges are used when "fetching"
+    userpriv usersandbox  # build in sandbox as portage:portage (not root:root)
+    cgroup  # gather all the build subprocess in a cgroup for Portage to safely kill them (if needed)
+    #ipc-sandbox mount-sandbox network-sandbox pid-sandbox
+    # TODO: If we decide to make use of user namespaces in cosmk for the SDK
+    # container, then we may decide to use *-sandbox FEATURES in order to
+    # isolate the ebuild-triggered subprocessed in dedicated namespaces.
+    # In the current state (Apr. 2019), it is still not possible since unshare
+    # syscall get a EPERM error as the SDK container does not have the
+    # capability to create new namespaces.
+
+    # Strip things we do not want in the targets we build:
+    nodoc noinfo noman
+
+    # Q/A settings:
+    strict unknown-features-warn
+    # TODO: Enable 'stricter' portage FEATURE (disabled due to QA failures).
+
+    # Parallelization:
+    # Note: "ebuild-locks" is absolutely required and sets a lock for
+    # unsandboxed (e.g. pkg_setup, pkg_postinst, etc.) parts of the ebuilds:
+    parallel-fetch parallel-install ebuild-locks
+    # TODO: Should we disable 'parallel-install' for production builds?
+
+    # Logging-related settings:
+    split-elog split-log
+
+    # Binary packages related settings:
+    #binpkg-multi-instance
+    # TODO: With a reorganization of the cache/ directory and with a proper
+    # patch to Portage to ignore the environment variables populated by cosmk
+    # in the SDK containers (i.e. the CURRENT_* environment variables), we may
+    # make use of the binpkg-multi-instance FEATURE in order to share the
+    # binary packages accross different recipes (i.e. a package built for
+    # clipos/core could be reused in clipos/efiboot both contexts share the
+    # same parameters for that package).
+    # TODO: Once we have a CI, we should add 'getbinpkg' to FEATURES. Or should
+    # we?
+
+    # Miscellaneous settings:
+    -news
+)
+
+# Build the main Portage configuration file for runtime:
 cat <<EOF >> /etc/portage/make.conf
+
+# Common location settings for Portage:
 DISTDIR='/mnt/assets/distfiles'
 PKGDIR='${CURRENT_CACHE_PKG}'
 PORT_LOGDIR='${CURRENT_CACHE}/log'
+
+# Binary packages compression settings:
 BINPKG_COMPRESS='lz4'
 BINPKG_COMPRESS_FLAGS='-1'
-FEATURES='sandbox userfetch userpriv usersandbox nodoc noinfo noman strict parallel-install split-elog split-log -news unknown-features-warn'
+
+# Portage FEATURES (see make.conf(5) for the reference of those):
+FEATURES='${wanted_portage_features[@]}'
+
+# Build multithreading settings:
 MAKEOPTS='-j ${make_jobs}'
 EMERGE_DEFAULT_OPTS='--jobs ${emerge_jobs} ${EMERGE_INTELLIGIBLE_OPTS}'
+
+# Locale and language-related settings:
 LINGUAS="${LOCALE%_*} ${LOCALE%.*}"
 L10N="${LOCALE%_*} ${L10N_LOCALE%.*}"
+
+# Portage Q/A enforcement (see make.conf(5) for their meaning)
 QA_STRICT_EXECSTACK="set"
 QA_STRICT_FLAGS_IGNORED="set"
 QA_STRICT_MULTILIB_PATHS="set"
