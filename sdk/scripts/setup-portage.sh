@@ -28,47 +28,24 @@ emerge_jobs="${nproc}"
 LOCALE="${CURRENT_PRODUCT_PROPERTY['system.locale']:-'en_US.UTF-8'}"
 L10N_LOCALE=${LOCALE/_/-}
 
-# Drop everything we do not need in the Portage configuration and set some
-# useful things
-find /etc/portage -mindepth 1 -not -path /etc/portage/make.conf -delete
-sed -i.bak -E -e '/^[ \t]*#/d' -e '/^[ \t]*$/d' /etc/portage/make.conf
+# Drop all the pre-exisiting Portage configuration (i.e. the one that comes
+# with the Gentoo stage3) but backup it rather than deleting it (just in case
+# something new and important appears one day in that stage3 configuration so
+# we can see what's missing in *our* configuration):
+if [[ ! -e "/etc/.portage.original-from-stage3" ]]; then
+    cp -a "/etc/portage" "/etc/.portage.original-from-stage3"
+fi
+find /etc/portage -mindepth 1 -delete   # delete contents but preserving parent dir
 
-# Delete configuration values that we are going to overwrite
-portage_vars_to_delete=(
-    # PORTDIR is erased from make.conf because the Portage tree directory path
-    # is left for the default defined in /etc/portage/repos.conf
-    PORTDIR
-
-    # ACCEPT_LICENSE is erased from make.conf because we manage this setting
-    # using special files in overlay profiles (see
-    # "package.license.global-override" and the notice about Portage profile
-    # workaround further down in this file).
-    ACCEPT_LICENSE
-
-    # Rewritten by ourselves below:
-    DISTDIR
-    PKGDIR
-    PORT_LOGDIR
-    BINPKG_COMPRESS
-    BINPKG_COMPRESS_FLAGS
-    FEATURES
-    MAKEOPTS
-    EMERGE_DEFAULT_OPTS
-    LINGUAS
-    L10N
-    QA_STRICT_EXECSTACK
-    QA_STRICT_FLAGS_IGNORED
-    QA_STRICT_MULTILIB_PATHS
-    QA_STRICT_PRESTRIPPED
-    QA_STRICT_TEXTRELS
-    QA_STRICT_WX_LOAD
-)
-for var in "${portage_vars_to_delete[@]}"; do
-    sed -i -E -e '/^[ \t]*'"${var}"'=/d' /etc/portage/make.conf
-done
-
-# The Portage FEATURES we want to use (see make.conf(5) for the reference of
-# those):
+# The Portage FEATURES we want to use (see make.conf(5) for futher reference of
+# those) and which ONLY affect the behavior of "emerge" and Portage in general
+# (e.g. Q/A checks on packages production/building process, Portage sandboxing
+# parameters while building, management of binary packages, and so on...).
+# FEATURES that affect the result of the packages to be installed **MUST NOT**
+# be declared here. Those FEATURES are to be declared in the Portage profiles
+# in the Portage tree overlays instead (see the file
+# profiles/clipos/amd64/make.defaults in the CLIP OS Portage tree overlay for
+# an example).
 wanted_portage_features=(
     # Ebuilds build isolation:
     sandbox
@@ -82,9 +59,6 @@ wanted_portage_features=(
     # In the current state (Apr. 2019), it is still not possible since unshare
     # syscall get a EPERM error as the SDK container does not have the
     # capability to create new namespaces.
-
-    # Strip things we do not want in the targets we build:
-    nodoc noinfo noman
 
     # Q/A settings:
     strict unknown-features-warn
@@ -114,9 +88,17 @@ wanted_portage_features=(
     # Miscellaneous settings:
     -news
 )
-
 # Build the main Portage configuration file for runtime:
-cat <<EOF >> /etc/portage/make.conf
+cat <<EOF > /etc/portage/make.conf
+#
+# Dynamic Portage configuration file generated for this SDK instance by the
+# SDK prelude script "setup-portage.sh".
+#
+# Important note: Do not declare here ACCEPT_LICENSE as this piece of
+# configuration is managed by using special files in our overlay profiles (see
+# "package.license.global-override" and the notice about Portage profile
+# workaround in the "setup-portage.sh" file).
+#
 
 # Common location settings for Portage:
 DISTDIR='/mnt/assets/distfiles'
@@ -127,7 +109,8 @@ PORT_LOGDIR='${CURRENT_CACHE}/log'
 BINPKG_COMPRESS='lz4'
 BINPKG_COMPRESS_FLAGS='-1'
 
-# Portage FEATURES (see make.conf(5) for the reference of those):
+# Portage FEATURES that only affects the behavior of Portage and not the
+# "emerged" results:
 FEATURES='${wanted_portage_features[@]}'
 
 # Build multithreading settings:
