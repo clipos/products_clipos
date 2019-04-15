@@ -40,8 +40,9 @@ portage_vars_to_delete=(
     PORTDIR
 
     # ACCEPT_LICENSE is erased from make.conf because we manage this setting
-    # using special files in overlay profiles (see package.license.global and
-    # the notice about Portage profile workaround below).
+    # using special files in overlay profiles (see
+    # "package.license.global-override" and the notice about Portage profile
+    # workaround further down in this file).
     ACCEPT_LICENSE
 
     # Rewritten by ourselves below:
