@@ -11,10 +11,30 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 # Set empty root password only for instrumented builds:
 if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
     sdk_info "INSTRUMENTED BUILD: Setting empty root password."
-    sed -i 's|root:x:0:0:Super User:/root:/bin/sh|root:x:0:0:Super User:/root:/bin/bash|' \
-        "${CURRENT_OUT_ROOT}/etc/passwd"
-    sed -i 's|root:!!:|root::|' \
-        "${CURRENT_OUT_ROOT}/etc/shadow"
+
+    # Note: This requires GNU Awk >= 4.1.0 for the inplace extension.
+    gawk -i inplace 'BEGIN { FS = OFS = ":"; processed=0; }
+    {
+        if ($1 == "root" && $3 == 0 && $4 == 0) {   # 1=username 3=UID 4=GID
+            $7 = "/bin/bash";   # 7=login-shell
+            processed=1;
+        }
+        print;
+    }
+    END { exit(!processed); }' "${CURRENT_OUT_ROOT}/etc/passwd" \
+        || sdk_die "INSTRUMENTED BUILD: Error while trying to set /bin/bash as the login shell for root in /etc/passwd."
+
+    # Note: This requires GNU Awk >= 4.1.0 for the inplace extension.
+    gawk -i inplace 'BEGIN { FS = OFS = ":"; processed=0; }
+    {
+        if ($1 == "root") {   # 1=username
+            $2 = "";   # 2=password
+            processed=1;
+        }
+        print;
+    }
+    END { exit(!processed); }' "${CURRENT_OUT_ROOT}/etc/shadow" \
+        || sdk_die "INSTRUMENTED BUILD: Error while trying to set an empty password for root in /etc/shadow."
 fi
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
