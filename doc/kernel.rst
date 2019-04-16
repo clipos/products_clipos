@@ -696,11 +696,14 @@ tightly related to the CLIP OS kernel configuration detailed above.
 .. describe:: kernel.perf_event_paranoid = 3
 
    This completely disallows unprivileged access to the ``perf_event_open()``
-   system call. Note that this requires a patch included in linux-hardened (see
-   `here <https://lwn.net/Articles/696216/>`_ for the reason why it is not
-   upstream), otherwise it is the same as setting this sysctl to ``2``. This is
-   actually not needed as we already enable
-   ``CONFIG_SECURITY_PERF_EVENTS_RESTRICT``.
+   system call. This is actually not needed as we already enable
+   ``CONFIG_SECURITY_PERF_EVENTS_RESTRICT``. [linux-hardened]_
+
+   Note that this requires a patch included in linux-hardened (see `here
+   <https://lwn.net/Articles/696216/>`_ for the reason why it is not upstream).
+   Indeed, on a mainline kernel without such a patch, the above is equivalent
+   to setting this sysctl to ``2``, which would still allow the profiling of
+   user processes.
 
 .. describe:: kernel.tiocsti_restrict = 1
 
@@ -770,7 +773,7 @@ We pass the following command line parameters to the kernel:
    This parameter provided by a linux-hardened patch (based on the PaX
    implementation) enables a very simple form of latent entropy extracted
    during system start-up and added to the entropy obtained with
-   ``GCC_PLUGIN_LATENT_ENTROPY``.
+   ``GCC_PLUGIN_LATENT_ENTROPY``. [linux-hardened]_
 
 .. describe:: pti=on
 
