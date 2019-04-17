@@ -15,6 +15,7 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 # this future chroot in order for some programs to run properly.
 rm -rf "${CURRENT_OUT_ROOT}/dev"
 install -m 755 -o 0 -g 0 -d "${CURRENT_OUT_ROOT}/dev"
+mknod -m 666 "${CURRENT_OUT_ROOT}/dev/null" c 1 3
 mknod -m 666 "${CURRENT_OUT_ROOT}/dev/full" c 1 7
 mknod -m 666 "${CURRENT_OUT_ROOT}/dev/ptmx" c 5 2
 mknod -m 644 "${CURRENT_OUT_ROOT}/dev/random" c 1 8
