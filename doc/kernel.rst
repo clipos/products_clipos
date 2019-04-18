@@ -395,9 +395,9 @@ Networking support
 Device Drivers
 ~~~~~~~~~~~~~~
 
-.. describe:: CONFIG_TCG_TPM=n
+.. describe:: CONFIG_TCG_TPM=y
 
-   TPM use is not supported by CLIP OS yet.
+   CLIP OS leverages the TPM to ensure :ref:`boot integrity <trusted_boot>`.
 
 .. describe:: CONFIG_DEVMEM=n
 
@@ -418,6 +418,11 @@ Device Drivers
 .. describe:: CONFIG_LEGACY_PTYS=n
 
    Use the modern PTY interface only.
+
+.. describe:: CONFIG_LDISC_AUTOLOAD=n
+
+   Do not automatically load any line discipline that is in a kernel module
+   when an unprivileged user asks for it.
 
 .. describe:: CONFIG_DEVPORT=n
 
@@ -673,6 +678,11 @@ Sysctl Security Tuning
 Many sysctls are not security-relevant or only play a role if some kernel
 configuration options are enabled/disabled. In other words, the following is
 tightly related to the CLIP OS kernel configuration detailed above.
+
+.. describe:: dev.tty.ldisc_autoload = 0
+
+   See ``CONFIG_LDISC_AUTOLOAD`` above, which serves as a default value for
+   this sysctl.
 
 .. describe:: kernel.kptr_restrict = 2
 

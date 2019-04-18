@@ -113,6 +113,8 @@ includes the read-only uncompressed SquashFS root filesystem. Support for
 forward error correction (FEC) is also enabled thus increasing resistance to
 disk read errors or failures.
 
+.. _trusted_boot:
+
 Trusted Boot
 ------------
 
