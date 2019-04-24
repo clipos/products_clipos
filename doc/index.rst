@@ -11,6 +11,7 @@
    clipos/security
    clipos/kernel
    clipos/boot_integrity
+   clipos/update
    clipos/roadmap
    clipos/development
 
