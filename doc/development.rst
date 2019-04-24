@@ -3,6 +3,8 @@
    Content licensed under the Open License version 2.0 as published by Etalab
    (French task force for Open Data).
 
+.. _development:
+
 Development and debug
 =====================
 
