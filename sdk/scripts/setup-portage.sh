@@ -10,10 +10,10 @@ set -o errexit -o nounset -o pipefail
 # The prelude to every script for this SDK. Do not remove it.
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
-sdk_info "Setting up Portage configuration for profile ${PORTAGE_PROFILE}..."
-
 # Needed to get EMERGE_INTELLIGIBLE_OPTS:
 source "${CURRENT_SDK}/scripts/emergeopts.sh"
+
+sdk_info "Setting up custom local Portage configuration..."
 
 # Compute optimal values for the number of jobs to allocate for make and
 # emerge. Since we throttle the amount of CPU shares dedicated to the current
@@ -167,7 +167,7 @@ done
 
 # Set the Portage profile depending on the current instrumentation level
 portage_profile_suffix=""
-if [[ "${CURRENT_ACTION}" == "build" ]] || [[ "${CURRENT_ACTION}" == "image" ]]; then
+if [[ "${CURRENT_ACTION}" =~ ^(build|image|run)$ ]]; then
     if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
         portage_profile_suffix="/instru-devel"
     elif [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
@@ -175,6 +175,7 @@ if [[ "${CURRENT_ACTION}" == "build" ]] || [[ "${CURRENT_ACTION}" == "image" ]];
     fi
 fi
 eselect profile set "${PORTAGE_PROFILE:-}${portage_profile_suffix}"
+sdk_info "Enabled Portage profile \"${PORTAGE_PROFILE:-}${portage_profile_suffix}\"."
 
 # Portage profile workaround for package.{,un}mask & package.license:
 #
