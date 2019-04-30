@@ -24,9 +24,11 @@ nproc="$(getconf _NPROCESSORS_ONLN)"  # more portable than nproc
 make_jobs="$((${nproc} + 1))"  # + 1 for the main thread of make
 emerge_jobs="${nproc}"
 
-# Set default LOCALE with fallback to 'en_US.UTF-8' if property is not defined
-LOCALE="${CURRENT_PRODUCT_PROPERTY['system.locale']:-'en_US.UTF-8'}"
-L10N_LOCALE=${LOCALE/_/-}
+# Set default LOCALE with fallback to 'en_US' if property is not defined
+# Guess language to use from the locale defined in the product properties:
+system_locale="${CURRENT_PRODUCT_PROPERTY['system.locale']:-'en_US.UTF-8'}"
+locale_regionalized_language="${system_locale%%.*}"    # e.g. "en_US"
+locale_regionless_language="${locale_regionalized_language%%_*}"   # e.g. "en"
 
 # Drop all the pre-exisiting Portage configuration (i.e. the one that comes
 # with the Gentoo stage3) but backup it rather than deleting it (just in case
@@ -118,8 +120,7 @@ MAKEOPTS='-j ${make_jobs}'
 EMERGE_DEFAULT_OPTS='--jobs ${emerge_jobs} ${EMERGE_INTELLIGIBLE_OPTS}'
 
 # Locale and language-related settings:
-LINGUAS="${LOCALE%_*} ${LOCALE%.*}"
-L10N="${LOCALE%_*} ${L10N_LOCALE%.*}"
+L10N="${locale_regionless_language} ${locale_regionalized_language//_/-}"
 
 # Portage Q/A enforcement (see make.conf(5) for their meaning)
 QA_STRICT_EXECSTACK="set"
