@@ -20,11 +20,18 @@ systemd-tmpfiles \
 
 install -dm 0755 -o 0 -g 0 "${CURRENT_OUT_ROOT}/etc/tmpfiles.d"
 
-sdk_info "Set keymap and timezone"
-systemd-firstboot \
-    --root="${CURRENT_OUT_ROOT}" \
-    --keymap="${KEYMAP}" \
-    --timezone="${TIMEZONE}"
+sdk_info "Set keymap to \"${KEYMAP}\"."
+echo "KEYMAP=${KEYMAP}" >> "${CURRENT_OUT_ROOT}/etc/vconsole.conf"
+
+# Setting timezone with some pre-checks:
+sdk_info "Setting timezone to \"${TIMEZONE}\"."
+if [[ ! "${TIMEZONE}" =~ ^[a-zA-Z0-9/_\+\-]+$ ]]; then
+    sdk_die "Timezone \"${TIMEZONE}\" is invalid, should be a IANA timezone name."
+elif [[ ! -f "${CURRENT_OUT_ROOT}/usr/share/zoneinfo/${TIMEZONE}" ]]; then
+    sdk_die "Timezone \"${TIMEZONE}\" is unfound in ROOT. Cannot set this timezone."
+else
+    ln -snf "/usr/share/zoneinfo/${TIMEZONE}" "${CURRENT_OUT_ROOT}/etc/localtime"
+fi
 
 # Split locale into the locale (required for locale generation command line):
 locale_lang='' charmap=''
