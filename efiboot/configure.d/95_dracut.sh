@@ -61,9 +61,10 @@ if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
     kernel_cmdline+=" rd.shell rd.break=cleanup"
     # Persistent runtime debug shell
     kernel_cmdline+=" systemd.debug-shell=1"
+    kernel_cmdline+=" console=ttyS0,115200"
 fi
 if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
-    kernel_cmdline+=" console=ttyS0,115200"
+    :
 fi
 
 # Heavy debug options disabled by default
