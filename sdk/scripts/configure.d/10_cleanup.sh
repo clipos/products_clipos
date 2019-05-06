@@ -30,7 +30,6 @@ REMOVE_LIST+=(
 # Exclude documentation, bash-completion files, etc.
 REMOVE_LIST+=(
     "$root"/usr/share/bash-completion
-    "$root"/usr/share/eselect
     "$root"/usr/share/gdb
     "$root"/usr/share/gtk-doc
     "$root"/usr/share/udhcpc
@@ -40,6 +39,7 @@ REMOVE_LIST+=(
 # Remove all portage related files
 # FIXME: add "$root"/var/db/?
 REMOVE_LIST+=(
+    "$root"/usr/share/eselect
     "$root"/var/cache/edb
     "$root"/var/db/Makefile
     "$root"/var/db/pkg
