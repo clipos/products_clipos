@@ -37,11 +37,6 @@ REMOVE_LIST+=(
     "$root"/usr/share/zsh
 )
 
-# Remove locale LC_MESSAGES files
-# REMOVE_LIST+=(
-#     "$root"/usr/share/locale
-# )
-
 # Remove all portage related files
 # FIXME: add "$root"/var/db/?
 REMOVE_LIST+=(
