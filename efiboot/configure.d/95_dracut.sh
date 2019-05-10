@@ -64,7 +64,8 @@ if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
     kernel_cmdline+=" console=ttyS0,115200"
 fi
 if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
-    :
+    # Do not ratelimit the logging
+    kernel_cmdline+=" printk.devkmsg=on"
 fi
 
 # Heavy debug options disabled by default
