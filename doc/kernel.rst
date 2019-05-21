@@ -788,6 +788,14 @@ We pass the following command line parameters to the kernel:
    Same reasoning as above but for the Spectre v4 vulnerability. Note that this
    mitigation requires updated microcode for Intel processors.
 
+
+.. describe:: mds=full,nosmt
+
+   This parameter controls optional mitigations for the MDS class of Intel CPU
+   vulnerabilities. Not specifying this parameter is equivalent to setting
+   ``mds=full``, which leaves SMT enabled and therefore is not a complete
+   mitigation. Note that this mitigation requires an Intel microcode update.
+
 .. describe:: iommu=force
 
    Even if we correctly enable the IOMMU in the kernel configuration, the
@@ -825,6 +833,11 @@ Also, note that:
   (note that an Intel microcode update is not required for this mitigation to
   work but improves performance by providing a way to invalidate caches with a
   finer granularity).
+* ``mitigations``: This parameter controls optional mitigations for CPU
+  vulnerabilities in an arch-independent and more coarse-grained way. For now,
+  we keep using arch-specific options for the sake of explicitness. Not setting
+  this parameter equals setting it to ``auto``, which itself does not update
+  anything.
 
 .. rubric:: Citations and origin of some items
 

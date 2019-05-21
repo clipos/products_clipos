@@ -45,7 +45,8 @@ kernel_cmdline+=" rd.verity.roothash=${core_verity_roothash}"
 kernel_cmdline+=" rd.verity.hashoffset=${core_verity_hashoffset}"
 kernel_cmdline+=" rd.verity.fecoffset=${core_verity_fecoffset}"
 # Security-related parameters
-kernel_cmdline+=" slub_debug=F pti=on extra_latent_entropy iommu=force"
+kernel_cmdline+=" slub_debug=F extra_latent_entropy iommu=force"
+kernel_cmdline+=" pti=on mds=full,nosmt"
 kernel_cmdline+=" spectre_v2=on spec_store_bypass_disable=seccomp"
 # Consider uncommenting below line if CLIP OS happens to be used as an
 # hypervisor with untrusted guest VMs someday
