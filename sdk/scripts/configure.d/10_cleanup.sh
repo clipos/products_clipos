@@ -87,10 +87,14 @@ REMOVE_LIST+=(
 REMOVE_LIST+=(
     "$root"/etc/conf.d
     "$root"/etc/csh.env
+    "$root"/etc/dmtab
+    "$root"/etc/filesystems
     "$root"/etc/gai.conf
     "$root"/etc/gentoo-release
     "$root"/etc/init.d
+    "$root"/etc/locale.gen
     "$root"/etc/localtime
+    "$root"/etc/login.defs
     "$root"/etc/machine-id
     "$root"/etc/networks
     "$root"/etc/os-release
