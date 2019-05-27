@@ -10,5 +10,5 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 
 sdk_info "Set fixed known machine-id & hostname for initramfs."
 SHORT_NAME="${CURRENT_PRODUCT_PROPERTY['short_name']}"
-echo "${SHORT_NAME:?}" > "${CURRENT_OUT_ROOT}/etc/hostname"
-echo "${SHORT_NAME:?}" | md5sum | awk '{print $1}' > "${CURRENT_OUT_ROOT}/etc/machine-id"
+echo "${SHORT_NAME}" > "${CURRENT_OUT_ROOT}/etc/hostname"
+echo "${SHORT_NAME}" | md5sum | awk '{print $1}' > "${CURRENT_OUT_ROOT}/etc/machine-id"

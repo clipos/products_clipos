@@ -23,8 +23,8 @@ mkdir "${CURRENT_STATE}"
 # hostname & machine-id
 readonly PRODUCT_NAME="${CURRENT_PRODUCT_PROPERTY['short_name']}"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc"
-echo "${PRODUCT_NAME:?}-qemu" > "${CURRENT_STATE}/core/etc/hostname"
-echo "${PRODUCT_NAME:?}-qemu" | md5sum | awk '{print $1}' > "${CURRENT_STATE}/core/etc/machine-id"
+echo "${PRODUCT_NAME}-qemu" > "${CURRENT_STATE}/core/etc/hostname"
+echo "${PRODUCT_NAME}-qemu" | md5sum | awk '{print $1}' > "${CURRENT_STATE}/core/etc/machine-id"
 
 # /var/log/journal
 # systemd-journal GID must match the one set in core/configure rootfs

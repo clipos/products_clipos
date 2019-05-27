@@ -15,7 +15,7 @@ declare -a REMOVE_LIST
 # ENVIRONMENT!
 # This is the reason why, all the items of the REMOVE_LIST array are prefixed
 # with the same variable "root" defined here:
-readonly root="${CURRENT_OUT_ROOT:?}"
+readonly root="${CURRENT_OUT_ROOT}"
 
 # Remove now unneeded tmpfiles config
 REMOVE_LIST+=(

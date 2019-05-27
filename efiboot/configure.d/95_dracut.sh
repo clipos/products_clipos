@@ -98,7 +98,7 @@ fi
 
 # dracut appends the machine-id to the resulting EFI-stubbed kernel image and
 # we do not want this
-rm -f "${CURRENT_OUT_ROOT:?}/etc/machine-id"
+rm -f "${CURRENT_OUT_ROOT}/etc/machine-id"
 
 # dracut needs /var/tmp to be available
 mkdir -p "${CURRENT_OUT_ROOT}/var/tmp"

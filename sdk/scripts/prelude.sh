@@ -29,6 +29,27 @@ source "$(dirname ${BASH_SOURCE[0]})/lib/utils.sh"
 # ever run in the host):
 die_if_not_in_a_sdk
 
+# Ensure that the following variables were properly set by cosmk in the SDK
+# environment so that we don't have to check them anywhere is our scripts.
+# We do not check if 'CURRENT_INSTRUMENTATION_FEATURES' exists has it will not
+# for production builds.
+cosmk_env=(
+    'CURRENT_ACTION'
+    'CURRENT_PRODUCT'
+    'CURRENT_PRODUCT_PROPERTIES'
+    'CURRENT_PRODUCT_TAINTED_VERSION'
+    'CURRENT_PRODUCT_VERSION'
+    'CURRENT_RECIPE'
+    'CURRENT_SDK_PRODUCT'
+    'CURRENT_SDK_RECIPE'
+)
+for v in "${cosmk_env[@]}"; do
+    if [[ -z ${!v+x} ]]; then
+        sdk_die "Environment variable '${v}' is not set!"
+    fi
+done
+unset v cosmk_env
+
 # Compute useful global variables to be used across various scripts used within
 # this SDK:
 

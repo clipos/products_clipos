@@ -38,7 +38,7 @@ EOF
 
 sdk_info "Install EFI bundle..."
 cp "${CURRENT_OUT}/../configure/linux.efi" \
-    "${CURRENT_OUT_ROOT}/EFI/Linux/clipos-${CURRENT_PRODUCT_VERSION:?}.efi"
+    "${CURRENT_OUT_ROOT}/EFI/Linux/clipos-${CURRENT_PRODUCT_VERSION}.efi"
 
 sdk_info "Bundle the EFI binaries into an EFI partition archive..."
 # Produce the EFI partition image as a tar archive.
