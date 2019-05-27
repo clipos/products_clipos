@@ -17,12 +17,6 @@ declare -a REMOVE_LIST
 # with the same variable "root" defined here:
 readonly root="${CURRENT_OUT_ROOT:?}"
 
-# TODO: Move portage db cleanup here and use emerge --unmerge
-REMOVE_LIST+=(
-    "$root"/usr/bin/awk
-    "$root"/usr/bin/sed
-)
-
 REMOVE_LIST+=(
     "$root"/bin/chroot
     "$root"/usr/bin/chroot
