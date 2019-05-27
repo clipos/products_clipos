@@ -76,6 +76,9 @@ fi
 # we do not want this
 rm -f "${CURRENT_OUT_ROOT:?}/etc/machine-id"
 
+# dracut needs /var/tmp to be available
+mkdir -p "${CURRENT_OUT_ROOT}/var/tmp"
+
 # Sadly enough, dracut does not provide an option to be able to work with
 # objects (kernel, binaries, environment) from a detached root tree.
 # For this reason, we are going to rely on a chroot(1) call into

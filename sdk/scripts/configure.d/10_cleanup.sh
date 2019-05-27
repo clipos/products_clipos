@@ -23,8 +23,7 @@ readonly root="${CURRENT_OUT_ROOT:?}"
 REMOVE_LIST+=(
     # extglob option required for those patterns:
     "$root"/tmp/!(.|..)
-    "$root"/var/log/!(.|..)
-    "$root"/var/tmp/!(.|..)
+    "$root"/var/!(.|..)
 )
 
 # Exclude documentation, bash-completion files, etc.
@@ -37,13 +36,8 @@ REMOVE_LIST+=(
 )
 
 # Remove all portage related files
-# FIXME: add "$root"/var/db/?
 REMOVE_LIST+=(
     "$root"/usr/share/eselect
-    "$root"/var/cache/edb
-    "$root"/var/db/Makefile
-    "$root"/var/db/pkg
-    "$root"/var/lib/portage
 )
 
 # FIXME: find which packages install those
