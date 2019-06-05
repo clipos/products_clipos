@@ -235,9 +235,11 @@ Processor type and features
    additional Intel pseudo-MSRs to be used by the kernel as a mitigation for
    various speculative execution vulnerabilities).
 
-.. describe:: CONFIG_X86_MSR=y
+.. describe:: CONFIG_X86_MSR=n
+              CONFIG_X86_CPUID=n
 
-   See above explanation about ``CONFIG_MICROCODE``.
+   Enabling those features would only present userspace with more attack
+   surface.
 
 .. describe:: CONFIG_KSM=n
 
