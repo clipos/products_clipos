@@ -140,15 +140,15 @@ General setup
       cryptographically secure) entropy at boot time.
 
    .. describe:: CONFIG_GCC_PLUGIN_STRUCTLEAK=y
+                 CONFIG_GCC_PLUGIN_STRUCTLEAK_BYREF_ALL=y
 
-      Prevent potential information leakage by forcing initialization of
-      structures containing userspace addresses. This is particularly
-      important to prevent trivial bypassing of KASLR.
+      Prevent potential information leakage by forcing zero-initialization of:
 
-   .. describe:: CONFIG_GCC_PLUGIN_STRUCTLEAK_BYREF_ALL=y
+        - structures on the stack containing userspace addresses;
+        - any stack variable (thus including structures) that may be passed by
+          reference and has not already been explicitly initialized.
 
-      Extend forced initialization to all local structures that have their
-      address taken at any point.
+      This is particularly important to prevent trivial bypassing of KASLR.
 
    .. describe:: CONFIG_GCC_PLUGIN_RANDSTRUCT=y
 
@@ -595,10 +595,9 @@ Security
 
 .. ---
 
-.. describe:: DEFAULT_SECURITY_DAC=y
+.. describe:: CONFIG_LSM="yama"
 
-   The default security module will be changed to SELinux once CLIP OS fully
-   uses it.
+   SELinux shall be stacked too once CLIP OS uses it.
 
 .. ---
 
