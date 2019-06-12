@@ -14,7 +14,7 @@ rm -f "${CURRENT_OUT_ROOT}/etc/sysctl.conf"
 rm -rf "${CURRENT_OUT_ROOT}/etc/sysctl.d"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/sysctl.d"
 
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
+if is_instrumentation_feature_enabled "soften-kernel-configuration"; then
 	unset kernel_modules_disabled
 	kernel_kptr_restrict=0
 	kernel_yama_ptrace_scope=0

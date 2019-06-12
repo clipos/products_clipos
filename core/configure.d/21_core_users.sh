@@ -38,7 +38,7 @@ systemd-sysusers --root="${CURRENT_OUT_ROOT}" clipos-core.conf
 ln -snf "/mnt/state/core/home" "${CURRENT_OUT_ROOT}/home"
 
 # Setup /root symlink for development & debug
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+if is_instrumentation_feature_enabled "passwordless-root-login"; then
     ln -s "/mnt/state/core/home/root" "${CURRENT_OUT_ROOT}/root"
 fi
 

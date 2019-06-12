@@ -52,25 +52,49 @@ kernel_cmdline+=" spectre_v2=on spec_store_bypass_disable=seccomp"
 # hypervisor with untrusted guest VMs someday
 #kernel_cmdline+=" l1tf=full,force"
 
-# Development and debug options are disabled by default
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 2 ]]; then
-    kernel_cmdline+=" rd.retry=10 rd.timeout=15 "  # Smaller timeout in VMs
+# Set small timeout for threshold values (in seconds) for the initramfs
+# (dracut) to retry and abandon device discovery before proceeding with the
+# rest of the sequence. This is set to ease debugging in VMs.
+# TODO: Put these parameters under an instrumentation feature flag
+kernel_cmdline+=" rd.retry=10 rd.timeout=15 "
+
+# Sets up breakpoints at interesting dracut stages:
+if is_instrumentation_feature_enabled "breakpointed-initramfs"; then
     # Debug shells at various dracut hook stages
     kernel_cmdline+=" rd.shell rd.break=pre-mount"
     kernel_cmdline+=" rd.shell rd.break=mount"
     kernel_cmdline+=" rd.shell rd.break=pre-pivot"
     kernel_cmdline+=" rd.shell rd.break=cleanup"
-    # Persistent runtime debug shell
+fi
+
+# Persistent runtime debug shell as root (mainly to ease systemd startup
+# debugging):
+if is_instrumentation_feature_enabled "early-root-shell"; then
     kernel_cmdline+=" systemd.debug-shell=1"
+fi
+
+# Shows kernel log on console (serial line):
+if is_instrumentation_feature_enabled "debuggable-kernel"; then
     kernel_cmdline+=" console=ttyS0,115200 earlyprintk=serial,ttyS0,115200"
 fi
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
-    # Do not ratelimit the logging
+
+# Do not ratelimit the logging when kernel has a more tolerant configuration:
+if is_instrumentation_feature_enabled "soften-kernel-configuration"; then
     kernel_cmdline+=" printk.devkmsg=on"
 fi
 
-# Heavy debug options disabled by default
-# kernel_cmdline="${kernel_cmdline} systemd.log_level=debug systemd.log_target=console systemd.journald.forward_to_console=1 console=ttyS0,38400 console=tty1"
+# Verbose systemd:
+if is_instrumentation_feature_enabled "verbose-systemd"; then
+    kernel_cmdline+=" systemd.log_level=debug"
+    kernel_cmdline+=" systemd.log_target=console"
+    kernel_cmdline+=" systemd.journald.forward_to_console=1"
+
+    # Make sure there is a "console=" parameter already set in the kernel
+    # commandline. Otherwise, the above options won't be of great effect:
+    if ! [[ "${kernel_cmdline}" =~ (^| )console= ]]; then
+        kernel_cmdline+=" console=ttyS0,115200"
+    fi
+fi
 
 # dracut appends the machine-id to the resulting EFI-stubbed kernel image and
 # we do not want this

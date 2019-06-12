@@ -19,12 +19,14 @@ sdk_info "Install systemd-boot as primary EFI bootloader..."
 cp "${CURRENT_OUT}/../configure/systemd-bootx64.efi" \
     "${CURRENT_OUT_ROOT}/EFI/BOOT/BOOTX64.EFI"
 
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -eq 0 ]]; then  # production
-    BOOTLOADER_TIMEOUT=6
-    AUTO_FIRMWARE=0
-else  # instrumented or above
+if is_instrumentation_feature_enabled "dev-friendly-bootloader"; then
+    # Reduce bootloader timeout not to annoy developers who do several reboots
+    # when experimenting boot up features:
     BOOTLOADER_TIMEOUT=2
     AUTO_FIRMWARE=1
+else
+    BOOTLOADER_TIMEOUT=6
+    AUTO_FIRMWARE=0
 fi
 
 sdk_info "Install systemd-boot main configuration..."

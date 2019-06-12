@@ -9,7 +9,7 @@ set -o errexit -o nounset -o pipefail
 source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
 
 # Set empty root password only for instrumented builds:
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+if is_instrumentation_feature_enabled "passwordless-root-login"; then
     sdk_info "INSTRUMENTED BUILD: Setting empty root password."
 
     # Note: This requires GNU Awk >= 4.1.0 for the inplace extension.

@@ -92,4 +92,8 @@ contains() {
     return 1
 }
 
+is_instrumentation_feature_enabled() {
+    contains "${1:?missing or empty feature requested}" ${CURRENT_INSTRUMENTATION_FEATURES:-}
+}
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

@@ -25,14 +25,27 @@ install -m 0755 -o 0 -g 0 \
     "${dracut_config}/90clipos-check-state/clipos-check-state.sh" \
     "${dracut_moddir}/90clipos-check-state"
 
+# The volume group name is required by the script mounting the stateful
+# partition of the Core (see a bit further down):
 readonly VG_NAME="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
-    readonly REQUIRE_TPM=false
-    readonly BRUTEFORCE_LOCKOUT=false
-else
-    readonly REQUIRE_TPM=true
-    readonly BRUTEFORCE_LOCKOUT=true
+
+# Require a TPM 2.0 by default to store the keyfile to the encrypted Core state
+# partition:
+REQUIRE_TPM=true
+if is_instrumentation_feature_enabled "initramfs-no-require-tpm"; then
+    REQUIRE_TPM=false
 fi
+readonly REQUIRE_TPM
+
+# Enable dictionary attack protection (see TPM documentation about "noDA"
+# attribute) by default:
+BRUTEFORCE_LOCKOUT=true
+if is_instrumentation_feature_enabled "initramfs-no-tpm-lockout"; then
+    BRUTEFORCE_LOCKOUT=false
+fi
+readonly BRUTEFORCE_LOCKOUT
+
+# Replace placeholder values in the script mounting the Core state partition:
 export VG_NAME REQUIRE_TPM BRUTEFORCE_LOCKOUT
 replace_placeholders "${dracut_moddir}/11clipos-core-state/mount-core-state.sh"
 

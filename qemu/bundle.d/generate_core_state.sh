@@ -56,7 +56,7 @@ audit_id="$(grep "audit:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/home"
 install -o ${admin_id} -g ${admin_id} -m 0700 -d "${CURRENT_STATE}/core/home/admin"
 install -o ${audit_id} -g ${audit_id} -m 0700 -d "${CURRENT_STATE}/core/home/audit"
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+if is_instrumentation_feature_enabled "passwordless-root-login"; then
     install -o 0 -g 0 -m 0700 -d "${CURRENT_STATE}/core/home/root"
 fi
 
@@ -77,7 +77,7 @@ install -o ${audit_id} -g ${audit_id} -m 0700 -D \
     "${CURRENT_CACHE}/ssh_audit.pub" \
     "${CURRENT_STATE}/core/home/audit/.ssh/authorized_keys"
 
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -ge 1 ]]; then
+if is_instrumentation_feature_enabled "allow-ssh-root-login"; then
     install -o 0 -g 0 -m 0700 -d "${CURRENT_STATE}/core/home/root/.ssh"
     install -o 0 -g 0 -m 0700 -D \
         "${CURRENT_CACHE}/ssh_root.pub" \
