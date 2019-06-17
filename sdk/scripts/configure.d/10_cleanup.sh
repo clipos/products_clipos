@@ -43,7 +43,6 @@ REMOVE_LIST+=(
 # FIXME: find which packages install those
 # Remove various unneeded binaries
 REMOVE_LIST+=(
-    "$root"/bin/arping
     "$root"/bin/passwd
     "$root"/bin/su
     "$root"/sbin/mkfs
@@ -55,14 +54,6 @@ REMOVE_LIST+=(
     "$root"/usr/bin/expiry
     "$root"/usr/bin/gpasswd
 )
-
-# Remove more binaries in production builds
-if [[ "${CURRENT_RECIPE_INSTRUMENTATION_LEVEL}" -eq 0 ]]; then
-    REMOVE_LIST+=(
-        "$root"/bin/ping
-        "$root"/bin/ping6
-    )
-fi
 
 # FIXME: find which packages install those
 # Remove headers & include files
