@@ -29,11 +29,6 @@ emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} sys-apps/baselayout
 sdk_info "Emerging linux-sources in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} virtual/linux-sources
 
-# Systematically remove previously built binary packages for meta ebuilds
-for pkg in $@; do
-    rm -fv "${CURRENT_CACHE_PKG}/${pkg}"*
-done
-
 sdk_info "Building the packages to emerge in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} "$@"
 
