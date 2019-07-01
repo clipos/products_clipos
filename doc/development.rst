@@ -11,62 +11,110 @@ Development and debug
 This section describes all changes and information specific to development and
 debug that only applies to the CLIP OS product.
 
-Effect of instrumentation levels
---------------------------------
+Effect of instrumentation features
+----------------------------------
 
 This is a summary of all changes made to the project during build and
-configuration steps for each instrumentation level available for development
-only. This is organized as a list of recipes, each with their instrumentation
-level. Instrumentation levels must be configured before project builds in
+configuration steps for each instrumentation feature available for development
+only. Instrumentation features must be configured before project builds in
 ``instrumentation.toml`` which must be located in the project repo root
-directory.
+directory. See ``toolkit/instrumentation.toml.example`` to get good default
+values for development.
 
-clipos/core
-~~~~~~~~~~~
+* **instrumented-core:** Install additional software development tools in the
+  Core, such as Bash, Vim, tmux, tree, strace, grep, ip, less, gdb, tcpdump,
+  etc. (This is a non-exhautive list, for the complete list please refer to
+  the ``clipos-meta/clipos-core`` ebuild)
 
-* *development*:
+* **passwordless-root-login:** Enable local and remote (SSH) root login
+  without password.
 
-  * Enable local and remote (SSH) **root** login without password
-  * Install additional development and debug tools (non exhaustive list, see
-    ``clipos-meta/clipos-core``: vim, tmux, tree, strace, grep, ip, less, gdb,
-    etc.)
-  * ``sys-apps/systemd``:
+  .. admonition:: Dependency
+     :class: warning
 
-    * Build *coredump* related tools
-    * Enable debug shell support (still disabled by default, see *debug* for
-      ``clipos/efiboot``)
+     To use this instrumentation feature, you must also enable
+     **instrumented-core**.
 
-* *debug*:
+* **allow-ssh-root-login:** Configure SSH in order to allow a developer to
+  log in as root (account must be enabled with the appropriate
+  instrumentation feature) via SSH and without any password thanks to an
+  installed SSH key pair (an SSH key pair will be generated in the cache
+  directory at first usage of this instrumentation feature).
 
-  * Tune the kernel ``sysctl``'s in order to lower security to ease binary
-    debugging:
+  .. admonition:: Dependency
+     :class: warning
 
-    * Enable signed kernel module loading
-    * Disable ``PTRACE`` protections
-    * Do not hide kernel pointers values from the kernel log
+     To use this instrumentation feature, you must also enable
+     **passwordless-root-login** and **instrumented-core**.
 
-clipos/efiboot
-~~~~~~~~~~~~~~
+* **dev-friendly-bootloader:** Configure the bootloader to provide handy
+  features to developer (i.e.  "Reboot into firmware") and set a smaller
+  timeout before loading the default boot entry.
 
-* *development*:
+* **instrumented-initramfs:** Install additional software development tools in
+  the initramfs, such as strace, ltrace, less, grep, gdb, etc. (This is a
+  non-exhautive list, for the complete list please refer to the
+  ``clipos-meta/clipos-efiboot`` ebuild).
 
-  * Increase bootloader timeout
-  * Enable interactive serial console
-  * Install additional development and debug tools (non exhaustive list, see
-    ``clipos-meta/clipos-efiboot``: strace, ltrace, less, grep, gdb, etc.)
+* **soften-kernel-configuration:** Lower Linux kernel security parameters at
+  runtime.
 
-* *debug*:
+* **initramfs-no-require-tpm:** Do not require a TPM 2.0 for the LUKS disk
+  partition decryption.  Therefore, in case of missing TPM 2.0, LUKS passphrase
+  will be prompted on the active console (either tty or serial console ttyS0).
 
-  * Enable persistent debug shell in ``clipos/core``
-  * Enable ``dracut`` breakpoints with interactive shell (requires multiple
-    interactions on the serial console to resume boot)
+* **initramfs-no-tpm-lockout:** Do not lockout TPM (brute-force attack
+  protection) when interacting with the TPM 2.0 (check out the TPM
+  documentation for the "noDA" attribute and for "dictionary attack
+  protections").
 
-clipos/qemu
-~~~~~~~~~~~
+* **debuggable-initramfs:** Activate alterations to initramfs/efiboot packages
+  intended to ease their debugging (e.g. debugging symbols):
 
-* *development*:
+* **breakpointed-initramfs:** Enable dracut breakpoints with interactive shell
+  drop-outs.
 
-  * Create *root* home directory and setup ``.ssh/authorized_keys`` for remote
-    login
+  .. admonition:: Important note
+     :class: important
+
+     This feature requires multiple interactions on the console (or serial
+     console for the QEMU target) to make the boot sequence proceed to the
+     final pivot_root(2).
+
+  .. admonition:: Dependency
+     :class: warning
+
+     To use this instrumentation feature, you must also enable
+     **instrumented-initramfs**.
+
+* **early-root-shell:** Spawn a persistent root interactive shell on a serial
+  console or an tty very early in the boot up sequence (right after the
+  pivot_root(2) done by the initramfs) in order to ease systemd debugging
+  tasks. See `systemd debugging
+  <https://freedesktop.org/wiki/Software/systemd/Debugging>`_ for more
+  information.
+
+  .. admonition:: Dependency
+     :class: warning
+
+     To use this instrumentation feature, you must also enable
+     **instrumented-core**.
+
+* **debuggable-kernel:** Activates features for debugging purposes in the
+  kernel (KALLSYMS, core dump production, etc.) with logging output sent on the
+  serial port (ttyS0) early on boot up sequence.
+
+* **verbose-systemd:** Sets parameters on the kernel command line to make
+  systemd very verbose on the defined console output (ttyS0 serial port by
+  default):
+
+* **coredump-handler:** Configure systemd in order to install the
+  systemd-coredump to allow kernel produce core dump files.
+
+  .. admonition:: Dependency
+     :class: warning
+
+     To use this instrumentation feature, you must also enable
+     **debuggable-kernel**.
 
 .. vim: set tw=79 ts=2 sts=2 sw=2 et:
