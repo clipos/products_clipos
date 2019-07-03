@@ -33,7 +33,7 @@ writable_assets_dirs_at_build = [
 # necessarily their directory name in /mnt/src/portage).
 PORTAGE_OVERLAYS = 'gentoo clipos'
 # Portage profile to use
-PORTAGE_PROFILE = 'clipos:clipos/amd64/sdk'
+PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/sdk'
 
 [bootstrap]
 rootfs_archive = "{{repo}}/assets/gentoo/stage3-amd64-hardened+nomultilib-20190224T214502Z.tar.xz"

@@ -46,7 +46,7 @@ find /etc/portage -mindepth 1 -delete   # delete contents but preserving parent 
 # FEATURES that affect the result of the packages to be installed **MUST NOT**
 # be declared here. Those FEATURES are to be declared in the Portage profiles
 # in the Portage tree overlays instead (see the file
-# profiles/clipos/amd64/make.defaults in the CLIP OS Portage tree overlay for
+# profiles/clipos/common/make.defaults in the CLIP OS Portage tree overlay for
 # an example).
 wanted_portage_features=(
     # Ebuilds build isolation:

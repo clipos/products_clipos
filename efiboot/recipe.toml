@@ -7,7 +7,7 @@ features = [ "root", "configure", "bundle" ]  # "sign"?
 sdk = "clipos/sdk"
 
 [root]
-env = { PORTAGE_PROFILE = 'clipos:clipos/amd64/efiboot' }
+env = { PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/efiboot' }
 build_steps = [
     "{{repo}}/products/clipos/sdk/scripts/build.sh clipos-meta/clipos-efiboot",
 ]
