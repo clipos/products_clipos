@@ -99,16 +99,13 @@ Source code availability
 
 The entire project source tree is publicly hosted on GitHub and GitLab.
 
-:Status: Completed
-:Version: 5.0 alpha
+.. admonition:: Status
+   :class: tip
+
+   Completed in version **5.0 alpha**.
 
 Built from source
 ^^^^^^^^^^^^^^^^^
-
-* The project is entirely built from source. This property is guaranteed by
-  nightly clean builds of the entire project.
-
-  :Status: In progress
 
 * All-in-one source tree: the project source tree includes all the
   third-parties assets which are vendored within the source tree and versioned
@@ -125,8 +122,21 @@ Built from source
   affected by the availability of a third-party project on which the CLIP OS
   project depends.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
+
+* The project is entirely built from source. This property is guaranteed by
+  nightly clean builds of the entire project.
+
+  .. admonition:: Status
+     :class: notice
+
+     In progress:
+
+     * Basic CI infrastrucure is operational.
+     * Build results are not yet publicly available.
 
 "Bit-exact" reproducible builds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -140,7 +150,10 @@ that a given image (in whole or in part, e.g., for a specific recipe) has not
 been tampered with and actually correspond to the build result of the claimed
 version specification of the said image.
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Source code integrity
 ^^^^^^^^^^^^^^^^^^^^^
@@ -188,8 +201,10 @@ sources.
    * Bluetooth controllers,
    * etc.
 
-:Status: Completed
-:Version: 5.0 alpha
+.. admonition:: Status
+   :class: tip
+
+   Completed in version **5.0 alpha**.
 
 Affordable customization
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -199,8 +214,11 @@ Affordable customization
   creating a project based on CLIP OS should not require extensive changes to
   the project source files.
 
-  :Status: First functional draft of the derivation mechanism
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     First functional draft of the derivation mechanism completed in version
+     **5.0 alpha**.
 
 * Documentation and maintenance instructions are made available to allow
   third-parties to derive the CLIP OS project and guide them into maintaining
@@ -210,7 +228,10 @@ Affordable customization
   as "CLIP OS" is a trademark of the French Republic and its usage is exclusively
   reserved to the ANSSI.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Build environment isolation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -221,8 +242,10 @@ Build environment isolation
   environment which is based on an immutable image with a statefull overlay
   that is discarded upon each steps completion.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 * Build steps isolation is enforced by the following Portage security features
   that are enabled in the Gentoo Hardened SDK used to compile the CLIP OS Core
@@ -236,8 +259,10 @@ Build environment isolation
   See Portage's ``make.conf(5)`` man page on a Gentoo environment for details
   about each option.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 Usage of memory-safe languages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -247,7 +272,10 @@ Software written specifically for the project should use a memory-safe language
 Alternatives should be thought for software currently included in the project
 but written in a memory-unsafe language.
 
-:Status: In progress
+.. admonition:: Status
+   :class: notice
+
+   In progress.
 
 Limit impact of security issues inherent to memory-unsafe languages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -259,8 +287,10 @@ Limit impact of security issues inherent to memory-unsafe languages
   To reduce the attack surface, a custom set of USE flags are applied to limit
   the amount of features included by default.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 * The following Portage QA checks and features are enabled:
 
@@ -275,14 +305,19 @@ Limit impact of security issues inherent to memory-unsafe languages
   See ``make.conf(5)`` man page on a Gentoo environment setup for details about
   each option.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 * The following Portage features should be enabled:
 
     * ``stricter``
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Content origin tracking
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -295,8 +330,10 @@ or linked back to a change made by a configuration step by examinating the
 operate fine tuning operations to recipe result files and which are found to be
 tedious or impossible to integrate into ``ebuild`` packages).
 
-:Status: Completed
-:Version: 5.0 alpha
+.. admonition:: Status
+   :class: tip
+
+   Completed in version **5.0 alpha**.
 
 
 Core system properties
@@ -310,27 +347,53 @@ Boot chain integrity
 
   The initial bootloader is signed using UEFI Secure Boot.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 * The Linux kernel, initramfs and command line are packaged in a single file as
   an EFI binary signed using UEFI Secure Boot.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 * Firmware integrity, configuration, bootloader and kernel bundle binary
   integrity measurements are included in TPM based secret sealing operations.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: notice
+
+     In progress:
+
+     * Firmware integrity and configuration (includes Secure Boot setup)
+       measurements are included in TPM based secret sealing operations.
+     * Bootloader and kernel bundle binary measurements are currently ignored.
 
 Unattended system bootup
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-TPM secret sealing and unsealing for unattended system partition encryption and
-decryption on bootup.
+* TPM secret sealing and unsealing for unattended system partition encryption
+  and decryption on bootup.
 
-:Status: Not started
+.. admonition:: Status
+   :class: tip
+
+   Completed in version **5.0 beta** (`clipos/bugs#8
+   <https://github.com/clipos/bugs/issues/8>`_).
+
+* Additional enhancements:
+
+  * Additional tests with real hardware.
+  * Kernel keyring (``keyctl``) support.
+  * Improved installation and initial setup support.
+
+.. admonition:: Status
+   :class: warning
+
+   Not started (`clipos/bugs#22 <https://github.com/clipos/bugs/issues/22>`_).
 
 System on disk data integrity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -343,13 +406,18 @@ System on disk data integrity
   root hash is included in the kernel command line, which is protected by
   Secure Boot.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 * The writable system state partition integrity is ensured by DM-Integrity. The
   secret used to unlock the DM-Integrity partition is sealed using the TPM.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 System on disk data confidentiality
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -357,18 +425,28 @@ System on disk data confidentiality
 * The writable system state partition confidentiality is insured by DM-Crypt.
   The secret used to unlock the DM-Crypt partition is sealed using the TPM.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 beta** (`clipos/bugs#8
+     <https://github.com/clipos/bugs/issues/8>`_).
 
 * The system root partition confidentiality may be insured by DM-Crypt. The
   secret used to unlock the DM-Crypt partition is sealed using the TPM.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * In order to allow recovery of the encrypted system partitions by an
   administrator, an additional LUKS key slot is provisioned. This allows
   offline secret escrow during system install phase.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Arbitrary code execution restrictions (W^X, a.k.a. Write XOR Execute)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -376,39 +454,58 @@ Arbitrary code execution restrictions (W^X, a.k.a. Write XOR Execute)
 * Hardware and kernel level enforcement of the exclusion of write and execute
   permissions on memory regions.
 
-  Please refer to the :ref:`kernel` page for details.
+  .. admonition:: Status
+     :class: notice
 
-  :Status: In progress
+     In progress. Please refer to the :ref:`kernel` page for details.
 
 * System-wide enforcement of the write and execute permissions exclusion
   principle:
 
-  * The system root partition contains executable files and is thus
-    read-only.
-  * The system stateful partition is writable and is thus mounted with the
-    ``noexec`` option.
+  * Applications code is stored in a read only partition.
+  * Execution of code from writable partitions is denied.
 
-  :Status: In progress
+  .. admonition:: Status
+     :class: notice
+
+     In progress. Status as of version **5.0 beta**:
+
+     * System root partition is read-only (Squashfs and DM-Verity).
+     * All writable partitions are mounted with the ``noexec`` option.
 
 * Interactive interpreters (Bash, Python, etc.) shall refuse to execute code
   from writable filesystems.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 System administration roles separation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Limited trust in ``root`` user.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
 
-* Constrained administrator role.
+     Not started.
 
-  :Status: Not started
+* Constrained administrator (admin) role.
 
-* Auditor role.
+  .. admonition:: Status
+     :class: notice
 
-  :Status: Not started
+     In progress. Initial support available in versions **5.0 beta**
+     (`clipos/bugs#17 <https://github.com/clipos/bugs/issues/17>`_).
+
+* Auditor (audit) role.
+
+  .. admonition:: Status
+     :class: notice
+
+     In progress. Initial support available in versions **5.0 beta**
+     (`clipos/bugs#17 <https://github.com/clipos/bugs/issues/17>`_).
 
 * No privilege elevation mechanism support:
 
@@ -417,14 +514,23 @@ System administration roles separation
   * Capability bounding sets
   * No new privileges flag (``no_new_privs``) set for the PID 1 process.
 
-  :Status: In progress
+  .. admonition:: Status
+     :class: notice
+
+     In progress. Status as of version **5.0 beta**:
+
+     * All SetUID bits are stripped from the system.
+     * All partitions are mounted with the ``nosuid`` mount option.
 
 System and user authentication separation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Storage space for system and user authentication secrets are separated.
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Non-persistency of potential system or user session compromise
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -433,14 +539,20 @@ Non-persistency of potential system or user session compromise
   persistency methods which make use of the filesystem. Such compromises would
   have their lifecycles limited to system boot lifetime (uptime).
 
-  :Status: In progress
+  .. admonition:: Status
+     :class: notice
+
+     In progress.
 
 * Unprivileged user level (i.e., the current user) compromises are mitigated
   against persistency methods which make use of the filesystem. Such
   compromises would have their lifecycles limited to the compromised user
   session lifetime.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Journaling
 ^^^^^^^^^^
@@ -448,16 +560,24 @@ Journaling
 * "Append-mostly" log storage and automatic rotation using
   ``systemd-journald``.
 
-  :Status: Completed
-  :Version: 5.0 alpha
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 alpha**.
 
 * Append-only log storage and automatic log rotation.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Log forwarding to remote storage.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Robust update system
 ^^^^^^^^^^^^^^^^^^^^
@@ -465,34 +585,65 @@ Robust update system
 * Atomic, in-background and non-intrusive upgrade mechanism using A/B
   partitions (similar to Android or ChromeOS).
 
-  :Status: In progress
+  .. admonition:: Status
+     :class: notice
+
+     In progress (`clipos/bugs#9 <https://github.com/clipos/bugs/issues/9>`_).
 
 * Fallback version available in case of unpredicted failure or bug.
 
-  :Status: In progress
+  .. admonition:: Status
+     :class: notice
+
+     In progress (`clipos/bugs#9 <https://github.com/clipos/bugs/issues/9>`_).
 
 * Supports updating both the system and other environments.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
 
-* Update transport protection.
+     Not started.
 
-  :Status: In progress
+* Update transport protection:
+
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
+
+* Update integrity protection and verification:
+
+  * Transport using TLS 1.3 only, with pinned server or root CA certificates.
+  * Signed updates.
+
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Detailed update signature key compromise impact.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Rollback protection.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Remote attestation
 ^^^^^^^^^^^^^^^^^^
 
 Remote version, configuration and system state attestation using the TPM.
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Linux kernel confidentiality
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -503,17 +654,21 @@ required, an additional kernel image and initramfs will be stored inside the
 encrypted system partition. The initial initramfs will thus kexec the new
 kernel and initramfs during boot time.
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Linux kernel provided security
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Please refer to the :ref:`kernel` page for details.
+.. admonition:: Status
+   :class: notice
+
+   In progress. Please refer to the :ref:`kernel` page for details.
 
 Linux kernel hardening
 ^^^^^^^^^^^^^^^^^^^^^^
-
-* Please refer to the :ref:`kernel` page for details.
 
 * The kernel is carefully configured and only strictly required options are
   enabled. Each rationale behind those options is documented.
@@ -526,7 +681,11 @@ Linux kernel hardening
   The kernel protects itself from attacks originating from userspace (``root``
   user included).
 
-  :Status: In progress
+  .. admonition:: Status
+     :class: notice
+
+     In progress. Please refer to the :ref:`kernel` page for details.
+
 
 Full sub-environment isolation using hardware-assisted virtualization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -534,48 +693,75 @@ Full sub-environment isolation using hardware-assisted virtualization
 * Support for KVM based virtualization and paravirtualized drivers only
   (i.e., ``virtio`` drivers).
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Minimal QEMU configuration.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * QEMU process instances are confined.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Alternative system virtualizer as a replacement for QEMU (nemu, crosvm,
   etc.).
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Safe operation of untrusted filesystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * FUSE-based userspace mount of untrusted file systems.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Virtual machine-based in-kernel mounting and sharing using NFS, CIFS, 9P,
-  etc.
+  VirtFS, etc.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Network setup, isolation and access control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Automatic and manual network configuration.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Automatic IPsec tunnel setup once network access is configured.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Access control, isolation and IPSec usage enforcement for host and
   environments.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Multi-level environment
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -583,22 +769,34 @@ Multi-level environment
 * Host and sub-environment service and application isolation using Linux
   namespaces, cgroups, seccomp-bpf filters, etc.
 
-  :Status: In progress
+  .. admonition:: Status
+     :class: notice
+
+     In progress.
 
 * Multi-level enforcement using an LSM inspired from Vserver.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Configurable sub environments restrictions and network access.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Safe and controlled communication to the host:
 
   * Unix sockets or encrypted TCP sockets (SSH)
   * vsocks (virtio)
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Host controlled inter-level communication:
 
@@ -606,36 +804,57 @@ Multi-level environment
   * Encrypting / decryption diode
   * Smartcard proxy and command filtering (see *Caml Crush* project)
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Intra-level application isolation using Flatpak.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Remote administration and fleet management
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Automatic provisioning and installation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Safe recovery mode for backup and administration performed recovery
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Mandatory Access Control
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Certification and Common Criteria Evaluation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 User-related properties
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -646,34 +865,55 @@ User data confidentiality and integrity
 * User data partition protected by DM-Crypt + DM-Integrity with a user provided
   secret.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * User storage partition unlocking with password.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * User storage partition unlocking with smartcard.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * User storage partition unlocking with a security token (e.g., U2F/FIDO).
 
-  :Status: Suggested, implementation not yet assessed
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Device access control
 ^^^^^^^^^^^^^^^^^^^^^
 
 * Device whitelisting.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Multi-level aware device assignation.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * USB device management (e.g., USBGuard).
 
-  :Status: Suggested, implementation not yet assessed
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Graphical interface properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -683,33 +923,54 @@ Trusted graphical interface
 
 * Root compositor.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Wayland protocol based environment.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Trusted graphical components and display (trusted panel).
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Protected lock-screen.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 * Protected input.
 
-  :Status: Not started
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
 
 Restricted users
 ^^^^^^^^^^^^^^^^
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Application access control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:Status: Not started
+.. admonition:: Status
+   :class: warning
+
+   Not started.
 
 Deployment profiles
 ~~~~~~~~~~~~~~~~~~~

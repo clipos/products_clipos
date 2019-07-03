@@ -19,7 +19,10 @@ This roadmap lists CLIP OS features planned for integration into each release.
 5.0 Alpha (initial open source preview release)
 -----------------------------------------------
 
-:Status: Released on **2018-09-18**
+.. admonition:: Status
+   :class: tip
+
+   Released on **2018-09-20**.
 
 Features
 ~~~~~~~~
@@ -65,7 +68,11 @@ Hardware support
 5.0 Beta (main security & service enabling release)
 ---------------------------------------------------
 
-:Status: In progress
+.. admonition:: Status
+   :class: notice
+
+   In progress. See the `5.0 Beta milestone
+   <https://github.com/clipos/bugs/milestone/1>`_.
 
 Features
 ~~~~~~~~
@@ -140,7 +147,10 @@ Hardware support
 5.0: First stable release (Multi-level support)
 -----------------------------------------------
 
-:Status: Not started yet
+.. admonition:: Status
+   :class: warning
+
+   Not started yet.
 
 Features
 ~~~~~~~~
