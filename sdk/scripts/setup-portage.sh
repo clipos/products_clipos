@@ -188,7 +188,7 @@ EOF
 
     # Build up a message to inform the user that we inject parts of Portage
     # profile for instrumentation features:
-    msg="INSTRUMENTED BUILD: Setting up an hybrid Portage profile with parts of Portage profile for instrumentation onto the Portage profile to use:"
+    msg="INSTRUMENTED BUILD: Setting up selected instrumentation features:"
 
     for overlay in ${PORTAGE_OVERLAYS}; do
         [[ "${overlay}" == "gentoo" ]] && continue   # skip Gentoo base overlay
@@ -196,7 +196,7 @@ EOF
         for instrufeat in ${CURRENT_INSTRUMENTATION_FEATURES}; do
             if [[ -d "${overlay_path}/profiles/instrumentation/${instrufeat}" ]]; then
                 echo "${overlay_path}/profiles/instrumentation/${instrufeat}" >> "/etc/portage/make.profile/parent"
-                msg+=$'\n'"  * ${overlay_path#/mnt/}/profiles/instrumentation/${instrufeat}"
+                msg+=$'\n'"* ${overlay_path#/mnt/}/profiles/instrumentation/${instrufeat}"
             fi
         done
     done
@@ -204,7 +204,7 @@ EOF
     for instrufeat in ${CURRENT_INSTRUMENTATION_FEATURES}; do
         if [[ -d "${main_profile_path}/instrumentation/${instrufeat}" ]]; then
             echo "${main_profile_path}/instrumentation/${instrufeat}" >> "/etc/portage/make.profile/parent"
-            msg+=$'\n'"  * ${main_profile_path#/mnt/}/instrumentation/${instrufeat}"
+            msg+=$'\n'"* ${main_profile_path#/mnt/}/instrumentation/${instrufeat}"
         fi
     done
 
@@ -270,14 +270,14 @@ done
 unset profile_path
 
 # Display the final global override setup for debugging purposes:
-msg="Setting up Portage profile global overrides (Portage configuration enforcement in /etc/portage directories):"
+msg="Setting up global overrides for current profile:"
 for item in "${portage_profile_global_items[@]}"; do
     item_dir="/etc/portage/${item}"
     if [[ -d "${item_dir}" ]]; then
-        msg+=$'\n'"  * ${item_dir}/"
+        msg+=$'\n'"* ${item_dir}/"
         for symlink in "${item_dir}/"*; do
             real_path="$(realpath "${symlink}")"
-            msg+=$'\n'"    - ${symlink##*/} -> ${real_path#/mnt/}"
+            msg+=$'\n'"  - ${real_path#/mnt/}"
         done
         unset symlink
     fi
