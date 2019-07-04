@@ -92,6 +92,43 @@ fi
 install -o 0 -g 0 -m 0600 "${CURRENT_CACHE}/host_key"     "${CURRENT_STATE}/core/etc/ssh/host_keys/ecdsa_key"
 install -o 0 -g 0 -m 0600 "${CURRENT_CACHE}/host_key.pub" "${CURRENT_STATE}/core/etc/ssh/host_keys/ecdsa_key.pub"
 
+sdk_info "Customizing the IPsec stack..."
+
+# PKI for a dummy/testbed IPsec infrastructure:
+readonly dummy_ipsec_pki_path="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/dummy-ipsec-pki"
+install -o 0 -g 0 -m 0750 -d \
+    "${CURRENT_STATE}/core/etc/swanctl/x509"{,ca} \
+    "${CURRENT_STATE}/core/etc/swanctl/private"
+install -o 0 -g 0 -m 0640 \
+    "${dummy_ipsec_pki_path}/root-ca.cert.pem" \
+    "${CURRENT_STATE}/core/etc/swanctl/x509ca/root-ca.cert.pem"
+install -o 0 -g 0 -m 0640 \
+    "${dummy_ipsec_pki_path}/client.cert.pem" \
+    "${CURRENT_STATE}/core/etc/swanctl/x509/client.cert.pem"
+install -o 0 -g 0 -m 0600 \
+    "${dummy_ipsec_pki_path}/client.key.pem" \
+    "${CURRENT_STATE}/core/etc/swanctl/private/client.key.pem"
+
+readonly dummy_ipsec_configuration="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/dummy-ipsec-configuration"
+install -o 0 -g 0 -m 0750 -d "${CURRENT_STATE}/core/etc/swanctl/conf.d"
+install -o 0 -g 0 -m 0640 \
+    "${dummy_ipsec_configuration}/office_net.conf" \
+    "${CURRENT_STATE}/core/etc/swanctl/conf.d/office_net.conf"
+# Replace placeholders by using a subshell as the function
+# `replace_placeholders` uses the exported environment variables as input for
+# the placeholders to replace. This subshell enables us not to mess with the
+# environment variables of this whole script.
+(
+    export OFFICENET_LOCAL_ADDRS="unset"
+    export OFFICENET_LOCAL_CERTS="client.cert.pem"
+    export OFFICENET_LOCAL_ID="unset"
+    export OFFICENET_REMOTE_ADDRS="192.168.150.1"
+    export OFFICENET_REMOTE_CACERTS="root-ca.cert.pem"
+    export OFFICENET_REMOTE_ID="ipsec-server.dummy.clip-os.org"
+    replace_placeholders "${CURRENT_STATE}/core/etc/swanctl/conf.d/office_net.conf"
+)
+
+
 # Touch a specific file to enable simple initramfs check.
 touch "${CURRENT_STATE}/.setup-done"
 
