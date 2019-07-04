@@ -44,7 +44,7 @@ install -d -m 0755 "${CURRENT_OUT_ROOT}/mnt"
 sdk_info "Add efiboot mountpoint configuration."
 install -d -m 0700 "${CURRENT_OUT_ROOT}/mnt/efiboot"
 cat <<EOF >> "${CURRENT_OUT_ROOT}/etc/fstab"
-/dev/disk/by-partlabel/EFI  /mnt/efiboot  vfat  rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro  0 2
+/dev/disk/by-partlabel/EFI  /mnt/efiboot  vfat  rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro  0 2
 EOF
 
 sdk_info "Add core state configuration."
