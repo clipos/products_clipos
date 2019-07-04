@@ -34,6 +34,7 @@ EOF
 sysusers_config=(
     "clipos-core"
     "dbus"
+    "strongswan"
 )
 
 for c in "${sysusers_config[@]}"; do
