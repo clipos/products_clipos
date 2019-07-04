@@ -36,7 +36,7 @@ PORTAGE_OVERLAYS = 'gentoo clipos'
 PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/sdk'
 
 [bootstrap]
-rootfs_archive = "{{repo}}/assets/gentoo/stage3-amd64-hardened+nomultilib-20190224T214502Z.tar.xz"
+rootfs_archive = "{{repo}}/assets/gentoo/stage3-amd64-hardened+nomultilib-20190630T214502Z.tar.xz"
 steps = [
     # The script in charge of transforming the above rootfs into a SDK image:
     "{{repo}}/products/{{product}}/{{recipe}}/scripts/bootstrap.sh",
