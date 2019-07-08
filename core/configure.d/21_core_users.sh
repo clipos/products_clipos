@@ -11,28 +11,39 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 sdk_info "Setup Core users"
 
 # DBus user
-cat <<EOF >> /usr/lib/sysusers.d/clipos-core.conf
+# WARNING: This overrides the package installed configuration in order to set
+# a fixed UID for the messagebus user.
+cat <<EOF > "${CURRENT_OUT_ROOT}/usr/lib/sysusers.d/dbus.conf"
 u messagebus 81              "System Message Bus"
 EOF
 
 # admin & audit users
-cat <<EOF >> /usr/lib/sysusers.d/clipos-core.conf
+cat <<EOF >> "${CURRENT_OUT_ROOT}/usr/lib/sysusers.d/clipos-core.conf"
 u admin      800             "Admin user"                        /home/admin /bin/bash
 u audit      801             "Audit user"                        /home/audit /bin/bash
 m audit      systemd-journal
 EOF
 
 # OpenSSH privilege separation user
-cat <<EOF >> /usr/lib/sysusers.d/clipos-core.conf
+cat <<EOF >> "${CURRENT_OUT_ROOT}/usr/lib/sysusers.d/clipos-core.conf"
 u sshd       22              "OpenSSH privilege separation user" /usr/lib/openssh/empty
 EOF
 
-# Install sysuser config for the SDK & the final root
-cp {,"${CURRENT_OUT_ROOT}"}/usr/lib/sysusers.d/clipos-core.conf
+# List of sysusers configuration files that will be taken into account to
+# create users in this recipe.
+sysusers_config=(
+    "clipos-core"
+    "dbus"
+)
 
-# Setup for the SDK & the final root
-systemd-sysusers clipos-core.conf
-systemd-sysusers --root="${CURRENT_OUT_ROOT}" clipos-core.conf
+for c in "${sysusers_config[@]}"; do
+    # Copy the config from the rootfs to the SDK
+    cp {"${CURRENT_OUT_ROOT}",}"/usr/lib/sysusers.d/${c}.conf"
+
+    # Setup users for the SDK & the final root
+    systemd-sysusers "${c}.conf"
+    systemd-sysusers --root="${CURRENT_OUT_ROOT}" "${c}.conf"
+done
 
 # Setup symlinks for home dirs (admin & audit)
 ln -snf "/mnt/state/core/home" "${CURRENT_OUT_ROOT}/home"
