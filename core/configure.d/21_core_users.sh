@@ -24,16 +24,12 @@ u audit      801             "Audit user"                        /home/audit /bi
 m audit      systemd-journal
 EOF
 
-# OpenSSH privilege separation user
-cat <<EOF >> "${CURRENT_OUT_ROOT}/usr/lib/sysusers.d/clipos-core.conf"
-u sshd       22              "OpenSSH privilege separation user" /usr/lib/openssh/empty
-EOF
-
 # List of sysusers configuration files that will be taken into account to
 # create users in this recipe.
 sysusers_config=(
     "clipos-core"
     "dbus"
+    "openssh"
     "strongswan"
 )
 
