@@ -10,9 +10,12 @@
 if [ -z "${BASH:-}" ]; then
     echo >&2 "This file is intended to be used by Bash scripts only."
     exit 1
-elif ! [[ "${BASH_VERSINFO[0]}" -ge 4 && "${BASH_VERSINFO[1]}" -ge 2 ]]; then
-    echo >&2 "This file is intended to be used with Bash 4.2 at least."
-    exit 1
+elif [[ "${BASH_VERSINFO[0]}" -lt 5 ]]; then
+    if ! [[ "${BASH_VERSINFO[0]}" -ge 4 && "${BASH_VERSINFO[1]}" -ge 2 ]]; then
+        echo "${BASH_VERSINFO[0]} ${BASH_VERSINFO[1]}"
+        echo >&2 "This file is intended to be used with Bash 4.2 at least."
+        exit 1
+    fi
 fi
 
 # Important: /etc/profile MUST be sourced manually because all the really
