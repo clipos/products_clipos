@@ -16,8 +16,8 @@ This roadmap lists CLIP OS features planned for integration into each release.
    **This roadmap is still a work in progress and will evolve with the project
    as features are added.**
 
-5.0 Alpha (initial open source preview release)
------------------------------------------------
+5.0 Alpha: Initial open source preview release
+----------------------------------------------
 
 .. admonition:: Status
    :class: tip
@@ -65,8 +65,8 @@ Hardware support
 * Boot with Secure Boot enabled UEFI firmware
 
 
-5.0 Beta (main security & service enabling release)
----------------------------------------------------
+5.0 Beta: Main security & service enabling release
+--------------------------------------------------
 
 .. admonition:: Status
    :class: notice
@@ -144,8 +144,8 @@ Hardware support
 * Initial laptop, desktop and server platforms support
 
 
-5.0: First stable release (Multi-level support)
------------------------------------------------
+5.0: First stable release with multi-level support
+--------------------------------------------------
 
 .. admonition:: Status
    :class: warning
