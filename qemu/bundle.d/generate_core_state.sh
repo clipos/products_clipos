@@ -124,7 +124,7 @@ install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
     export OFFICENET_LOCAL_ADDRS="unset"
     export OFFICENET_LOCAL_CERTS="client.cert.pem"
     export OFFICENET_LOCAL_ID="unset"
-    export OFFICENET_REMOTE_ADDRS="192.168.150.1"
+    export OFFICENET_REMOTE_ADDRS="172.27.1.10"
     export OFFICENET_REMOTE_CACERTS="root-ca.cert.pem"
     export OFFICENET_REMOTE_ID="ipsec-server.dummy.clip-os.org"
     replace_placeholders "${CURRENT_STATE}/core/etc/swanctl/conf.d/office_net.conf"
