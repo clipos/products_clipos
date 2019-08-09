@@ -117,4 +117,8 @@ values for development.
      To use this instrumentation feature, you must also enable
      **debuggable-kernel**.
 
+* **test-update:** In addition to the normal build, create everything required
+  to test updates. This creates a second build with the same content but a
+  higher version.
+
 .. vim: set tw=79 ts=2 sts=2 sw=2 et:

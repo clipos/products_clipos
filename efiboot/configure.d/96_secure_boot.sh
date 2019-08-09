@@ -14,35 +14,41 @@ sb_keys_path="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/dum
 mkdir -p "${CURRENT_OUT_ROOT}/secure_boot"
 cp "${sb_keys_path}"/DB.{key,crt} "${CURRENT_OUT_ROOT}/secure_boot"
 
-# Setup binaries to be signed
-mv  "${CURRENT_OUT_ROOT}/usr/lib64/systemd/boot/efi/systemd-bootx64.efi" \
-    "${CURRENT_OUT}/linux.efi" \
-    "${CURRENT_OUT_ROOT}/secure_boot"
+sign_efi_binary() {
+    # The binary to sign
+    local src="${1}"
+    local name="$(basename ${src})"
 
-# See comments in "./95_dracut.sh" for below env and bash tricks
-sdk_info "Sign dracut bundled EFI binary..."
-env -i chroot "${CURRENT_OUT_ROOT}" \
-    /bin/bash -l -c 'exec "$0" "$@"' \
-        sbsign --key /secure_boot/DB.key \
-               --cert /secure_boot/DB.crt \
-               /secure_boot/linux.efi
+    # Move the binary to be signed to a predefined location
+    mv "${src}" "${CURRENT_OUT_ROOT}/secure_boot"
 
-sdk_info "Sign systemd-boot EFI binary..."
-env -i chroot "${CURRENT_OUT_ROOT}" \
-    /bin/bash -l -c 'exec "$0" "$@"' \
-        sbsign --key /secure_boot/DB.key \
-               --cert /secure_boot/DB.crt \
-               /secure_boot/systemd-bootx64.efi
+    # See comments in "./95_dracut.sh" for below env and bash tricks
+    sdk_info "Sign '${name}' EFI binary..."
+    env -i chroot "${CURRENT_OUT_ROOT}" \
+        /bin/bash -l -c 'exec "$0" "$@"' \
+            sbsign --key /secure_boot/DB.key \
+                   --cert /secure_boot/DB.crt \
+                   /secure_boot/${name}
 
-# Extract the signed EFI binaries produced above from the root tree and drop
-# them in a predictive path for the next step (the bundle step):
-mv  "${CURRENT_OUT_ROOT}/secure_boot/linux.efi.signed" \
-    "${CURRENT_OUT}/linux.efi"
-mv  "${CURRENT_OUT_ROOT}/secure_boot/systemd-bootx64.efi.signed" \
-    "${CURRENT_OUT}/systemd-bootx64.efi"
+    # Move the signed binary to a predictable location for the next step
+    mv "${CURRENT_OUT_ROOT}/secure_boot/${name}.signed" "${CURRENT_OUT}/${name}"
+}
 
-# Same thing for the OVMF code compiled with Secure Boot and TPM 2.0 support
-# and for OVMF vars with dummy keys enrolled
+# Sign bootloader
+sign_efi_binary "${CURRENT_OUT_ROOT}/usr/lib64/systemd/boot/efi/systemd-bootx64.efi"
+
+# Sign EFI bundle binary
+sign_efi_binary "${CURRENT_OUT}/linux.efi"
+
+# Special case to sign a second EFI binary to test updates
+if is_instrumentation_feature_enabled "test-update"; then
+    sign_efi_binary "${CURRENT_OUT}/linux.next.efi"
+fi
+
+# Copy:
+#   * the OVMF code compiled with Secure Boot and TPM 2.0 support
+#   * the OVMF vars with dummy keys enrolled
+# to a predictable path for the next step
 cp  "${CURRENT_OUT_ROOT}/usr/share/edk2-ovmf/OVMF_CODE.fd" \
     "${CURRENT_OUT}/OVMF_CODE_sb-tpm.fd"
 

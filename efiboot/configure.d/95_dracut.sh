@@ -26,26 +26,10 @@ if [[ -z "${kernel_version}" ]]; then
     exit 1
 fi
 
-# Retrieve core root-hash and the hash offset in the partition image bundling
-# both squashfs and dm-verity metadata:
-core_bundle_dir="${CURRENT_OUT}/../../core/bundle"
-core_verity_roothash="$(< "${core_bundle_dir}/core.squashfs.verity.roothash")"
-core_verity_hashoffset="$(< "${core_bundle_dir}/core.squashfs.verity.bundled.hashoffset")"
-core_verity_fecoffset="$(< "${core_bundle_dir}/core.squashfs.verity.bundled.fecoffset")"
+# First, build the generic portion of the kernel command line
 
-readonly vg_name="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
-readonly core_lv_name="core_${CURRENT_PRODUCT_VERSION}"
-# The kernel command line to be embedded into the EFI-stubbed kernel
-kernel_cmdline="root=/dev/mapper/verity_${core_lv_name} rootfstype=squashfs rootflags=ro"
-kernel_cmdline+=" rd.lvm.vg=${vg_name}"
-# DM-Verity options
-kernel_cmdline+=" rd.verity.device=/dev/${vg_name}/${core_lv_name}"
-kernel_cmdline+=" rd.verity.name=verity_${core_lv_name}"
-kernel_cmdline+=" rd.verity.roothash=${core_verity_roothash}"
-kernel_cmdline+=" rd.verity.hashoffset=${core_verity_hashoffset}"
-kernel_cmdline+=" rd.verity.fecoffset=${core_verity_fecoffset}"
 # Security-related parameters
-kernel_cmdline+=" slub_debug=F extra_latent_entropy iommu=force"
+kernel_cmdline="slub_debug=F extra_latent_entropy iommu=force"
 kernel_cmdline+=" pti=on mds=full,nosmt"
 kernel_cmdline+=" spectre_v2=on spec_store_bypass_disable=seccomp"
 # Consider uncommenting below line if CLIP OS happens to be used as an
@@ -103,25 +87,68 @@ rm -f "${CURRENT_OUT_ROOT}/etc/machine-id"
 # dracut needs /var/tmp to be available
 mkdir -p "${CURRENT_OUT_ROOT}/var/tmp"
 
-# Sadly enough, dracut does not provide an option to be able to work with
-# objects (kernel, binaries, environment) from a detached root tree.
-# For this reason, we are going to rely on a chroot(1) call into
-# CURRENT_OUT_ROOT. :(
-sdk_info "Launch dracut to produce an initramfs+EFI-stubbed kernel..."
-env -i chroot "${CURRENT_OUT_ROOT}" \
-    /bin/bash -l -c 'exec "$0" "$@"' \
-        dracut --kver "${kernel_version}" \
-        --reproducible --force \
-        --uefi --uefi-stub /usr/lib/systemd/boot/efi/linuxx64.efi.stub \
-        --kernel-cmdline "${kernel_cmdline}" --no-kernel
-# Note for the "bash -lc 'exec ...'" quirk above:
-# This trick is to ensure that we won't inherit anything from the environment
-# of the SDK but only from the CURRENT_OUT_ROOT (the bash -l option will source
-# /etc/profile for that root tree).
+dracut_bundle_efi() {
+    # The Core bundle to use
+    local core_name="${1}"
+    # The product version to use
+    local version="${2}"
+    # The final name for the bundle
+    local dst="${3}"
 
-# Extract the EFI binary produced above from the root tree and drop it in a
-# predictive path for the next step:
-cp "${CURRENT_OUT_ROOT}/boot/EFI/Linux/linux-${kernel_version}.efi" \
-    "${CURRENT_OUT}/linux.efi"
+    # Retrieve core root-hash and the hash offset in the partition image
+    # bundling both squashfs and dm-verity metadata:
+    core_bundle="${CURRENT_OUT}/../../core/bundle/${core_name}.squashfs.verity"
+    core_verity_roothash="$(< "${core_bundle}.roothash")"
+    core_verity_hashoffset="$(< "${core_bundle}.bundled.hashoffset")"
+    core_verity_fecoffset="$(< "${core_bundle}.bundled.fecoffset")"
+
+    local vg_name="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
+    local core_lv_name="core_${version}"
+    # The kernel command line to be embedded into the EFI-stubbed kernel
+    rootfs_cmdline="root=/dev/mapper/verity_${core_lv_name} rootfstype=squashfs rootflags=ro"
+    rootfs_cmdline+=" rd.lvm.vg=${vg_name}"
+    # DM-Verity options
+    rootfs_cmdline+=" rd.verity.device=/dev/${vg_name}/${core_lv_name}"
+    rootfs_cmdline+=" rd.verity.name=verity_${core_lv_name}"
+    rootfs_cmdline+=" rd.verity.roothash=${core_verity_roothash}"
+    rootfs_cmdline+=" rd.verity.hashoffset=${core_verity_hashoffset}"
+    rootfs_cmdline+=" rd.verity.fecoffset=${core_verity_fecoffset}"
+
+    # Sadly enough, dracut does not provide an option to be able to work with
+    # objects (kernel, binaries, environment) from a detached root tree.  For
+    # this reason, we are going to rely on a chroot(1) call into
+    # CURRENT_OUT_ROOT. :(
+    sdk_info "Launch dracut to produce an initramfs+EFI-stubbed kernel..."
+    env -i chroot "${CURRENT_OUT_ROOT}" \
+        /bin/bash -l -c 'exec "$0" "$@"' \
+            dracut --kver "${kernel_version}" \
+            --reproducible --force \
+            --uefi --uefi-stub /usr/lib/systemd/boot/efi/linuxx64.efi.stub \
+            --kernel-cmdline "${rootfs_cmdline} ${kernel_cmdline}" --no-kernel
+    # Note for the "bash -lc 'exec ...'" quirk above:
+    # This trick is to ensure that we won't inherit anything from the
+    # environment of the SDK but only from the CURRENT_OUT_ROOT (the bash -l
+    # option will source /etc/profile for that root tree).
+
+    # Extract the EFI binary produced above from the root tree and drop it in a
+    # predictable path for the next step:
+    cp "${CURRENT_OUT_ROOT}/boot/EFI/Linux/linux-${kernel_version}.efi" \
+        "${CURRENT_OUT}/${dst}"
+}
+
+# Create a EFI bundle
+dracut_bundle_efi "core" "${CURRENT_PRODUCT_VERSION}" "linux.efi"
+
+# Special case to create a second bundle to test updates
+if is_instrumentation_feature_enabled "test-update"; then
+
+    # Increase the version number
+    version=${CURRENT_PRODUCT_VERSION##*.}
+    next_version=$((version+1))
+    next_version=${CURRENT_PRODUCT_VERSION/%${version}/${next_version}}
+    sed -i "s|${CURRENT_PRODUCT_VERSION}|${next_version}|g" "${CURRENT_OUT_ROOT}/etc/os-release"
+
+    dracut_bundle_efi "core.next" "${next_version}" "linux.next.efi"
+fi
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
