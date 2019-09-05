@@ -22,7 +22,7 @@ readonly TPM2TOOLS_DEVICE_FILE="/dev/tpmrm0"
 
 readonly PCR_BANK="sha256"
 readonly PCRS_SETUP="${PCR_BANK}:0,2,7"
-readonly PCRS_ALL="${PCR_BANK}:0,1,2,3,4,5,6,7"
+readonly PCRS_ALL="${PCR_BANK}:0,1,2,3,5,6,7"
 
 readonly POLICY_DIGEST="${TMPFS}/policy.digest"
 readonly PRIMARY_CONTEXT="${TMPFS}/primary.context"
