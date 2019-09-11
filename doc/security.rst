@@ -586,16 +586,38 @@ Robust update system
   partitions (similar to Android or ChromeOS).
 
   .. admonition:: Status
-     :class: notice
+     :class: tip
 
-     In progress (`clipos/bugs#9 <https://github.com/clipos/bugs/issues/9>`_).
+     Completed in version **5.0 beta** (`clipos/bugs#9
+     <https://github.com/clipos/bugs/issues/9>`_).
 
 * Fallback version available in case of unpredicted failure or bug.
 
   .. admonition:: Status
-     :class: notice
+     :class: tip
 
-     In progress (`clipos/bugs#9 <https://github.com/clipos/bugs/issues/9>`_).
+     Completed in version **5.0 beta** (`clipos/bugs#9
+     <https://github.com/clipos/bugs/issues/9>`_).
+
+* Update transport protection:
+
+  Transport using TLS 1.2 or 1.3 only, with pinned root CA certificate.
+
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 beta** (`clipos/bugs#9
+     <https://github.com/clipos/bugs/issues/9>`_).
+
+* Update integrity protection and verification:
+
+  Signed updates using `minisign <https://jedisct1.github.io/minisign/>`_.
+
+  .. admonition:: Status
+     :class: tip
+
+     Completed in version **5.0 beta** (`clipos/bugs#9
+     <https://github.com/clipos/bugs/issues/9>`_).
 
 * Supports updating both the system and other environments.
 
@@ -604,31 +626,14 @@ Robust update system
 
      Not started.
 
-* Update transport protection:
-
-  .. admonition:: Status
-     :class: warning
-
-     Not started.
-
-* Update integrity protection and verification:
-
-  * Transport using TLS 1.3 only, with pinned server or root CA certificates.
-  * Signed updates.
-
-  .. admonition:: Status
-     :class: warning
-
-     Not started.
-
-* Detailed update signature key compromise impact.
-
-  .. admonition:: Status
-     :class: warning
-
-     Not started.
-
 * Rollback protection.
+
+  .. admonition:: Status
+     :class: warning
+
+     Not started.
+
+* Server-side channel and version selection for delivery to clients.
 
   .. admonition:: Status
      :class: warning
