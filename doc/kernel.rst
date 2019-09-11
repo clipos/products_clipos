@@ -709,7 +709,7 @@ tightly related to the CLIP OS kernel configuration detailed above.
 .. describe:: kernel.tiocsti_restrict = 1
 
    This is already forced by the ``CONFIG_SECURITY_TIOCSTI_RESTRICT`` kernel
-   configuration option that we enable.
+   configuration option that we enable. [linux-hardened]_
 
 The following two sysctls help mitigating TOCTOU vulnerabilities by preventing
 users from creating symbolic or hard links to files they do not own or have
