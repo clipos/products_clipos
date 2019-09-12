@@ -135,9 +135,13 @@ setup_tpm2() {
 	fi
 
 	# FIXME: use better algorithms? (ecc available)
+	local attr="fixedtpm|fixedparent|sensitivedataorigin|adminwithpolicy"
+	if ! $BRUTEFORCE_LOCKOUT ; then
+		attr+="|noda"
+	fi
 	if ! tpm2_createprimary --quiet --hierarchy=o --halg=sha256 --kalg=rsa \
 			--policy-file="$POLICY_DIGEST" --context="$PRIMARY_CONTEXT" \
-			--object-attributes="fixedtpm|fixedparent|sensitivedataorigin|adminwithpolicy"; then
+			--object-attributes="$attr"; then
 		return 1
 	fi
 
@@ -146,16 +150,12 @@ setup_tpm2() {
 
 seal_keyfile() {
 	readonly outfile="${1}/state_keyfile"
-	local attr="fixedtpm|fixedparent|adminwithpolicy"
-	if ! $BRUTEFORCE_LOCKOUT ; then
-		attr+="|noda"
-	fi
 	info "Sealing $outfile with the TPM..."
 	if ! echo -n "$KEYFILE" | tpm2_create --quiet \
 			--context-parent="$PRIMARY_CONTEXT" --halg=sha256 \
 			--kalg=keyedhash --policy-file="$POLICY_DIGEST" \
-			--object-attributes="$attr" --in-file=- \
-			--pubfile="${outfile}.pub" \
+			--object-attributes="fixedtpm|fixedparent|adminwithpolicy" \
+			--in-file=- --pubfile="${outfile}.pub" \
 			--privfile="${outfile}.priv"; then
 		warn "Failed to seal $outfile"
 		return 1
