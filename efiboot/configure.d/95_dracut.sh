@@ -30,6 +30,7 @@ fi
 
 # Security-related parameters
 kernel_cmdline="slub_debug=F extra_latent_entropy iommu=force"
+kernel_cmdline+=" page_alloc.shuffle=1"
 kernel_cmdline+=" pti=on mds=full,nosmt"
 kernel_cmdline+=" spectre_v2=on spec_store_bypass_disable=seccomp"
 # Consider uncommenting below line if CLIP OS happens to be used as an
