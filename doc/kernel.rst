@@ -64,12 +64,21 @@ General setup
    CLIP OS will need the auditing infrastructure.
 
 .. describe:: CONFIG_IKCONFIG=n
+              CONFIG_IKHEADERS=n
 
-   We do not need ``.config`` to be available at runtime.
+   We do not need ``.config`` to be available at runtime, neither do we need
+   access to kernel headers through *sysfs*.
 
 .. describe:: CONFIG_KALLSYMS=n
 
    Symbols are only useful for debug and attack purposes.
+
+.. describe:: CONFIG_USERFAULTFD=n
+
+   The ``userfaultfd()`` system call adds attack surface and can `make heap
+   sprays easier <https://duasynt.com/blog/linux-kernel-heap-spray>`_. Note
+   that the ``vm.unprivileged_userfaultfd`` sysctl can also be used to restrict
+   the use of this system call to privileged users.
 
 .. describe:: CONFIG_EXPERT=y
 
@@ -120,6 +129,13 @@ General setup
       Verify that newly allocated slab allocations are zeroed to detect
       write-after-free bugs. [linux-hardened]_
 
+.. describe:: CONFIG_SHUFFLE_PAGE_ALLOCATOR=y
+
+   Page allocator randomization is primarily a performance improvement for
+   direct-mapped memory-side-cache utilization, but it does reduce the
+   predictability of page allocations and thus complements
+   ``SLAB_FREELIST_RANDOM``. The ``page_alloc.shuffle=1`` parameter needs to be
+   added to the kernel command line.
 
 .. ---
 
@@ -207,10 +223,10 @@ additional layer of security:
 
 .. ---
 
-.. describe:: CONFIG_LOCAL_INIT=n
+.. describe:: CONFIG_INIT_STACK_ALL=n
 
-   This option requires compiler support for ``-fsanitize=local-init``, which
-   is only available in Clang. [linux-hardened]_
+   This option requires compiler support that is currently only available in
+   Clang.
 
 Processor type and features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -823,6 +839,10 @@ We pass the following command line parameters to the kernel:
       This can help detect overflows but we already rely on ``SLAB_CANARY``
       provided by linux-hardened. A canary is much better than a simple red
       zone as it is supposed to be random.
+
+.. describe:: page_alloc.shuffle=1
+
+   See ``CONFIG_SHUFFLE_PAGE_ALLOCATOR``.
 
 Also, note that:
 
