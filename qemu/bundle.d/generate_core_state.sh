@@ -49,6 +49,8 @@ DHCP=ipv4
 # Gateway=192.168.XX.1
 # DNS=192.168.150.1
 EOF
+# Make the /etc/resolv.conf symlink point to a valid (empty) file:
+install -o 0 -g 0 -m 0644 /dev/null "${CURRENT_STATE}/core/etc/resolv.conf"
 
 # Setup admin & audit home dirs
 admin_id="$(grep "admin:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/passwd" | cut -d: -f 3)"

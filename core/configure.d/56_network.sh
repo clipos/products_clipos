@@ -12,6 +12,10 @@ sdk_info "Setup RW state folder for systemd-networkd config"
 rm -rfv "${CURRENT_OUT_ROOT}/etc/systemd/network"
 ln -s "/mnt/state/core/etc/systemd/network" "${CURRENT_OUT_ROOT}/etc/systemd/network"
 
+# Create a symlink to stateful partition for resolv.conf, otherwise the DHCP
+# client won't be able to create such a file in /etc (which is read-only).
+ln -s "/mnt/state/core/etc/resolv.conf" "${CURRENT_OUT_ROOT}/etc/resolv.conf"
+
 sdk_info "Enable systemd-networkd by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable systemd-networkd
 
