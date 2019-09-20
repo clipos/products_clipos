@@ -45,8 +45,8 @@ Name=en*
 
 [Network]
 DHCP=ipv4
-# Address=192.168.XX.YY/24
-# Gateway=192.168.XX.1
+Address=172.27.100.100/24
+# Gateway=172.27.1.1
 # DNS=192.168.150.1
 EOF
 # Make the /etc/resolv.conf symlink point to a valid (empty) file:
@@ -123,12 +123,12 @@ install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
 # the placeholders to replace. This subshell enables us not to mess with the
 # environment variables of this whole script.
 (
-    export OFFICENET_LOCAL_ADDRS="unset"
     export OFFICENET_LOCAL_CERTS="client.cert.pem"
-    export OFFICENET_LOCAL_ID="unset"
     export OFFICENET_REMOTE_ADDRS="172.27.1.10"
     export OFFICENET_REMOTE_CACERTS="root-ca.cert.pem"
     export OFFICENET_REMOTE_ID="ipsec-server.dummy.clip-os.org"
+    export OFFICENET_LOCAL_TS="172.27.100.100/32"
+    export OFFICENET_REMOTE_TS="0.0.0.0/0"
     replace_placeholders "${CURRENT_STATE}/core/etc/swanctl/conf.d/office_net.conf"
 )
 
