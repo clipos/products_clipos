@@ -17,8 +17,6 @@
 # architecture design in the CLIP OS documentation) would be broken.
 
 readonly TMPFS="/tmp" # FIXME: create a transient tmpfs/ramfs to store stuff?
-readonly TPM2TOOLS_TCTI_NAME="device"
-readonly TPM2TOOLS_DEVICE_FILE="/dev/tpmrm0"
 
 readonly PCR_BANK="sha256"
 readonly PCRS_SETUP="${PCR_BANK}:0,2,7"
@@ -36,7 +34,7 @@ readonly REQUIRE_TPM='@REQUIRE_TPM@'
 readonly BRUTEFORCE_LOCKOUT='@BRUTEFORCE_LOCKOUT@'
 
 main() {
-	export TPM2TOOLS_TCTI="${TPM2TOOLS_TCTI_NAME}:${TPM2TOOLS_DEVICE_FILE}"
+	export TPM2TOOLS_TCTI="device:/dev/tpmrm0"
 
 	# If no TPM 2.0 is available, deny boot (in production mode) or fall back
 	# on passphrase mode
@@ -103,7 +101,7 @@ main() {
 			# Unseal keyfile
 			if ! unseal_keyfile "$keyfilesdir"; then
 				# List PCRs so admin can then start to diagnose
-				tpm2_pcrlist --sel-list="$PCRS_ALL"
+				tpm2_pcrread "$PCRS_ALL"
 				deny_boot
 			fi
 			if ! open_core_state "keyfile" "$KEYFILE"; then
@@ -126,22 +124,23 @@ warn() {
 }
 
 setup_tpm2() {
-	# Take ownership if first boot after machine install
-	[[ $# -eq 0 ]] || tpm2_takeownership --clear
+	# Clear owner, endorsement and lockout hierarchy authorization values if
+	# first boot after machine installation
+	[[ $# -eq 0 ]] || tpm2_clear --quiet
 	# Create TPM_SE_TRIAL PCR-based policy session
-	if ! tpm2_createpolicy --quiet --policy-digest-alg=sha256 --policy-pcr \
-			--set-list="$PCRS_ALL" --policy-file="$POLICY_DIGEST"; then
+	if ! tpm2_createpolicy --quiet --policy-algorithm=sha256 --policy-pcr \
+			--pcr-list="$PCRS_ALL" --policy="$POLICY_DIGEST"; then
 		return 1
 	fi
 
 	# FIXME: use better algorithms? (ecc available)
-	local attr="fixedtpm|fixedparent|sensitivedataorigin|adminwithpolicy"
+	local attr="fixedtpm|fixedparent|sensitivedataorigin|decrypt|restricted|adminwithpolicy"
 	if ! $BRUTEFORCE_LOCKOUT ; then
 		attr+="|noda"
 	fi
-	if ! tpm2_createprimary --quiet --hierarchy=o --halg=sha256 --kalg=rsa \
-			--policy-file="$POLICY_DIGEST" --context="$PRIMARY_CONTEXT" \
-			--object-attributes="$attr"; then
+	if ! tpm2_createprimary --quiet --hierarchy=o --attributes="$attr" \
+			--policy="$POLICY_DIGEST" --key-context="$PRIMARY_CONTEXT" \
+			--hash-algorithm=sha256 --key-algorithm=rsa ; then
 		return 1
 	fi
 
@@ -151,12 +150,13 @@ setup_tpm2() {
 seal_keyfile() {
 	readonly outfile="${1}/state_keyfile"
 	info "Sealing $outfile with the TPM..."
-	if ! echo -n "$KEYFILE" | tpm2_create --quiet \
-			--context-parent="$PRIMARY_CONTEXT" --halg=sha256 \
-			--kalg=keyedhash --policy-file="$POLICY_DIGEST" \
-			--object-attributes="fixedtpm|fixedparent|adminwithpolicy" \
-			--in-file=- --pubfile="${outfile}.pub" \
-			--privfile="${outfile}.priv"; then
+	# Key algorithm cannot be specified as only TPM_ALG_KEYEDHASH is allowed
+	# when sealing data
+	if ! echo -n "$KEYFILE" | tpm2_create --quiet --hash-algorithm=sha256 \
+			--parent-context="$PRIMARY_CONTEXT" --parent-auth="pcr:$PCRS_ALL" \
+			--attributes="fixedtpm|fixedparent|adminwithpolicy" \
+			--policy="$POLICY_DIGEST" --sealing-input=- \
+			--public="${outfile}.pub" --private="${outfile}.priv"; then
 		warn "Failed to seal $outfile"
 		return 1
 	fi
@@ -166,15 +166,14 @@ seal_keyfile() {
 unseal_keyfile() {
 	readonly infile="${1}/state_keyfile"
 	info "Unsealing $infile with the TPM"
-	if ! tpm2_load --quiet --context-parent="$PRIMARY_CONTEXT" \
-			--context="$OBJECT_CONTEXT" \
-			--pubfile="${infile}.pub" \
-			--privfile="${infile}.priv"; then
+	if ! tpm2_load --quiet --key-context="$OBJECT_CONTEXT" \
+			--parent-context="$PRIMARY_CONTEXT" --auth="pcr:$PCRS_ALL" \
+			--public="${infile}.pub" --private="${infile}.priv"; then
 		warn "Failed to unseal $infile"
 		return 1
 	fi
-	KEYFILE="$(tpm2_unseal --quiet --item-context="$OBJECT_CONTEXT" \
-		--set-list="$PCRS_ALL")"
+	KEYFILE="$(tpm2_unseal --quiet --object-context="$OBJECT_CONTEXT" \
+					--auth="pcr:$PCRS_ALL")"
 	if [[ -z "$KEYFILE" ]]; then
 		warn "Failed to unseal $infile"
 		return 1
@@ -215,4 +214,4 @@ deny_boot() {
 
 main
 
-# vim: set ts=4 sts=4 sw=4 et:
+# vim: set ts=4 sts=4 sw=4:

@@ -3,8 +3,8 @@
 # Copyright © 2017 ANSSI. All rights reserved.
 
 TPM2_TOOLS_DLOPEN="libtss2-tcti-device.so*"
-TPM2_TOOLS_BINARIES="tpm2_startup tpm2_takeownership tpm2_createpolicy tpm2_createprimary"
-TPM2_TOOLS_BINARIES+=" tpm2_create tpm2_load tpm2_unseal tpm2_pcrlist"
+TPM2_TOOLS_BINARIES="tpm2_startup tpm2_clear tpm2_createpolicy tpm2_createprimary"
+TPM2_TOOLS_BINARIES+=" tpm2_create tpm2_load tpm2_unseal tpm2_pcrread"
 
 # called by dracut
 check() {
