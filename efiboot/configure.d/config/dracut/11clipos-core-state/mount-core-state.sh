@@ -125,6 +125,14 @@ setup_tpm2() {
 	# Clear owner, endorsement and lockout hierarchy authorization values
 	tpm2_clear --quiet || return 1
 
+	# Set temporary random authorization value for the owner hierarchy
+	declare -r owner_auth="$(dd status=none conv=notrunc if=/dev/urandom \
+							 bs=32 count=1 | tr '\0' '0')"
+	if ! tpm2_changeauth --quiet --object-context=owner \
+			"file:-" <<< "$owner_auth"; then
+		return 1
+	fi
+
 	# Create TPM_SE_TRIAL PCR-based policy session
 	if ! tpm2_createpolicy --quiet --policy-algorithm=sha256 --policy-pcr \
 			--pcr-list="$PCRS_ALL" --policy="$POLICY_DIGEST"; then
@@ -137,13 +145,15 @@ setup_tpm2() {
 	if ! $BRUTEFORCE_LOCKOUT ; then
 		attr+="|noda"
 	fi
-	if ! tpm2_createprimary --quiet --hierarchy=o --attributes="$attr" \
+	if ! tpm2_createprimary --quiet --attributes="$attr" \
+			--hierarchy=o --hierarchy-auth="file:-" \
 			--policy="$POLICY_DIGEST" --key-context="$primary_context" \
-			--hash-algorithm=sha256 --key-algorithm=rsa ; then
+			--hash-algorithm=sha256 --key-algorithm=rsa <<< "$owner_auth" ; then
 		return 1
 	fi
-	if ! tpm2_evictcontrol --quiet --hierarchy=o \
-			--object-context="$primary_context" "$PRIMARY_HANDLE"; then
+	if ! tpm2_evictcontrol --quiet --hierarchy=o --auth="file:-" \
+			--object-context="$primary_context" "$PRIMARY_HANDLE" \
+			<<< "$owner_auth"; then
 		return 1
 	fi
 

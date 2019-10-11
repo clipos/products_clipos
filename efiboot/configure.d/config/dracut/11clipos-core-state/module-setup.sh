@@ -5,7 +5,7 @@
 TPM2_TOOLS_DLOPEN="libtss2-tcti-device.so*"
 TPM2_TOOLS_BINARIES="tpm2_startup tpm2_clear tpm2_createpolicy tpm2_createprimary"
 TPM2_TOOLS_BINARIES+=" tpm2_create tpm2_load tpm2_unseal tpm2_pcrread"
-TPM2_TOOLS_BINARIES+=" tpm2_evictcontrol"
+TPM2_TOOLS_BINARIES+=" tpm2_evictcontrol tpm2_changeauth"
 
 # called by dracut
 check() {
