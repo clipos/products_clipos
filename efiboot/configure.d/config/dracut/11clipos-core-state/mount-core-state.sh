@@ -23,8 +23,9 @@ readonly PCRS_SETUP="${PCR_BANK}:0,2,7"
 readonly PCRS_ALL="${PCR_BANK}:0,1,2,3,5,6,7"
 
 readonly POLICY_DIGEST="${TMPFS}/policy.digest"
-readonly PRIMARY_CONTEXT="${TMPFS}/primary.context"
 readonly OBJECT_CONTEXT="${TMPFS}/object.context"
+
+readonly PRIMARY_HANDLE="0x81000000"
 
 readonly KEYFILE_SIZE=128
 KEYFILE=""
@@ -67,7 +68,7 @@ main() {
 				deny_boot
 			fi
 
-			if ! setup_tpm2 --init; then
+			if ! setup_tpm2; then
 				warn "Could not setup the TPM"
 				deny_boot
 			fi
@@ -94,10 +95,6 @@ main() {
 			echo -n "$tmp_key" | cryptsetup luksRemoveKey \
 				"/dev/mapper/${VG_NAME}-core_state" -
 		else
-			if ! setup_tpm2; then
-				warn "Could not setup the TPM"
-				deny_boot
-			fi
 			# Unseal keyfile
 			if ! unseal_keyfile "$keyfilesdir"; then
 				# List PCRs so admin can then start to diagnose
@@ -109,7 +106,7 @@ main() {
 				deny_boot
 			fi
 		fi
-		rm -f "$POLICY_DIGEST" "$PRIMARY_CONTEXT"
+		rm -f "$POLICY_DIGEST"
 		umount "$efibootdir"
 	fi
 	mount /dev/mapper/core_state /sysroot/mnt/state -t ext4 -o rw,nodev,noexec,nosuid
@@ -124,26 +121,33 @@ warn() {
 }
 
 setup_tpm2() {
-	# Clear owner, endorsement and lockout hierarchy authorization values if
-	# first boot after machine installation
-	[[ $# -eq 0 ]] || tpm2_clear --quiet
+	declare -r primary_context="${TMPFS}/primary.context"
+	# Clear owner, endorsement and lockout hierarchy authorization values
+	tpm2_clear --quiet || return 1
+
 	# Create TPM_SE_TRIAL PCR-based policy session
 	if ! tpm2_createpolicy --quiet --policy-algorithm=sha256 --policy-pcr \
 			--pcr-list="$PCRS_ALL" --policy="$POLICY_DIGEST"; then
 		return 1
 	fi
 
+	# Derive a primary key from the owner seed and make it persistent
 	# FIXME: use better algorithms? (ecc available)
 	local attr="fixedtpm|fixedparent|sensitivedataorigin|decrypt|restricted|adminwithpolicy"
 	if ! $BRUTEFORCE_LOCKOUT ; then
 		attr+="|noda"
 	fi
 	if ! tpm2_createprimary --quiet --hierarchy=o --attributes="$attr" \
-			--policy="$POLICY_DIGEST" --key-context="$PRIMARY_CONTEXT" \
+			--policy="$POLICY_DIGEST" --key-context="$primary_context" \
 			--hash-algorithm=sha256 --key-algorithm=rsa ; then
 		return 1
 	fi
+	if ! tpm2_evictcontrol --quiet --hierarchy=o \
+			--object-context="$primary_context" "$PRIMARY_HANDLE"; then
+		return 1
+	fi
 
+	rm -f "$primary_context"
 	return 0
 }
 
@@ -153,7 +157,7 @@ seal_keyfile() {
 	# Key algorithm cannot be specified as only TPM_ALG_KEYEDHASH is allowed
 	# when sealing data
 	if ! echo -n "$KEYFILE" | tpm2_create --quiet --hash-algorithm=sha256 \
-			--parent-context="$PRIMARY_CONTEXT" --parent-auth="pcr:$PCRS_ALL" \
+			--parent-context="$PRIMARY_HANDLE" --parent-auth="pcr:$PCRS_ALL" \
 			--attributes="fixedtpm|fixedparent|adminwithpolicy" \
 			--policy="$POLICY_DIGEST" --sealing-input=- \
 			--public="${outfile}.pub" --private="${outfile}.priv"; then
@@ -167,7 +171,7 @@ unseal_keyfile() {
 	readonly infile="${1}/state_keyfile"
 	info "Unsealing $infile with the TPM"
 	if ! tpm2_load --quiet --key-context="$OBJECT_CONTEXT" \
-			--parent-context="$PRIMARY_CONTEXT" --auth="pcr:$PCRS_ALL" \
+			--parent-context="$PRIMARY_HANDLE" --auth="pcr:$PCRS_ALL" \
 			--public="${infile}.pub" --private="${infile}.priv"; then
 		warn "Failed to unseal $infile"
 		return 1
