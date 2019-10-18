@@ -50,4 +50,7 @@ tar --create \
     --directory "${CURRENT_OUT_ROOT}" \
     .
 
+# Clean up
+rm -rf "${CURRENT_OUT_ROOT}"
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

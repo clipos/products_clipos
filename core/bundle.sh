@@ -45,6 +45,9 @@ bundle() {
 
     # Bundle squashfs contents with appended dm-verity information
     cat "${dst}" "${dst}.verity" "${dst}.verity.fec" > "${dst}.verity.bundled"
+
+    # Clean up
+    rm "${dst}" "${dst}.verity" "${dst}.verity.fec"
 }
 
 bundle "../configure/root" "core"
