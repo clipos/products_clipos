@@ -142,6 +142,13 @@ for f in "remote.toml" "rootca.pem"; do
         "${CURRENT_STATE}/core/etc/updater/${f}"
 done
 
+sdk_info "Installing default nftables rules..."
+# Install nftables rules
+install -o 0 -g ${admin_id} -m 750 -d "${CURRENT_STATE}/core/etc/nftables"
+install -o 0 -g ${admin_id} -m 640 \
+    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/nft/rules.nft" \
+    "${CURRENT_STATE}/core/etc/nftables/rules.nft"
+
 # Touch a specific file to enable simple initramfs check.
 touch "${CURRENT_STATE}/.setup-done"
 

@@ -1,0 +1,168 @@
+#!/usr/sbin/nft -f
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2019 ANSSI. All rights reserved.
+
+# Flush all rules
+flush ruleset
+
+# Local public network interface name.
+# This is specific to each system.
+define public_iface = "enp0s3"
+
+# IP address and range for private network available only over an IPsec tunnel.
+# This is specific to each deployment.
+define private_ip =   172.27.100.100
+define private_net =  172.27.100.0/24
+
+# Warning: Filter only IPv4 as IPv6 support is disabled in the kernel.
+table ip filter {
+    # Main chain to filter input traffic
+    chain input {
+        # Drop everything by default
+        type filter hook input priority 0; policy drop;
+
+        # Drop invalid connections
+        ct state invalid drop
+
+        # Match loopback traffic
+        iif lo jump input_lo
+
+        # Internet exposed interface, IPsec only traffic
+        iifname $public_iface rt ipsec exists jump input_ipsec
+
+        # Internet exposed interface, public traffic
+        iifname $public_iface jump input_public
+
+        # Log everything else
+        log prefix "INPUT (reject): "
+
+        # Reject everything else
+        reject with icmp type port-unreachable
+    }
+
+    # Loopback
+    chain input_lo {
+        # Do not filter localhost for now
+        accept
+    }
+
+    # Internet incoming traffic
+    chain input_public {
+        # DEBUG
+        # log prefix "INPUT PUBLIC: "
+
+        # Accept currently established connections
+        ct state established accept
+
+        # ICMP whitelist
+        ip protocol icmp icmp type { echo-reply, destination-unreachable, echo-request, time-exceeded, parameter-problem } accept
+
+        # systemd-networkd: allow DHCP server to client
+        udp sport 67 udp dport 68 accept
+
+        # DEBUG: Allow incoming SSH
+        # tcp dport { 22 } accept
+
+        # Log everything else
+        log prefix "INPUT PUBLIC (drop): " drop
+    }
+
+    # Traffic received over an IPsec tunnel
+    chain input_ipsec {
+        # DEBUG
+        # log prefix "INPUT IPSEC: "
+
+        # Accept currently established connections
+        ct state established,related accept
+
+        # ICMP whitelist
+        ip protocol icmp icmp type { destination-unreachable, echo-request, time-exceeded, parameter-problem } accept
+
+        # openssh: allow incoming SSH
+        tcp dport { 22 } accept
+
+        # Log everything else
+        log prefix "INPUT IPSEC (drop): " drop
+    }
+
+    # Do not forward anything for now
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+        # DEBUG
+        # log prefix "FORWARD (drop): " drop
+    }
+
+    # Main chain to filter output traffic
+    chain output {
+        # Drop everything by default
+        type filter hook output priority 0; policy drop;
+
+        # Drop invalid connections
+        ct state invalid drop
+
+        # Match loopback traffic
+        oif lo jump output_lo
+
+        # Internet exposed interface, IPsec only traffic
+        oifname $public_iface rt ipsec exists jump output_ipsec
+
+        # Do not allow private traffic if IPsec is down
+        oifname $public_iface rt ipsec missing ip saddr $private_ip  log prefix "OUTPUT IPsec down (drop): " drop
+        oifname $public_iface rt ipsec missing ip daddr $private_net log prefix "OUTPUT IPsec down (drop): " drop
+
+        # Internet exposed interface, public traffic
+        oifname $public_iface jump output_public
+
+        # Log everything else
+        log prefix "OUTPUT (reject): "
+
+        # Reject everything else
+        reject with icmp type port-unreachable
+    }
+
+    # Loopback
+    chain output_lo {
+        # Do not filter localhost for now
+        accept
+    }
+
+    # Internet outgoing traffic
+    chain output_public {
+        # DEBUG
+        # log prefix "OUTPUT PUBLIC: "
+
+        # Accept currently established connections
+        ct state established accept
+
+        # ICMP whitelist
+        ip protocol icmp icmp type { echo-reply, destination-unreachable, echo-request, time-exceeded, parameter-problem } accept
+
+        # strongswan/kernel: allow outgoing IKE & UDP encapsulated ESP
+        udp sport 4500 udp dport 4500 meta skuid { "root", "ipsec" } accept
+
+        # systemd-networkd: allow DHCP client to server
+        udp sport 68 udp dport 67 meta skuid "systemd-network" accept
+
+        # Log everything else
+        log prefix "OUTPUT PUBLIC (drop): " drop
+    }
+
+    # Traffic that will be send over an IPsec tunnel
+    chain output_ipsec {
+        # DEBUG
+        # log prefix "OUTPUT IPSEC: "
+
+        # Accept currently established connections
+        ct state established,related accept
+
+        # ICMP whitelist
+        ip protocol icmp icmp type { destination-unreachable, echo-request, time-exceeded, parameter-problem } accept
+
+        # Allow outgoing DNS, HTTPS
+        tcp dport { 53, 443 } accept
+        udp dport { 53 } accept
+
+        # Log everything else
+        log prefix "OUTPUT IPSEC (drop): " drop
+    }
+}
