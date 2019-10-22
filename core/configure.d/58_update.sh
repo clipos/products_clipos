@@ -38,7 +38,7 @@ RWTJ/M0U/zDYcGXzF2FC3fsz/PgZUs3PFI4Co3Ul/2udRk6PCde+B++S
 EOF
 
     cat <<EOF >> "${CURRENT_OUT_ROOT}/etc/hosts"
-172.27.1.10  update.clip-os.org
+172.27.100.10  update.clip-os.org
 EOF
 fi
 
