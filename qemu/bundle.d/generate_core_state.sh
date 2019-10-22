@@ -132,6 +132,7 @@ install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
     replace_placeholders "${CURRENT_STATE}/core/etc/swanctl/conf.d/office_net.conf"
 )
 
+sdk_info "Installing updater configuration to test updates..."
 # Install updater remote configuration
 readonly updater_config="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/updater"
 install -o ${admin_id} -g 0 -m 0750 -d "${CURRENT_STATE}/core/etc/updater"
