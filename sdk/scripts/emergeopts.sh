@@ -22,6 +22,9 @@ emerge_intelligible_optarray=(
     # package if this one fails to build (logs are stored in a directory
     # volume-bound in the host anyway).
     --quiet-build
+
+    # No need for the activity spinner
+    --nospinner
 )
 readonly EMERGE_INTELLIGIBLE_OPTS="${emerge_intelligible_optarray[@]}"
 
