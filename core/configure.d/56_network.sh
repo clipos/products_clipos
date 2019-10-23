@@ -19,4 +19,12 @@ ln -s "/mnt/state/core/etc/resolv.conf" "${CURRENT_OUT_ROOT}/etc/resolv.conf"
 sdk_info "Enable systemd-networkd by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable systemd-networkd
 
+# Install our own nftables.service
+install -o 0 -g 0 -m 0644 \
+    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/config/nftables.service" \
+    "${CURRENT_OUT_ROOT}/lib/systemd/system/nftables.service"
+
+sdk_info "Enable nftables-based firewall by default"
+systemctl --root="${CURRENT_OUT_ROOT}" enable nftables
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

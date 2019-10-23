@@ -109,6 +109,11 @@ REMOVE_LIST+=(
     "$root"/etc/shadow-
 )
 
+# Remove unneeded or unused systemd units
+REMOVE_LIST+=(
+    "$root"/lib/systemd/system/nftables-restore.service
+)
+
 msg="Remove various unwanted items from ROOT (first pass):"
 for item in "${REMOVE_LIST[@]}"; do
     if [[ ! -e "${item}" ]]; then
