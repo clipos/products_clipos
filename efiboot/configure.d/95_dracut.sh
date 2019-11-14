@@ -36,7 +36,7 @@ kernel_cmdline+=" spectre_v2=on spec_store_bypass_disable=seccomp"
 kernel_cmdline+=" rng_core.default_quality=512"
 # Consider uncommenting below line if CLIP OS happens to be used as an
 # hypervisor with untrusted guest VMs someday
-#kernel_cmdline+=" l1tf=full,force"
+#kernel_cmdline+=" l1tf=full,force kvm.nx_huge_pages=force"
 
 # Set small timeout for threshold values (in seconds) for the initramfs
 # (dracut) to retry and abandon device discovery before proceeding with the
