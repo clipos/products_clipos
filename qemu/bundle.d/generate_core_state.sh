@@ -149,6 +149,12 @@ install -o 0 -g ${admin_id} -m 640 \
     "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/nft/rules.nft" \
     "${CURRENT_STATE}/core/etc/nftables/rules.nft"
 
+if is_instrumentation_feature_enabled "allow-ssh-root-login"; then
+    # Enable SSH login from local network for development
+    sed -i 's|#\s*\(tcp dport { 22 } accept$\)|\1|g' \
+        "${CURRENT_STATE}/core/etc/nftables/rules.nft"
+fi
+
 # Touch a specific file to enable simple initramfs check.
 touch "${CURRENT_STATE}/.setup-done"
 
