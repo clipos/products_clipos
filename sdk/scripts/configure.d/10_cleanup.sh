@@ -92,6 +92,7 @@ REMOVE_LIST+=(
     "$root"/etc/portage
     "$root"/etc/runlevels
     "$root"/etc/sandbox.d
+    "$root"/etc/sysctl.conf
     "$root"/usr/lib/os-release
 )
 
