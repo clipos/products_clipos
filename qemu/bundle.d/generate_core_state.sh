@@ -98,25 +98,25 @@ sdk_info "Customizing the IPsec stack..."
 
 # Retreive ipsec GID
 ipsec_gid="$(grep "ipsec:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/group" | cut -d: -f 3)"
-# PKI for a dummy/testbed IPsec infrastructure:
-readonly dummy_ipsec_pki_path="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/dummy-ipsec-pki"
+# Dummy PKI for the testbed IPsec infrastructure:
+readonly ipsec_pki_path="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/pki"
 install -o ${admin_id} -g ${ipsec_gid} -m 0750 -d \
     "${CURRENT_STATE}/core/etc/swanctl/x509"{,ca} \
     "${CURRENT_STATE}/core/etc/swanctl/private"
 install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
-    "${dummy_ipsec_pki_path}/root-ca.cert.pem" \
+    "${ipsec_pki_path}/root-ca.cert.pem" \
     "${CURRENT_STATE}/core/etc/swanctl/x509ca/root-ca.cert.pem"
 install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
-    "${dummy_ipsec_pki_path}/client.cert.pem" \
+    "${ipsec_pki_path}/client.cert.pem" \
     "${CURRENT_STATE}/core/etc/swanctl/x509/client.cert.pem"
 install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
-    "${dummy_ipsec_pki_path}/client.key.pem" \
+    "${ipsec_pki_path}/client.key.pem" \
     "${CURRENT_STATE}/core/etc/swanctl/private/client.key.pem"
-
-readonly dummy_ipsec_configuration="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/dummy-ipsec-configuration"
+# strongSwan configuration
+readonly ipsec_configuration="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/strongswan"
 install -o ${admin_id} -g ${ipsec_gid} -m 0750 -d "${CURRENT_STATE}/core/etc/swanctl/conf.d"
 install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
-    "${dummy_ipsec_configuration}/office_net.conf" \
+    "${ipsec_configuration}/office_net.conf" \
     "${CURRENT_STATE}/core/etc/swanctl/conf.d/office_net.conf"
 # Replace placeholders by using a subshell as the function
 # `replace_placeholders` uses the exported environment variables as input for
