@@ -39,16 +39,10 @@ ln -sf "$PROFILESDIR/firmware" "${CURRENT_STATE}/core/etc/firmware"
 
 # Network setup
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc/systemd/network"
-cat > "${CURRENT_STATE}/core/etc/systemd/network/10-wired.network" << EOF
-[Match]
-Name=en*
+install -o 0 -g 0 -m 0644 \
+    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/network/10-wired.network"\
+    "${CURRENT_STATE}/core/etc/systemd/network/10-wired.network"
 
-[Network]
-DHCP=ipv4
-Address=172.27.100.100/24
-# Gateway=172.27.1.1
-# DNS=192.168.150.1
-EOF
 # Make the /etc/resolv.conf symlink point to a valid (empty) file:
 install -o 0 -g 0 -m 0644 /dev/null "${CURRENT_STATE}/core/etc/resolv.conf"
 
