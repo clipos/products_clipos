@@ -42,4 +42,10 @@ EOF
 EOF
 fi
 
+# Require IPsec for updates
+install -o 0 -g 0 -m 755 -d "${CURRENT_OUT_ROOT}/etc/systemd/system/updater.service.d"
+install -o 0 -g 0 -m 0644 \
+    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/config/ipsec0.conf" \
+    "${CURRENT_OUT_ROOT}/etc/systemd/system/updater.service.d/ipsec0.conf"
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

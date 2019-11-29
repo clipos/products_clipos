@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2019 ANSSI. All rights reserved.
+
+[Unit]
+Description=Setup '%i' XFRM interface
+Wants=network.target
+After=network.target
+Before=strongswan.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+RefuseManualStop=true
+
+EnvironmentFile=/mnt/state/core/etc/clipos/%i.conf
+
+# We cannot order this unit with systemd as we do not know the interface name
+# in advance so let's wait until the given interface appears
+ExecStart=/lib/systemd/systemd-networkd-wait-online --interface=${INTERFACE}:off
+ExecStart=/bin/ip netns add %i
+ExecStart=/bin/ip netns exec %i nft -f /mnt/state/core/etc/nftables/rules.%i.nft
+ExecStart=/bin/ip netns exec %i ip link set lo up
+ExecStart=/bin/ip link add %i type xfrm dev ${INTERFACE} if_id '${XFRM_ID}'
+ExecStart=/bin/ip link set %i netns %i
+ExecStart=/bin/ip netns exec %i ip addr add ${IP_ADDR} dev %i
+ExecStart=/bin/ip netns exec %i ip link set %i up
+
+ExecStop=/bin/ip netns exec %i ip link set %i down
+ExecStop=/bin/ip netns exec %i ip addr delete ${IP_ADDR} dev %i
+ExecStop=/bin/ip netns exec %i ip link delete dev %i
+ExecStop=/bin/ip netns exec %i ip link set lo down
+ExecStop=/bin/ip netns exec %i nft flush ruleset
+ExecStop=/bin/ip netns delete %i
+
+[Install]
+RequiredBy=strongswan.service

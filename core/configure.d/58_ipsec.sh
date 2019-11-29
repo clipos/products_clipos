@@ -44,4 +44,12 @@ for item in "${items_to_symlink_into_core_state[@]}"; do
 done
 unset item
 
+# Install network namespace and XFRM interface setup unit
+install -o 0 -g 0 -m 0644 \
+    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/config/netns@.service" \
+    "${CURRENT_OUT_ROOT}/lib/systemd/system/netns@.service"
+
+# Enable ipsec0 network namespace and XFRM interface
+systemctl --root="${CURRENT_OUT_ROOT}" enable netns@ipsec0.service
+
 # vim: set ts=4 sts=4 sw=4 et ft=sh:
