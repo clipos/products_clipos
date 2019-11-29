@@ -80,11 +80,10 @@ done
 # installed next (ensure to get rid of them even in the @system package set):
 emerge --rage-clean sys-apps/sysvinit sys-fs/eudev
 
-emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} sys-apps/systemd virtual/udev sys-apps/pciutils
-
 # Update the packages according to profile and overlays (this will install also
 # the packages from @sdk-world).
-emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} --update --deep --newuse @world clipos-meta/clipos-sdk
+emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} --update --deep --newuse @world \
+    sys-apps/systemd virtual/udev sys-apps/pciutils clipos-meta/clipos-sdk
 
 # Remove now unnecessary packages
 CLEAN_DELAY=0 emerge --depclean
