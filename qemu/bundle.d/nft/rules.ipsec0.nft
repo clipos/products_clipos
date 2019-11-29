@@ -5,9 +5,8 @@
 # Flush all rules
 flush ruleset
 
-# Local public network interface name.
-# This is specific to each system.
-define public_iface = "enp0s3"
+# IPsec interface
+define private_iface = "ipsec0"
 
 # Warning: Filter only IPv4 as IPv6 support is disabled in the kernel.
 table ip filter {
@@ -22,8 +21,8 @@ table ip filter {
         # Match loopback traffic
         iif lo jump input_lo
 
-        # Internet exposed interface, public traffic
-        iifname $public_iface jump input_public
+        # IPsec traffic
+        iifname $private_iface jump input_ipsec
 
         # Log everything else
         log prefix "INPUT (reject): "
@@ -38,10 +37,10 @@ table ip filter {
         accept
     }
 
-    # Internet incoming traffic
-    chain input_public {
+    # Traffic received over an IPsec tunnel
+    chain input_ipsec {
         # DEBUG
-        # log prefix "INPUT PUBLIC: "
+        # log prefix "INPUT IPSEC: "
 
         # Accept currently established connections
         ct state established accept
@@ -49,17 +48,14 @@ table ip filter {
         # ICMP whitelist
         ip protocol icmp icmp type { echo-reply, destination-unreachable, echo-request, time-exceeded, parameter-problem } accept
 
-        # systemd-networkd: allow DHCP server to client
-        udp sport 67 udp dport 68 accept
-
-        # DEBUG: Allow incoming SSH
-        # tcp dport { 22 } accept
+        # openssh: allow incoming SSH
+        tcp dport { 22 } accept
 
         # Log everything else
-        log prefix "INPUT PUBLIC (drop): " drop
+        log prefix "INPUT IPSEC (drop): " drop
     }
 
-    # Do not forward anything for now
+    # Do not forward traffic
     chain forward {
         type filter hook forward priority 0; policy drop;
         # DEBUG
@@ -77,8 +73,8 @@ table ip filter {
         # Match loopback traffic
         oif lo jump output_lo
 
-        # Internet exposed interface, public traffic
-        oifname $public_iface jump output_public
+        # IPsec traffic
+        oifname $private_iface jump output_ipsec
 
         # Log everything else
         log prefix "OUTPUT (reject): "
@@ -93,10 +89,10 @@ table ip filter {
         accept
     }
 
-    # Internet outgoing traffic
-    chain output_public {
+    # Traffic that will be send over an IPsec tunnel
+    chain output_ipsec {
         # DEBUG
-        # log prefix "OUTPUT PUBLIC: "
+        # log prefix "OUTPUT IPSEC: "
 
         # Accept currently established connections
         ct state established accept
@@ -104,13 +100,11 @@ table ip filter {
         # ICMP whitelist
         ip protocol icmp icmp type { echo-reply, destination-unreachable, echo-request, time-exceeded, parameter-problem } accept
 
-        # strongswan/kernel: allow outgoing IKE & UDP encapsulated ESP
-        udp sport 4500 udp dport 4500 meta skuid { "root", "ipsec" } accept
-
-        # systemd-networkd: allow DHCP client to server
-        udp sport 68 udp dport 67 meta skuid "systemd-network" accept
+        # Allow outgoing DNS, HTTPS
+        tcp dport { 53, 443 } accept
+        udp dport { 53 } accept
 
         # Log everything else
-        log prefix "OUTPUT PUBLIC (drop): " drop
+        log prefix "OUTPUT IPSEC (drop): " drop
     }
 }

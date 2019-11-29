@@ -142,6 +142,9 @@ install -o 0 -g ${admin_id} -m 750 -d "${CURRENT_STATE}/core/etc/nftables"
 install -o 0 -g ${admin_id} -m 640 \
     "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/nft/rules.nft" \
     "${CURRENT_STATE}/core/etc/nftables/rules.nft"
+install -o 0 -g ${admin_id} -m 640 \
+    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/nft/rules.ipsec0.nft" \
+    "${CURRENT_STATE}/core/etc/nftables/rules.ipsec0.nft"
 
 # Install CLIP OS custom environment file to specify interface used to bind
 # XFRM interface and private IP for IPsec traffic
