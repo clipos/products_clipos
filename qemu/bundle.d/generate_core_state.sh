@@ -143,6 +143,14 @@ install -o 0 -g ${admin_id} -m 640 \
     "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/nft/rules.nft" \
     "${CURRENT_STATE}/core/etc/nftables/rules.nft"
 
+# Install CLIP OS custom environment file to specify interface used to bind
+# XFRM interface and private IP for IPsec traffic
+# WARNING: This is subject to change before the 5.0 stable release.
+install -o 0 -g ${admin_id} -m 750 -d "${CURRENT_STATE}/core/etc/clipos"
+install -o 0 -g ${admin_id} -m 640 \
+    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/clipos/ipsec0.conf" \
+    "${CURRENT_STATE}/core/etc/clipos/ipsec0.conf"
+
 if is_instrumentation_feature_enabled "allow-ssh-root-login"; then
     # Enable SSH login from local network for development
     sed -i 's|#\s*\(tcp dport { 22 } accept$\)|\1|g' \

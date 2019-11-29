@@ -6,6 +6,3 @@ Name=en*
 
 [Network]
 DHCP=ipv4
-Address=172.27.100.100/24
-# Gateway=172.27.1.1
-# DNS=192.168.150.1
