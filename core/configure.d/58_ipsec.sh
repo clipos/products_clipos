@@ -11,11 +11,8 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 sdk_info "Enable strongswan by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable strongswan
 
-# Make all strongswan and swanctl confguration readable by admin:ipsec
-chown -R admin:ipsec \
-    "${CURRENT_OUT_ROOT}/etc/strongswan.conf" \
-    "${CURRENT_OUT_ROOT}/etc/strongswan.d" \
-    "${CURRENT_OUT_ROOT}/etc/swanctl"
+# Access to swanctl configuration is restricted by UID/GID in state partition
+chmod a+rX -R "${CURRENT_OUT_ROOT}/etc/swanctl"
 
 # Setup symlinks in core state partition
 readonly items_to_symlink_into_core_state=(
