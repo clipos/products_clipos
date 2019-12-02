@@ -53,6 +53,7 @@ REMOVE_LIST+=(
     "$root"/usr/bin/chsh
     "$root"/usr/bin/expiry
     "$root"/usr/bin/gpasswd
+    "$root"/usr/libexec/dbus-daemon-launch-helper
 )
 
 # FIXME: find which packages install those
