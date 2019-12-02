@@ -24,16 +24,16 @@ rm -rf "${CURRENT_OUT_ROOT}/etc/systemd/system"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/systemd/system"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/systemd/system/getty.target.wants"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_OUT_ROOT}/etc/systemd/system/multi-user.target.wants"
-ln -s "/lib64/systemd/system/getty@.service" \
+ln -s "/lib/systemd/system/getty@.service" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/getty.target.wants/getty@tty1.service"
-ln -s "/lib64/systemd/system/multi-user.target" \
+ln -s "/lib/systemd/system/multi-user.target" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/default.target"
 
 # Mask unneeded systemd user instances
-rm "${CURRENT_OUT_ROOT}/lib64/systemd/system/user@.service"
+rm "${CURRENT_OUT_ROOT}/lib/systemd/system/user@.service"
 ln -s '/dev/null' "${CURRENT_OUT_ROOT}/etc/systemd/system/user@.service"
 
 # TODO: Fix /var/run symlink setup
-sed -i "s|L /var/run - - - - ../run|L /var/run - - - - /run|" "${CURRENT_OUT_ROOT}/usr/lib64/tmpfiles.d/var.conf"
+sed -i "s|L /var/run - - - - ../run|L /var/run - - - - /run|" "${CURRENT_OUT_ROOT}/usr/lib/tmpfiles.d/var.conf"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

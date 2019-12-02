@@ -35,7 +35,7 @@ sign_efi_binary() {
 }
 
 # Sign bootloader
-sign_efi_binary "${CURRENT_OUT_ROOT}/usr/lib64/systemd/boot/efi/systemd-bootx64.efi"
+sign_efi_binary "${CURRENT_OUT_ROOT}/usr/lib/systemd/boot/efi/systemd-bootx64.efi"
 
 # Sign EFI bundle binary
 sign_efi_binary "${CURRENT_OUT}/linux.efi"

@@ -70,7 +70,7 @@ REMOVE_LIST+=(
 REMOVE_LIST+=(
     "$root"/etc/modprobe.d
     "$root"/etc/modules-load.d
-    "$root"/lib64/modprobe.d
+    "$root"/lib/modprobe.d
     "$root"/usr/lib/modules-load.d
 )
 
