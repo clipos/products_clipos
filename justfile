@@ -6,9 +6,6 @@ all: core efiboot qemu
 sdk:
     just sdk/all
 
-sdk_debian:
-    just sdk_debian/all
-
 core:
     just core/all
 
