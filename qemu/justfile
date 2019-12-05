@@ -4,14 +4,13 @@
 product = "clipos"
 recipe = "qemu"
 
-all: bundle run
+all: bundle
 
-# Make sure the Debian SDK is available
+# Make sure the SDK is available
 sdk:
-    just ../sdk_debian/all
+    just ../sdk/all
 
-# Assemble all the other parts composing the CLIP OS image into a QEMU QCOW disk
-# image.
+# Generate the Core State for the QEMU test image.
 bundle: clear-bundle sdk
     cosmk bundle "{{product}}/{{recipe}}"
 
@@ -21,8 +20,5 @@ clear-bundle:
     repo_root="$(cosmk repo-root-path)"
     version="$(cosmk product-version {{product}})"
     rm -rf "${repo_root}/out/{{product}}/${version}/{{recipe}}/bundle"
-
-run:
-    cosmk spawn "{{product}}/{{recipe}}"
 
 # vim: set ts=4 sts=4 sw=4 et ft=make:

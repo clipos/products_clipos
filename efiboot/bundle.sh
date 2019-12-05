@@ -50,6 +50,17 @@ tar --create \
     --directory "${CURRENT_OUT_ROOT}" \
     .
 
+sdk_info "Creating OVMF firmware tarball..."
+readonly CURRENT_OVMF="${CURRENT_OUT}/qemu-ovmf"
+mkdir "${CURRENT_OVMF}"
+cp "${CURRENT_OUT}/../configure/OVMF_CODE_sb-tpm.fd" \
+    "${CURRENT_OVMF}/OVMF_CODE.fd"
+cp "/mnt/products/${CURRENT_PRODUCT}/efiboot/configure.d/dummy_keys_secure_boot/OVMF_VARS.fd" \
+    "${CURRENT_OVMF}/OVMF_VARS.fd"
+tar --create --file "${CURRENT_OUT}/qemu-firmware.tar" \
+    --directory "${CURRENT_OVMF}" \
+    .
+
 # Clean up
 rm -rf "${CURRENT_OUT_ROOT}"
 
