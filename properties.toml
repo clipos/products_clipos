@@ -4,7 +4,7 @@
 # CLIP OS product global properties file
 
 # The version of this product:
-version = "5.0.0-alpha.1"
+version = "5.0.0-beta.1"
 
 # The common name such as the official trademark name or the common designation
 # name for this product:
