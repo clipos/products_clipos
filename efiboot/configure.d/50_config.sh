@@ -1,1 +1,1 @@
-../../sdk/scripts/configure.d/50_config.sh
+../../sdk/configure.d/50_config.sh

@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 sdk_info "Enable updater timer by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable updater.timer
@@ -45,7 +45,7 @@ fi
 # Require IPsec for updates
 install -o 0 -g 0 -m 755 -d "${CURRENT_OUT_ROOT}/etc/systemd/system/updater.service.d"
 install -o 0 -g 0 -m 0644 \
-    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/config/ipsec0.conf" \
+    "${CURRENT_RECIPE}/configure.d/config/ipsec0.conf" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/updater.service.d/ipsec0.conf"
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

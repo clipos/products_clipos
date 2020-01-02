@@ -21,12 +21,19 @@ short_name = "clipos"
 # The URL to the project homepage:
 homepage = "https://github.com/clipos/"
 
-[system]
-keymap = "fr"
-timezone = "UTC"
-locale = "en_US.UTF-8"
+# List of recipes required to build this product. The order matters!
+recipes = [
+    "core",
+    "efiboot",
+    "qemu",
+]
 
-[system.disk_layout]
-vg_name = "mainvg"
+# Arbitrary environment variables made available in the SDKs with the
+# 'COSMK_PRODUCT_ENV_' prefix
+[environment]
+KEYMAP = "fr"
+TIMEZONE = "UTC"
+LOCALE = "en_US.UTF-8"
+VG_NAME = "mainvg"
 
 # vim: set ts=4 sts=4 sw=4 et ft=toml:

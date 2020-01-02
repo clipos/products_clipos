@@ -3,12 +3,7 @@
 
 # CLIP OS QEMU target recipe file
 
-features = [ "bundle" ]
 sdk = "clipos/sdk"
-
-[bundle]
-steps = [
-    "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh"
-]
+actions = [ "bundle" ]
 
 # vim: set ts=4 sts=4 sw=4 et ft=toml:

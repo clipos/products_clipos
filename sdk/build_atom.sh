@@ -8,7 +8,10 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
+
+# Setup Portage profile and overlays
+${CURRENT_SDK}/setup-portage.sh
 
 if [[ "$#" -eq 0 ]]; then
     sdk_error "No packages to emerge (no arguments given)."

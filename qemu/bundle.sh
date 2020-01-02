@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 # Setup the minimal required layout for the state partition.
 # This only includes files that must exist before the initramfs pivot_root or
@@ -17,38 +17,44 @@ source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelud
 # This setup will be done by the installer for real hardware.
 
 readonly CURRENT_STATE="${CURRENT_OUT}/qemu-state"
+readonly CURRENT_RECIPE_D="/mnt/products/${COSMK_PRODUCT}/${COSMK_RECIPE}/bundle.d"
+readonly CORE_OUT_ROOT="/mnt/out/${COSMK_PRODUCT}/${COSMK_PRODUCT_VERSION}/core/configure/root"
 
+# We need to remove the state directory manually here as we use non root UIDs
+# and GIDs which map to non-user owned UIDs/GIDs outside the user namespace for
+# rootless podman.
+rm -rf "${CURRENT_STATE}"
 mkdir "${CURRENT_STATE}"
 
 # hostname & machine-id
-readonly PRODUCT_NAME="${CURRENT_PRODUCT_PROPERTY['short_name']}"
+readonly PRODUCT_NAME="${COSMK_PRODUCT_SHORT_NAME}"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc"
 echo "${PRODUCT_NAME}-qemu" > "${CURRENT_STATE}/core/etc/hostname"
 echo "${PRODUCT_NAME}-qemu" | md5sum | awk '{print $1}' > "${CURRENT_STATE}/core/etc/machine-id"
 
 # /var/log/journal
 # systemd-journal GID must match the one set in core/configure rootfs
-journald_gid="$(grep "systemd-journal:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/group" | cut -d: -f 3)"
+journald_gid="$(grep "systemd-journal:" "${CORE_OUT_ROOT}/etc/group" | cut -d: -f 3)"
 install -o 0 -g "${journald_gid}" -m 2755 -d "${CURRENT_STATE}/core/var/log/journal"
 
 sdk_info "Setting up modules and firmwares"
-readonly PROFILESDIR="/usr/share/hardware/profiles/kvm_ovmf64"
+readonly PROFILES_DIR="/usr/share/hardware/profiles/kvm_ovmf64"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc/modules-load.d"
-ln -sf "$PROFILESDIR/modules" "${CURRENT_STATE}/core/etc/modules-load.d/hardware.conf"
-ln -sf "$PROFILESDIR/firmware" "${CURRENT_STATE}/core/etc/firmware"
+ln -sf "${PROFILES_DIR}/modules" "${CURRENT_STATE}/core/etc/modules-load.d/hardware.conf"
+ln -sf "${PROFILES_DIR}/firmware" "${CURRENT_STATE}/core/etc/firmware"
 
 # Network setup
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/etc/systemd/network"
 install -o 0 -g 0 -m 0644 \
-    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/network/10-wired.network"\
+    "${CURRENT_RECIPE_D}/network/10-wired.network"\
     "${CURRENT_STATE}/core/etc/systemd/network/10-wired.network"
 
 # Make the /etc/resolv.conf symlink point to a valid (empty) file:
 install -o 0 -g 0 -m 0644 /dev/null "${CURRENT_STATE}/core/etc/resolv.conf"
 
 # Setup admin & audit home dirs
-admin_id="$(grep "admin:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/passwd" | cut -d: -f 3)"
-audit_id="$(grep "audit:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/passwd" | cut -d: -f 3)"
+admin_id="$(grep "admin:" "${CORE_OUT_ROOT}/etc/passwd" | cut -d: -f 3)"
+audit_id="$(grep "audit:" "${CORE_OUT_ROOT}/etc/passwd" | cut -d: -f 3)"
 install -o 0 -g 0 -m 0755 -d "${CURRENT_STATE}/core/home"
 install -o ${admin_id} -g ${admin_id} -m 0700 -d "${CURRENT_STATE}/core/home/admin"
 install -o ${audit_id} -g ${audit_id} -m 0700 -d "${CURRENT_STATE}/core/home/audit"
@@ -91,9 +97,9 @@ install -o 0 -g 0 -m 0600 "${CURRENT_CACHE}/host_key.pub" "${CURRENT_STATE}/core
 sdk_info "Customizing the IPsec stack..."
 
 # Retreive ipsec GID
-ipsec_gid="$(grep "ipsec:" "/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/core/configure/root/etc/group" | cut -d: -f 3)"
+ipsec_gid="$(grep "ipsec:" "${CORE_OUT_ROOT}/etc/group" | cut -d: -f 3)"
 # Dummy PKI for the testbed IPsec infrastructure:
-readonly ipsec_pki_path="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/pki"
+readonly ipsec_pki_path="${CURRENT_RECIPE_D}/pki"
 install -o ${admin_id} -g ${ipsec_gid} -m 0750 -d \
     "${CURRENT_STATE}/core/etc/swanctl/x509"{,ca} \
     "${CURRENT_STATE}/core/etc/swanctl/private"
@@ -107,7 +113,7 @@ install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
     "${ipsec_pki_path}/client.key.pem" \
     "${CURRENT_STATE}/core/etc/swanctl/private/client.key.pem"
 # strongSwan configuration
-readonly ipsec_configuration="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/strongswan"
+readonly ipsec_configuration="${CURRENT_RECIPE_D}/strongswan"
 install -o ${admin_id} -g ${ipsec_gid} -m 0750 -d "${CURRENT_STATE}/core/etc/swanctl/conf.d"
 install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
     "${ipsec_configuration}/office_net.conf" \
@@ -128,7 +134,7 @@ install -o ${admin_id} -g ${ipsec_gid} -m 0640 \
 
 sdk_info "Installing updater configuration to test updates..."
 # Install updater remote configuration
-readonly updater_config="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/updater"
+readonly updater_config="${CURRENT_RECIPE_D}/updater"
 install -o ${admin_id} -g 0 -m 0750 -d "${CURRENT_STATE}/core/etc/updater"
 for f in "remote.toml" "rootca.pem"; do
     install -o ${admin_id} -g 0 -m 0640 \
@@ -140,10 +146,10 @@ sdk_info "Installing default nftables rules..."
 # Install nftables rules
 install -o 0 -g ${admin_id} -m 750 -d "${CURRENT_STATE}/core/etc/nftables"
 install -o 0 -g ${admin_id} -m 640 \
-    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/nft/rules.nft" \
+    "${CURRENT_RECIPE_D}/nft/rules.nft" \
     "${CURRENT_STATE}/core/etc/nftables/rules.nft"
 install -o 0 -g ${admin_id} -m 640 \
-    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/nft/rules.ipsec0.nft" \
+    "${CURRENT_RECIPE_D}/nft/rules.ipsec0.nft" \
     "${CURRENT_STATE}/core/etc/nftables/rules.ipsec0.nft"
 
 # Install CLIP OS custom environment file to specify interface used to bind
@@ -151,7 +157,7 @@ install -o 0 -g ${admin_id} -m 640 \
 # WARNING: This is subject to change before the 5.0 stable release.
 install -o 0 -g ${admin_id} -m 750 -d "${CURRENT_STATE}/core/etc/clipos"
 install -o 0 -g ${admin_id} -m 640 \
-    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/bundle.d/clipos/ipsec0.conf" \
+    "${CURRENT_RECIPE_D}/clipos/ipsec0.conf" \
     "${CURRENT_STATE}/core/etc/clipos/ipsec0.conf"
 
 if is_instrumentation_feature_enabled "allow-ssh-root-login"; then

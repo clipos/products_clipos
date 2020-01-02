@@ -6,15 +6,15 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 
 # FIXME: Move most for those entries to .mount units
 # FIXME: add /proc restrictions
 # FIXME: Remove /tmp & make it chmod 500
 
-readonly vg_name="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
-readonly core_lv_name="core_${CURRENT_PRODUCT_VERSION}"
+readonly vg_name="${COSMK_PRODUCT_ENV_VG_NAME}"
+readonly core_lv_name="core_${COSMK_PRODUCT_VERSION}"
 
 # Empty out pre-existing /etc/fstab & /etc/crypttab
 true > "${CURRENT_OUT_ROOT}/etc/fstab"

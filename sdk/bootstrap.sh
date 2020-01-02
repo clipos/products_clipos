@@ -7,14 +7,21 @@
 # Safety settings: do not remove!
 set -o errexit -o nounset -o pipefail
 
+if [[ -z "${COSMK_ACTION:+x}" ]] || [[ "${COSMK_ACTION}" != "bootstrap" ]]; then
+    >&2 echo "Not running inside a COSMK bootstrapped container!"
+    exit 1
+fi
+# Touch a special file to mark the SDK rootfs
+touch "/.sdk"
+
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 # Setup Portage as there is no prerun command in the bootstrap action:
-${CURRENT_SDK}/scripts/setup-portage.sh
+${CURRENT_SDK}/setup-portage.sh
 
 # Needed to get EMERGE_BUILDROOTWITHBDEPS_OPTS:
-source ${CURRENT_SDK}/scripts/emergeopts.sh
+source "${CURRENT_SDK}/emergeopts.sh"
 
 # Workaround for lz4 build
 portage_vars_to_delete=(
@@ -33,7 +40,7 @@ EOF
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} app-arch/lz4
 
 # Now reset portage setup:
-${CURRENT_SDK}/scripts/setup-portage.sh
+${CURRENT_SDK}/setup-portage.sh
 
 # Install equery and retrieve distfiles for installed packages in the Gentoo stage3:
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} app-portage/gentoolkit

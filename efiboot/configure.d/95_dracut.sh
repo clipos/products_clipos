@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 # Copy kernel compiled in core recipe
 CORE_CONFIGURE="${CURRENT_OUT_ROOT}/../../../core/configure"
@@ -104,7 +104,7 @@ dracut_bundle_efi() {
     core_verity_hashoffset="$(< "${core_bundle}.bundled.hashoffset")"
     core_verity_fecoffset="$(< "${core_bundle}.bundled.fecoffset")"
 
-    local vg_name="${CURRENT_PRODUCT_PROPERTY['system.disk_layout.vg_name']}"
+    local vg_name="${COSMK_PRODUCT_ENV_VG_NAME}"
     local core_lv_name="core_${version}"
     # The kernel command line to be embedded into the EFI-stubbed kernel
     rootfs_cmdline="root=/dev/mapper/verity_${core_lv_name} rootfstype=squashfs rootflags=ro"
@@ -139,16 +139,16 @@ dracut_bundle_efi() {
 }
 
 # Create a EFI bundle
-dracut_bundle_efi "core" "${CURRENT_PRODUCT_VERSION}" "linux.efi"
+dracut_bundle_efi "core" "${COSMK_PRODUCT_VERSION}" "linux.efi"
 
 # Special case to create a second bundle to test updates
 if is_instrumentation_feature_enabled "test-update"; then
 
     # Increase the version number
-    version=${CURRENT_PRODUCT_VERSION##*.}
+    version=${COSMK_PRODUCT_VERSION##*.}
     next_version=$((version+1))
-    next_version=${CURRENT_PRODUCT_VERSION/%${version}/${next_version}}
-    sed -i "s|${CURRENT_PRODUCT_VERSION}|${next_version}|g" "${CURRENT_OUT_ROOT}/etc/os-release"
+    next_version=${COSMK_PRODUCT_VERSION/%${version}/${next_version}}
+    sed -i "s|${COSMK_PRODUCT_VERSION}|${next_version}|g" "${CURRENT_OUT_ROOT}/etc/os-release"
 
     dracut_bundle_efi "core.next" "${next_version}" "linux.next.efi"
 fi

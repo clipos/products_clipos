@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2017 ANSSI. All rights reserved.
+
+# CLIP OS SDK recipe file
+
+# Container image tag used to identify this SDK version and used pull image
+# from the CI or to tag locally built images
+tag = "20191127T214502Z"
+
+# Arbitrary environment variables made available in this SDK with the
+# 'COSMK_SDK_ENV_' prefix
+[environment]
+# Portage overlays to expose in the Portage configuration
+# Note: this is the enumeration of the Portage overlays repo_name (not
+# necessarily their directory name in /mnt/src/portage).
+PORTAGE_OVERLAYS = 'gentoo clipos'
+# Portage profile to use
+PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/sdk'
+
+[bootstrap]
+# The rootfs archive to import as base image for the SDK
+rootfs = "assets/gentoo/stage3-amd64-hardened+nomultilib-20191127T214502Z.tar.xz"
+
+[build]
+# Additionnal capabilities granted to processes in this SDK
+# * CAP_SYS_PTRACE: needed to build the GCC package
+capabilities = [
+    "CAP_SYS_PTRACE",
+]
+
+# Additional assets paths mounted as RW during build action for this SDK
+writable_assets = [
+    "distfiles"
+]
+
+# vim: set ts=4 sts=4 sw=4 et ft=toml:

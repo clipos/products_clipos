@@ -1,1 +1,1 @@
-../../sdk/scripts/configure.d/99_final_cleanup.sh
+../../sdk/configure.d/99_final_cleanup.sh

@@ -8,10 +8,20 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
+
+if [[ -z "${COSMK_RECIPE_ENV_PORTAGE_PROFILE:+x}" ]]; then
+    if [[ -z "${COSMK_SDK_ENV_PORTAGE_PROFILE:+x}" ]]; then
+        sdk_error "No Portage profile selected."
+        exit 1
+    fi
+    PORTAGE_PROFILE="${COSMK_SDK_ENV_PORTAGE_PROFILE}"
+else
+    PORTAGE_PROFILE="${COSMK_RECIPE_ENV_PORTAGE_PROFILE}"
+fi
 
 # Needed to get EMERGE_INTELLIGIBLE_OPTS:
-source "${CURRENT_SDK}/scripts/emergeopts.sh"
+source "${CURRENT_SDK}/emergeopts.sh"
 
 sdk_info "Setting up custom local Portage configuration..."
 
@@ -26,7 +36,7 @@ emerge_jobs="${nproc}"
 
 # Set default LOCALE with fallback to 'en_US' if property is not defined
 # Guess language to use from the locale defined in the product properties:
-system_locale="${CURRENT_PRODUCT_PROPERTY['system.locale']:-'en_US.UTF-8'}"
+system_locale="${COSMK_PRODUCT_ENV_LOCALE:-'en_US.UTF-8'}"
 locale_regionalized_language="${system_locale%%.*}"    # e.g. "en_US"
 locale_regionless_language="${locale_regionalized_language%%_*}"   # e.g. "en"
 
@@ -54,13 +64,17 @@ wanted_portage_features=(
     userfetch  # ensure portage:portage privileges are used when "fetching"
     userpriv usersandbox  # build in sandbox as portage:portage (not root:root)
     cgroup  # gather all the build subprocess in a cgroup for Portage to safely kill them (if needed)
-    #ipc-sandbox mount-sandbox network-sandbox pid-sandbox
+
     # TODO: If we decide to make use of user namespaces in cosmk for the SDK
     # container, then we may decide to use *-sandbox FEATURES in order to
     # isolate the ebuild-triggered subprocessed in dedicated namespaces.
     # In the current state (Apr. 2019), it is still not possible since unshare
     # syscall get a EPERM error as the SDK container does not have the
     # capability to create new namespaces.
+    -ipc-sandbox
+    -mount-sandbox
+    -network-sandbox
+    -pid-sandbox
 
     # Q/A settings:
     strict unknown-features-warn
@@ -139,7 +153,7 @@ EOF
 rm -rf /usr/portage
 mkdir /etc/portage/repos.conf
 declare -A portage_overlay_paths
-for r in ${PORTAGE_OVERLAYS}; do
+for r in ${COSMK_SDK_ENV_PORTAGE_OVERLAYS}; do
     repo=/mnt/src/portage/${r}
     [[ ! -d "${repo}" ]] && continue
     # this parses the layout.conf to get the repo-name defined in it
@@ -151,7 +165,7 @@ for r in ${PORTAGE_OVERLAYS}; do
 
     # Check that the current Portage repo is well declared in the
     # PORTAGE_OVERLAYS name list:
-    if ! contains "${reponame}" ${PORTAGE_OVERLAYS:-}; then
+    if ! contains "${reponame}" ${COSMK_SDK_ENV_PORTAGE_OVERLAYS:-}; then
         continue
     fi
 
@@ -174,7 +188,7 @@ readonly portage_overlay_paths
 sdk_info "Portage profile to be used: \"${PORTAGE_PROFILE:?}\"."
 eselect profile set "${PORTAGE_PROFILE}"
 readonly main_profile_path="$(readlink -f "/etc/portage/make.profile")"
-if [[ -n "${CURRENT_INSTRUMENTATION_FEATURES:-}" ]]; then
+if [[ -n "${COSMK_INSTRUMENTATION_FEATURES:-}" ]]; then
     rm -f "/etc/portage/make.profile"
     mkdir "/etc/portage/make.profile"
     cat <<EOF > "/etc/portage/make.profile/parent"
@@ -190,10 +204,10 @@ EOF
     # profile for instrumentation features:
     msg="INSTRUMENTED BUILD: Setting up selected instrumentation features:"
 
-    for overlay in ${PORTAGE_OVERLAYS}; do
+    for overlay in ${COSMK_SDK_ENV_PORTAGE_OVERLAYS}; do
         [[ "${overlay}" == "gentoo" ]] && continue   # skip Gentoo base overlay
         overlay_path="${portage_overlay_paths["${overlay}"]}"
-        for instrufeat in ${CURRENT_INSTRUMENTATION_FEATURES}; do
+        for instrufeat in ${COSMK_INSTRUMENTATION_FEATURES}; do
             if [[ -d "${overlay_path}/profiles/instrumentation/${instrufeat}" ]]; then
                 echo "${overlay_path}/profiles/instrumentation/${instrufeat}" >> "/etc/portage/make.profile/parent"
                 msg+=$'\n'"* ${overlay_path#/mnt/}/profiles/instrumentation/${instrufeat}"
@@ -201,7 +215,7 @@ EOF
         done
     done
 
-    for instrufeat in ${CURRENT_INSTRUMENTATION_FEATURES}; do
+    for instrufeat in ${COSMK_INSTRUMENTATION_FEATURES}; do
         if [[ -d "${main_profile_path}/instrumentation/${instrufeat}" ]]; then
             echo "${main_profile_path}/instrumentation/${instrufeat}" >> "/etc/portage/make.profile/parent"
             msg+=$'\n'"* ${main_profile_path#/mnt/}/instrumentation/${instrufeat}"

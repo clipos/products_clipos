@@ -34,17 +34,16 @@ die_if_not_in_a_sdk
 
 # Ensure that the following variables were properly set by cosmk in the SDK
 # environment so that we don't have to check them anywhere is our scripts.
-# We do not check if 'CURRENT_INSTRUMENTATION_FEATURES' exists has it will not
+# We do not check if 'COSMK_INSTRUMENTATION_FEATURES' exists has it will not
 # for production builds.
 cosmk_env=(
-    'CURRENT_ACTION'
-    'CURRENT_PRODUCT'
-    'CURRENT_PRODUCT_PROPERTIES'
-    'CURRENT_PRODUCT_TAINTED_VERSION'
-    'CURRENT_PRODUCT_VERSION'
-    'CURRENT_RECIPE'
-    'CURRENT_SDK_PRODUCT'
-    'CURRENT_SDK_RECIPE'
+    'COSMK_ACTION'
+    'COSMK_PRODUCT'
+    'COSMK_PRODUCT_TAINTED_VERSION'
+    'COSMK_PRODUCT_VERSION'
+    'COSMK_RECIPE'
+    'COSMK_SDK_PRODUCT'
+    'COSMK_SDK_RECIPE'
 )
 for v in "${cosmk_env[@]}"; do
     if [[ -z ${!v+x} ]]; then
@@ -57,7 +56,7 @@ unset v cosmk_env
 # this SDK:
 
 # Output directory for the current recipe/action. Always available read-write.
-readonly CURRENT_OUT="/mnt/out/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/${CURRENT_ACTION}"
+readonly CURRENT_OUT="/mnt/out/${COSMK_PRODUCT}/${COSMK_PRODUCT_VERSION}/${COSMK_RECIPE}/${COSMK_ACTION}"
 export CURRENT_OUT
 
 # Shortcut for frequently used root subdirectory
@@ -65,21 +64,20 @@ readonly CURRENT_OUT_ROOT="${CURRENT_OUT}/root"
 export CURRENT_OUT_ROOT
 
 # Cache directory for the current recipe/action. Always available read-write.
-readonly CURRENT_CACHE="/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/${CURRENT_ACTION}"
+readonly CURRENT_CACHE="/mnt/cache/${COSMK_PRODUCT}/${COSMK_PRODUCT_VERSION}/${COSMK_RECIPE}/${COSMK_ACTION}"
 export CURRENT_CACHE
 
 # Cache directory for packages for the current recipe. Available read-write
 # only during the build action.
-readonly CURRENT_CACHE_PKG="/mnt/cache/${CURRENT_PRODUCT}/${CURRENT_PRODUCT_VERSION}/${CURRENT_RECIPE}/binpkgs"
+readonly CURRENT_CACHE_PKG="/mnt/cache/${COSMK_PRODUCT}/${COSMK_PRODUCT_VERSION}/${COSMK_RECIPE}/binpkgs"
 export CURRENT_CACHE_PKG
 
 # SDK directory for easy access to SDK scripts. Always available read-only.
-readonly CURRENT_SDK="/mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}"
+readonly CURRENT_SDK="/mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}"
 export CURRENT_SDK
 
-# This requires Bash 4 at least and defines the associative array
-# CURRENT_PRODUCT_PROPERTY which holds all the current product properties
-# associating keys and their values:
-_define_current_product_property_associative_array
+# Recipe directory for easy access to recipe scripts. Always available read-only.
+readonly CURRENT_RECIPE="/mnt/products/${COSMK_PRODUCT}/${COSMK_RECIPE}"
+export CURRENT_RECIPE
 
 # vim: set ts=4 sts=4 sw=4 et ft=sh:

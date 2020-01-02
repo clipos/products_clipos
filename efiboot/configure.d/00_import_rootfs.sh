@@ -1,0 +1,1 @@
+../../sdk/configure.d/00_import_rootfs.sh

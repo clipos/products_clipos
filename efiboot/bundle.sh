@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 # Prepare the EFI partition layout
 sdk_info "Prepare the EFI partition layout..."
@@ -32,13 +32,13 @@ fi
 sdk_info "Install systemd-boot main configuration..."
 cat <<EOF > "${CURRENT_OUT_ROOT}/loader/loader.conf"
 editor 0
-auto-firmware $AUTO_FIRMWARE
+auto-firmware ${AUTO_FIRMWARE}
 timeout ${BOOTLOADER_TIMEOUT}
 EOF
 
 sdk_info "Install EFI bundle..."
 cp "${CURRENT_OUT}/../configure/linux.efi" \
-    "${CURRENT_OUT_ROOT}/EFI/Linux/clipos-${CURRENT_PRODUCT_VERSION}.efi"
+    "${CURRENT_OUT_ROOT}/EFI/Linux/clipos-${COSMK_PRODUCT_VERSION}.efi"
 
 sdk_info "Bundle the EFI binaries into an EFI partition archive..."
 # Produce the EFI partition image as a tar archive.
@@ -55,7 +55,7 @@ readonly CURRENT_OVMF="${CURRENT_OUT}/qemu-ovmf"
 mkdir "${CURRENT_OVMF}"
 cp "${CURRENT_OUT}/../configure/OVMF_CODE_sb-tpm.fd" \
     "${CURRENT_OVMF}/OVMF_CODE.fd"
-cp "/mnt/products/${CURRENT_PRODUCT}/efiboot/configure.d/dummy_keys_secure_boot/OVMF_VARS.fd" \
+cp "/mnt/products/${COSMK_PRODUCT}/efiboot/configure.d/dummy_keys_secure_boot/OVMF_VARS.fd" \
     "${CURRENT_OVMF}/OVMF_VARS.fd"
 tar --create --file "${CURRENT_OUT}/qemu-firmware.tar" \
     --directory "${CURRENT_OVMF}" \

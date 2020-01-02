@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 cd "${CURRENT_OUT}"
 
@@ -58,10 +58,10 @@ if is_instrumentation_feature_enabled "test-update"; then
     cp -a "../configure/root" "${CURRENT_OUT}"
 
     # Increase the version number
-    version=${CURRENT_PRODUCT_VERSION##*.}
+    version=${COSMK_PRODUCT_VERSION##*.}
     next_version=$((version+1))
-    next_version=${CURRENT_PRODUCT_VERSION/%${version}/${next_version}}
-    sed -i "s|${CURRENT_PRODUCT_VERSION}|${next_version}|g" "${CURRENT_OUT_ROOT}/etc/os-release"
+    next_version=${COSMK_PRODUCT_VERSION/%${version}/${next_version}}
+    sed -i "s|${COSMK_PRODUCT_VERSION}|${next_version}|g" "${CURRENT_OUT_ROOT}/etc/os-release"
 
     bundle "root" "core.next"
 

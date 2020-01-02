@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 sdk_info "Enable strongswan by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable strongswan
@@ -46,7 +46,7 @@ unset item
 
 # Install network namespace and XFRM interface setup unit
 install -o 0 -g 0 -m 0644 \
-    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/config/netns@.service" \
+    "${CURRENT_RECIPE}/configure.d/config/netns@.service" \
     "${CURRENT_OUT_ROOT}/lib/systemd/system/netns@.service"
 
 # Enable ipsec0 network namespace and XFRM interface

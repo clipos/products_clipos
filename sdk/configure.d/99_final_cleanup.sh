@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 declare -a REMOVE_LIST
 
@@ -17,27 +17,12 @@ declare -a REMOVE_LIST
 # with the same variable "root" defined here:
 readonly root="${CURRENT_OUT_ROOT}"
 
-# Remove now unneeded tmpfiles config
 REMOVE_LIST+=(
-    "$root"/usr/lib/tmpfiles.d/etc.conf
-    "$root"/usr/lib/tmpfiles.d/home.conf
-    "$root"/usr/lib/tmpfiles.d/journal-nocow.conf
-    "$root"/usr/lib/tmpfiles.d/x11.conf
+    "$root"/bin/chroot
+    "$root"/usr/bin/chroot
 )
 
-# Remove now unneeded sysusers config
-REMOVE_LIST+=(
-    "$root"/usr/lib/sysusers.d/
-)
-
-REMOVE_LIST+=(
-    "$root"/etc/group-
-    "$root"/etc/gshadow-
-    "$root"/etc/passwd-
-    "$root"/etc/shadow-
-)
-
-msg="Remove unwanted items from ROOT (configuration files ending pass):"
+msg="Remove now unneeded items from ROOT (second and final pass):"
 for item in "${REMOVE_LIST[@]}"; do
     if [[ ! -e "${item}" ]]; then
         # Do not list the items to be removed if they cannot be found in ROOT

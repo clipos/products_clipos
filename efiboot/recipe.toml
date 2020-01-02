@@ -3,35 +3,13 @@
 
 # CLIP OS EFI boot recipe file
 
-features = [ "root", "configure", "bundle" ]  # "sign"?
 sdk = "clipos/sdk"
+actions = [ "build", "image", "configure", "bundle" ]
 
-[root]
-env = { PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/efiboot' }
-build_steps = [
-    "{{repo}}/products/clipos/sdk/scripts/build.sh clipos-meta/clipos-efiboot",
-]
-image_steps = [
-    "{{repo}}/products/clipos/sdk/scripts/image.sh clipos-meta/clipos-efiboot",
-]
-
-[configure]
-root = "{{product}}/{{recipe}}"  # work on self
-steps = [
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/10_cleanup.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/20_default_users.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config_state.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/51_os-release.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/90_config_cleanup.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/91_chroot_devices.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/95_dracut.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/96_secure_boot.sh",
-]
-
-[bundle]
-steps = [
-    "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh",
-]
+# Arbitrary environment variables made available in the SDK with the
+# 'COSMK_RECIPE_ENV_' prefix
+[environment]
+PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/efiboot'
+META_ATOM = 'clipos-meta/clipos-efiboot'
 
 # vim: set ts=4 sts=4 sw=4 et ft=toml:

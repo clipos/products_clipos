@@ -3,45 +3,13 @@
 
 # CLIP OS Core recipe file
 
-features = [ "root", "configure", "bundle" ]  # "sign"?
 sdk = "clipos/sdk"
+actions = [ "build", "image", "configure", "bundle" ]
 
-[root]
-env = { PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/core' }
-build_steps = [
-    "{{repo}}/products/clipos/sdk/scripts/build.sh clipos-meta/clipos-core",
-]
-image_steps = [
-    "{{repo}}/products/clipos/sdk/scripts/image.sh clipos-meta/clipos-core",
-]
-
-[configure]
-root = "{{product}}/{{recipe}}"  # work on self
-steps = [
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/10_cleanup.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/20_default_users.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/21_core_users.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/29_debug_no_root_password.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/31_extract_boot.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/40_fstab.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/41_dev_proc_sys.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/50_config.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/51_os-release.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/54_systemd.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/56_network.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/57_sshd.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/58_ipsec.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/58_update.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/59_lvm.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/80_nosuid.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/89_empty_var.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/90_config_cleanup.sh",
-    "{{repo}}/products/{{product}}/{{recipe}}/configure.d/99_final_cleanup.sh",
-]
-
-[bundle]
-steps = [
-    "{{repo}}/products/{{product}}/{{recipe}}/bundle.sh",
-]
+# Arbitrary environment variables made available in the SDK with the
+# 'COSMK_RECIPE_ENV_' prefix
+[environment]
+PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/core'
+META_ATOM = 'clipos-meta/clipos-core'
 
 # vim: set ts=4 sts=4 sw=4 et ft=toml:

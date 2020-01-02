@@ -6,7 +6,7 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
 sdk_info "Enable sshd by default"
 systemctl --root="${CURRENT_OUT_ROOT}" enable sshd
@@ -17,7 +17,7 @@ ln -sf "/mnt/state/core/etc/ssh/host_keys" "${CURRENT_OUT_ROOT}/etc/ssh/host_key
 # Require IPsec for SSH access
 install -o 0 -g 0 -m 755 -d "${CURRENT_OUT_ROOT}/etc/systemd/system/sshd.service.d"
 install -o 0 -g 0 -m 0644 \
-    "/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/config/ipsec0.conf" \
+    "${CURRENT_RECIPE}/configure.d/config/ipsec0.conf" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/sshd.service.d/ipsec0.conf"
 
 # Disable SSH access over IPsec only restriction for development

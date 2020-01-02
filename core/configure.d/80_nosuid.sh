@@ -1,1 +1,1 @@
-../../sdk/scripts/configure.d/80_nosuid.sh
+../../sdk/configure.d/80_nosuid.sh

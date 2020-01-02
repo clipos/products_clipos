@@ -6,9 +6,9 @@
 set -o errexit -o nounset -o pipefail
 
 # The prelude to every script for this SDK. Do not remove it.
-source /mnt/products/${CURRENT_SDK_PRODUCT}/${CURRENT_SDK_RECIPE}/scripts/prelude.sh
+source /mnt/products/${COSMK_SDK_PRODUCT}/${COSMK_SDK_RECIPE}/prelude.sh
 
-sb_keys_path="/mnt/products/${CURRENT_PRODUCT}/${CURRENT_RECIPE}/configure.d/dummy_keys_secure_boot"
+sb_keys_path="${CURRENT_RECIPE}/configure.d/dummy_keys_secure_boot"
 
 # Setup Secure Boot signing keys
 mkdir -p "${CURRENT_OUT_ROOT}/secure_boot"
