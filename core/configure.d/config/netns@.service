@@ -6,11 +6,11 @@ Description=Setup '%i' XFRM interface
 Wants=network.target
 After=network.target
 Before=strongswan.service
+RefuseManualStop=true
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-RefuseManualStop=true
 
 EnvironmentFile=/mnt/state/core/etc/clipos/%i.conf
 
