@@ -29,6 +29,10 @@ ln -s "/lib/systemd/system/getty@.service" \
 ln -s "/lib/systemd/system/multi-user.target" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/default.target"
 
+# Enable dbus-broker as system and user bus
+systemctl --root="${CURRENT_OUT_ROOT}" enable dbus-broker
+systemctl --root="${CURRENT_OUT_ROOT}" --global enable dbus-broker
+
 # Mask unneeded systemd user instances
 rm "${CURRENT_OUT_ROOT}/lib/systemd/system/user@.service"
 ln -s '/dev/null' "${CURRENT_OUT_ROOT}/etc/systemd/system/user@.service"
