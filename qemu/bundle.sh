@@ -152,6 +152,13 @@ install -o 0 -g ${admin_id} -m 640 \
     "${CURRENT_RECIPE_D}/nft/rules.ipsec0.nft" \
     "${CURRENT_STATE}/core/etc/nftables/rules.ipsec0.nft"
 
+sdk_info "Installing secret keys for chrony..."
+chrony_id="$(grep "chrony:" "${CORE_OUT_ROOT}/etc/passwd" | cut -d: -f 3)"
+install -o 0 -g ${chrony_id} -m 750 -d "${CURRENT_STATE}/core/etc/chrony"
+install -o 0 -g ${chrony_id} -m 640 \
+    "${CURRENT_RECIPE_D}/chronyd/chrony.keys" \
+    "${CURRENT_STATE}/core/etc/chrony/chrony.keys"
+
 # Install CLIP OS custom environment file to specify interface used to bind
 # XFRM interface and private IP for IPsec traffic
 # WARNING: This is subject to change before the 5.0 stable release.
