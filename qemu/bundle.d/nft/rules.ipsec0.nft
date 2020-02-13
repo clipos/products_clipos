@@ -104,7 +104,12 @@ table ip filter {
         tcp dport { 53, 443 } accept
         udp dport { 53 } accept
 
+        # chrony: allow outgoing NTP
+        udp dport 123 meta skuid "chrony" accept
+
         # Log everything else
         log prefix "OUTPUT IPSEC (drop): " drop
     }
 }
+
+# vim: set ts=4 sts=4 sw=4 et ai ft=conf:
