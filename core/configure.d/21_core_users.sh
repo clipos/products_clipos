@@ -30,6 +30,7 @@ sysusers_config=(
     "clipos-core"
     "dbus"
     "openssh"
+    "chronyd"
     "strongswan"
 )
 

@@ -26,6 +26,7 @@ ${configure}/57_sshd.sh
 ${configure}/58_ipsec.sh
 ${configure}/58_update.sh
 ${configure}/59_lvm.sh
+${configure}/60_chrony.sh
 ${configure}/80_nosuid.sh
 ${configure}/89_empty_var.sh
 ${configure}/90_config_cleanup.sh
