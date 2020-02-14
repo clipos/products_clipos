@@ -26,6 +26,14 @@ source "${CURRENT_SDK}/emergeopts.sh"
 # and will work in this ROOT tree.
 export ROOT="${CURRENT_OUT_ROOT}"
 
+# Setup EXIT trap to restore log and distfiles ownership to root on successful
+# and unsuccessful script exits.
+restore_log_ownership() {
+    chown -R "$(stat -c '%u' /mnt/assets):$(stat -c '%g' /mnt/assets)" \
+        "${CURRENT_CACHE}/log" '/mnt/assets/distfiles'
+}
+trap restore_log_ownership EXIT
+
 sdk_info "Emerging baselayout in ROOT:"
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} sys-apps/baselayout
 

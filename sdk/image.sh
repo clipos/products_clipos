@@ -29,6 +29,14 @@ export ROOT="${CURRENT_OUT_ROOT}"
 # All imaging process must begin with a clean empty root tree:
 rm -rf "${ROOT}"
 
+# Setup EXIT trap to restore log ownership to root on successful and
+# unsuccessful script exits.
+restore_log_ownership() {
+    chown -R "$(stat -c '%u' /mnt/assets):$(stat -c '%g' /mnt/assets)" \
+        "${CURRENT_CACHE}/log"
+}
+trap restore_log_ownership EXIT
+
 sdk_info "Emerging (using binpkgs only) baselayout in ROOT:"
 emerge ${EMERGE_IMAGEROOTONLYRDEPS_OPTS} sys-apps/baselayout
 

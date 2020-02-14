@@ -36,6 +36,14 @@ cat <<EOF >> /etc/portage/make.conf
 PKGDIR='${CURRENT_CACHE_PKG}/.binpkgs-bz2'
 EOF
 
+# Setup EXIT trap to restore log and distfiles ownership to root on successful
+# and unsuccessful script exits.
+restore_log_ownership() {
+    chown -R "$(stat -c '%u' /mnt/assets):$(stat -c '%g' /mnt/assets)" \
+        "${CURRENT_CACHE}/log" '/mnt/assets/distfiles'
+}
+trap restore_log_ownership EXIT
+
 # Needed for a time-optimal compression of the binpkgs.
 emerge ${EMERGE_BUILDROOTWITHBDEPS_OPTS} app-arch/lz4
 
