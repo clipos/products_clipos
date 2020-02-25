@@ -24,6 +24,12 @@ u audit      801             "Audit user"                        /home/audit /bi
 m audit      systemd-journal
 EOF
 
+# rsyslog user
+cat <<EOF >> "${CURRENT_OUT_ROOT}/usr/lib/sysusers.d/clipos-core.conf"
+u rsyslog    456             "rsyslog privilege separation user" /var/lib/rsyslog
+m rsyslog    systemd-journal
+EOF
+
 # List of sysusers configuration files that will be taken into account to
 # create users in this recipe.
 sysusers_config=(
