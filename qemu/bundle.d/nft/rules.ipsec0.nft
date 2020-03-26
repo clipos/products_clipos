@@ -107,6 +107,9 @@ table ip filter {
         # chrony: allow outgoing NTP
         udp dport 123 meta skuid "chrony" accept
 
+        # Allow rsyslog TCP outgoing traffic
+        tcp dport 514 meta skuid "rsyslog" accept
+
         # Log everything else
         log prefix "OUTPUT IPSEC (drop): " drop
     }
