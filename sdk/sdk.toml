@@ -5,7 +5,7 @@
 
 # Container image tag used to identify this SDK version and used pull image
 # from the CI or to tag locally built images
-tag = "20191127T214502Z"
+tag = "20200315T214502Z"
 
 # Arbitrary environment variables made available in this SDK with the
 # 'COSMK_SDK_ENV_' prefix
@@ -19,7 +19,7 @@ PORTAGE_PROFILE = 'clipos:clipos/arch/amd64/sdk'
 
 [bootstrap]
 # The rootfs archive to import as base image for the SDK
-rootfs = "assets/gentoo/stage3-amd64-hardened+nomultilib-20191127T214502Z.tar.xz"
+rootfs = "assets/gentoo/stage3-amd64-hardened+nomultilib-20200315T214502Z.tar.xz"
 
 [build]
 # Additionnal capabilities granted to processes in this SDK
