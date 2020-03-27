@@ -18,6 +18,7 @@ ${configure}/29_debug_no_root_password.sh
 ${configure}/31_extract_boot.sh
 ${configure}/40_fstab.sh
 ${configure}/41_dev_proc_sys.sh
+${configure}/42_hosts.sh
 ${configure}/50_config.sh
 ${configure}/51_os-release.sh
 ${configure}/54_systemd.sh

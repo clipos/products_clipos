@@ -27,11 +27,4 @@ install -o 0 -g 0 -m 0644 \
     "${CURRENT_RECIPE}/configure.d/config/ipsec0.conf" \
     "${CURRENT_OUT_ROOT}/etc/systemd/system/rsyslog.service.d/ipsec0.conf"
 
-# Install host entry only for development builds
-if [[ -n "${COSMK_INSTRUMENTATION_FEATURES+x}" ]]; then
-    cat <<EOF >> "${CURRENT_OUT_ROOT}/etc/hosts"
-172.27.100.10  logs.clip-os.org
-EOF
-fi
-
 #vim: set ts=4 sts=4 sw=4 et ft=sh:
