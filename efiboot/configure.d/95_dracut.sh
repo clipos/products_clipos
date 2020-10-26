@@ -124,7 +124,7 @@ dracut_bundle_efi() {
     env -i chroot "${CURRENT_OUT_ROOT}" \
         /bin/bash -l -c 'exec "$0" "$@"' \
             dracut --kver "${kernel_version}" \
-            --reproducible --force \
+            --reproducible --force --zstd \
             --uefi --uefi-stub /usr/lib/systemd/boot/efi/linuxx64.efi.stub \
             --kernel-cmdline "${rootfs_cmdline} ${kernel_cmdline}" --no-kernel
     # Note for the "bash -lc 'exec ...'" quirk above:
